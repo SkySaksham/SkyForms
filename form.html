@@ -7,6 +7,18 @@
 <body>
 
 <div id = "nav"></div>
+<div class = "Qcontainer">
+
+    <div class = "Qcard">
+        <div class="Qtitle">1. How many items do you have ? </div>
+        <div class="Qdescription" > How many times do i have to tell u</div>
+    </div>
+    <div class = "Qcard">
+        <div class="Qtitle">2. How many items do you have ? </div>
+        <div class="Qdescription" > How many times do i have to tell u</div>
+    </div>
+
+</div>
  
 </body>
 <script type="module" >
@@ -16,5 +28,52 @@ nav.replaceWith(getNavbar({left : null, middle : "Draft" , right:'add'}));
 
 
 </script>
+
+<style>
+
+.Qcontainer{
+    display : flex;
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    background: white;
+   
+    margin: 10px auto 0 auto;
+    min-height: 100vh;
+    
+    flex-direction: column;
+}
+.Qdescription {
+    font-size: 0.9rem;
+    background: rgb(230,230,230);
+    margin:5px 20px 5px 20px;
+
+    font-weight: 400;
+    font-size: 0.8rem;
+    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
+}
+.Qtitle {
+    font-size: 1.25rem;   
+    font-weight: 200;
+    margin:5px;
+    width: 100%;
+}
+
+.Qcard {
+    display : flex;
+    width: 100%;
+    margin: 0 auto;
+   
+    border: 1px solid rgb(235,235,235);
+    flex-direction: column;
+    border-radius: 4px;
+    margin-top: 0px;
+}
+
+body {
+    background: rgb(230,230,230);
+    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
+}
+</style>
 
 </html>
