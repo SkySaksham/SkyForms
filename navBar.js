@@ -26,7 +26,7 @@ function getHeader(content) {
 }
 
 
-function getNavbar(content){
+export function getNavbar(content){
     const nav = document.createElement("nav");
 
     nav.appendChild(getButton(content.left));
