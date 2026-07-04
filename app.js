@@ -1,7 +1,5 @@
-import { getDraftForm } from "./draftForm";
+import { getDraftForm } from "./draftForm.js";
 
 export function App() {
-
-
-    return getDraftForm()
+    return getDraftForm("test");
 }

@@ -1,4 +1,4 @@
-let a = {left:null,middle:"Hello",right:null};
+const testData = {left:null,middle:"Hello",right:null};
 
 
 function getButton(content){
