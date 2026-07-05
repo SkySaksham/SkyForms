@@ -8,7 +8,7 @@
 <body>
 
 <div id = "nav"></div>
-<div class = "Qcontainer">
+<div id = "Qcontainer" class = "Qcontainer">
 
     <div class = "Qcard">
         <div class="Qtitle">1. How many items do you have ? </div>
@@ -21,6 +21,13 @@
                 <option value="checkbox">Checkboxes</option>
                 <option value="dropdown">Dropdown</option>
             </select>
+
+
+            <div id = "dragHandle" class="dragHandle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
             <label class="required">
                 <input type="checkbox">
@@ -30,7 +37,7 @@
     </div>
 
     <div class = "Qcard">
-        <div class="Qtitle">1. How many items do you have ? </div>
+        <div class="Qtitle">2. How many items do you have ? </div>
         <div class="Qdescription" > How many times do i have to tell u</div>
         <div class="Qbottom">
 
@@ -42,7 +49,7 @@
                 <option value="dropdown">Dropdown</option>
             </select>
 
-            <div class="dragHandle">
+            <div id = "dragHandle" class="dragHandle">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -62,10 +69,24 @@
 </body>
 
 
-<script type="module" >
+<script  src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script type="module">
 import { getNavbar } from "./navBar.js";
 const nav = document.querySelector("#nav");
-nav.replaceWith(getNavbar({left : null, middle : "Draft" , right:'add'}));
+nav.replaceWith(getNavbar({left : 'back', middle : "Draft" , right:'add'}));
+
+
+new Sortable(document.getElementById("Qcontainer"), {
+    
+    handle: ".dragHandle",
+    animation: 150,
+    chosenClass:"chosen",
+    ghostClass: "dragging",
+
+  
+});
+
+
 
 
 </script>
@@ -130,7 +151,7 @@ nav.replaceWith(getNavbar({left : null, middle : "Draft" , right:'add'}));
     margin: 0 auto;
    
     border: 1px solid rgb(235,235,235);
-
+    background: white;
     flex-direction: column;
     border-radius: 4px;
     margin-top: 0px;
@@ -150,12 +171,22 @@ nav.replaceWith(getNavbar({left : null, middle : "Draft" , right:'add'}));
     background: grey;
     border-radius: 2px;
 }
+.dragHandle:hover span {
+    background: #444;
+}
 
 
 .dragHandle:active {
     cursor: grabbing;
 }
-
+.dragging {
+    background: #f5f5f5;
+    opacity: .4;
+}
+.chosen {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
 
 </style>
 
