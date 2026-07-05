@@ -49,7 +49,7 @@
                 <option value="dropdown">Dropdown</option>
             </select>
 
-            <div id = "dragHandle" class="dragHandle">
+            <div class="dragHandle">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -86,7 +86,110 @@ new Sortable(document.getElementById("Qcontainer"), {
   
 });
 
+let Questions = [
+{
+    id : 21,
+    title : "Hii",
+    description: null,
+    type : "short",
+    required : true,
+},
+{
+    id : 23,
+    title : "Hii",
+    description: null,
+    type : "short",
+    required : true,
+}
+];
 
+function getDiv(className,textContent=""){
+    const div = document.createElement("div");
+    div.className = className;
+    div.textContent = textContent; 
+    return div;
+}
+
+function getQuestionType(selectedType = "short") {
+    const select = document.createElement("select");
+    select.className = "questionType";
+
+    const types = {
+        short: "Short Answer",
+        paragraph: "Long Answer",
+        mcq: "Multiple Choice",
+        checkbox: "Checkbox",
+        dropdown: "Dropdown"
+    };
+
+    for (const [value, text] of Object.entries(types)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = text;
+        select.appendChild(option);
+    }
+
+    select.value = selectedType;
+
+    return select;
+}
+
+function getDragHandle(){
+    const div = document.createElement("div");
+    div.className="dragHandle";
+    for (let i = 0; i < 3; i++) {
+        div.appendChild(document.createElement("span"));
+    }
+    return div;
+}
+
+function getRequired(required = false) {
+    const label = document.createElement("label");
+    label.className = "required";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = required;
+
+    label.appendChild(checkbox);
+    label.append("Required");
+
+    return label;
+}
+
+function getQcard(content){
+    const card = document.createElement("div");
+    card.id=content.id;
+    card.className="Qcard";
+
+    card.appendChild(getDiv("Qtitle",content.title));
+    card.appendChild(getDiv("Qdescription",content.description));
+
+    const bottom = getDiv("Qbottom",null);
+
+    bottom.appendChild (getQuestionType(content.type));
+    bottom.appendChild (getDragHandle());
+    bottom.appendChild (getRequired(content.required));
+
+    card.appendChild(bottom);
+    
+    return card;
+}
+
+function addQuestion(content){
+    const container = document.querySelector("#Qcontainer"); 
+    container.appendChild(getQcard(content))
+}
+
+addQuestion(
+{
+    id : 21,
+    title : "Hii",
+    description: null,
+    type : "short",
+    required : true,
+}
+);
 
 
 </script>
@@ -187,6 +290,8 @@ new Sortable(document.getElementById("Qcontainer"), {
     transform: scale(1.03);
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
 }
+
+
 
 </style>
 
