@@ -3,6 +3,7 @@
 <head>
     <title id = "head-title">SkyForms</title>
     <link rel="stylesheet" href="./navBar.css">
+    <link rel="stylesheet" href="./editor.css">
     <link rel="stylesheet" href="./body.css">
 </head>
 <body>
@@ -11,21 +12,10 @@
 <div id = "Qcontainer" class = "Qcontainer">
 
     <div class = "Qcard">
+
         <div class ="Qhead">
-
             <div class = "Qsr">-></div>
-            <div class="Qtitle"> How many items do you have ? 
-
-                 How many items do you have ?
-                 How many items do you have ?
-                 How many items do you have ?
-                 How many items do you have ?
-                 How many items do you have ?
-                 How many items do you have ?
-                 How many items do you have ?
-
-            </div>
-
+            <div class="Qtitle"> How many items do you have ? </div>
         </div>
         
         <div class="Qdescription" > How many times do i have to tell u</div>
@@ -38,7 +28,6 @@
                 <option value="dropdown">Dropdown</option>
             </select>
 
-
             <div id = "dragHandle" class="dragHandle">
                 <span></span>
                 <span></span>
@@ -49,33 +38,9 @@
                 <input type="checkbox">
                 Required
             </label>
+
         </div>
-    </div>
 
-    <div class = "Qcard">
-        <div class="Qtitle">2. How many items do you have ? </div>
-        <div class="Qdescription" > How many times do i have to tell u</div>
-        <div class="Qbottom">
-
-            <select class="questionType">
-                <option value="short">Short Answer</option>
-                <option value="paragraph">Paragraph</option>
-                <option value="mcq">Multiple Choice</option>
-                <option value="checkbox">Checkboxes</option>
-                <option value="dropdown">Dropdown</option>
-            </select>
-
-            <div class="dragHandle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <label class="required">
-                <input type="checkbox">
-                Required
-            </label>
-        </div>
     </div>
 
     
@@ -90,6 +55,8 @@
 import { getNavbar } from "./navBar.js";
 const nav = document.querySelector("#nav");
 nav.replaceWith(getNavbar({left : 'back', middle : "Draft" , right:'add'}));
+
+const container = document.querySelector("#Qcontainer");
 
 
 new Sortable(document.getElementById("Qcontainer"), {
@@ -186,34 +153,17 @@ function getQcard(content,serial="->"){
 }
 
 function addQuestion(content,serial="->"){
-    const container = document.querySelector("#Qcontainer"); 
     container.appendChild(getQcard(content,serial));
 }
 
 function renderEditor(questions) {
-    const container = document.querySelector("#Qcontainer");
     container.innerHTML = "";
-
     const fragment = document.createDocumentFragment();
-
     questions.forEach((question, index) => {
         fragment.appendChild(getQcard(question, index + 1));
     });
-
     container.appendChild(fragment);
 }
-
-addQuestion(
-{
-    id : 21,
-    title : "Hii",
-    description: null,
-    type : "short",
-    required : true,
-}
-);
-
-
 
 let Questions = [
 {
@@ -295,116 +245,6 @@ renderEditor(Questions);
 
 <style>
 
-.Qhead{
-    display : flex;
-}
-
-.Qsr{
-    font-weight: 200;
-    font-size: 1rem;
-    margin-top:8px;
-    margin-left: 5px;
-    flex: 0 0 auto;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.Qtitle {
-    font-size: 1.25rem;   
-    font-weight: 200;
-    margin:5px;
-    min-width: 0;
-}
-
-.Qcontainer{
-    display : flex;
-    width: 100%;
-    max-width: 900px;
-    height: 100%;
-    
-    background: transparent;
-   
-    margin: 10px auto 0 auto;
-    min-height: 100vh;
-    gap: 5px;
-    padding: 12px;
-    flex-direction: column;
-}
-.Qdescription {
-    font-size: 0.9rem;
-    background: rgb(230,230,230);
-    margin:5px 20px 5px 20px;
-
-    font-weight: 400;
-    font-size: 0.8rem;
-    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
-}
-
-.Qbottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px;
-    padding: 10px 0;
-}
-
-.questionType {
-    margin : 5px;
-    padding: 6px 10px;
-    font-size: 14px;
-}
-
-.required {
-    margin : 5px;
-    display: flex;
-    align-items: center;
-    
-    font-size: 14px;
-}
-.required input[type="checkbox"] {
-    accent-color: gray;
-}
-
-.Qcard {
-    display : flex;
-    width: 100%;
-    margin: 0 auto;
-   
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
-    background: white;
-    flex-direction: column;
-    border-radius: 4px;
-    margin-top: 0px;
-    transition: transform 150ms ease;
-}
-
-.dragHandle {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    cursor: grab;  
-}
-
-.dragHandle span {
-    width: 18px;
-    height: 2px;
-    background: grey;
-    border-radius: 2px;
-}
-.dragHandle:hover span {
-    background: #444;
-}
-
-
-.dragHandle:active {
-    cursor: grabbing;
-}
-.dragging {
-    background: #f5f5f5;
-    opacity: .4;
-}
-.chosen {
-    transform: scale(1.03);
-    box-shadow: 0 8px 24px rgba(0,0,0,.18);
-}
 
 
 
