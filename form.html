@@ -11,7 +11,23 @@
 <div id = "Qcontainer" class = "Qcontainer">
 
     <div class = "Qcard">
-        <div class="Qtitle">1. How many items do you have ? </div>
+        <div class ="Qhead">
+
+            <div class = "Qsr">-></div>
+            <div class="Qtitle"> How many items do you have ? 
+
+                 How many items do you have ?
+                 How many items do you have ?
+                 How many items do you have ?
+                 How many items do you have ?
+                 How many items do you have ?
+                 How many items do you have ?
+                 How many items do you have ?
+
+            </div>
+
+        </div>
+        
         <div class="Qdescription" > How many times do i have to tell u</div>
         <div class="Qbottom">
             <select class="questionType">
@@ -86,28 +102,21 @@ new Sortable(document.getElementById("Qcontainer"), {
   
 });
 
-let Questions = [
-{
-    id : 21,
-    title : "Hii",
-    description: null,
-    type : "short",
-    required : true,
-},
-{
-    id : 23,
-    title : "Hii",
-    description: null,
-    type : "short",
-    required : true,
-}
-];
 
 function getDiv(className,textContent=""){
     const div = document.createElement("div");
     div.className = className;
     div.textContent = textContent; 
     return div;
+}
+
+function getQhead(title,serial = "->"){
+
+    const qhead= getDiv("Qhead");
+    qhead.appendChild(getDiv("Qsr",serial+"."));
+    qhead.appendChild(getDiv("Qtitle",title));
+
+    return qhead;
 }
 
 function getQuestionType(selectedType = "short") {
@@ -157,12 +166,12 @@ function getRequired(required = false) {
     return label;
 }
 
-function getQcard(content){
+function getQcard(content,serial="->"){
+    
     const card = document.createElement("div");
     card.id=content.id;
     card.className="Qcard";
-
-    card.appendChild(getDiv("Qtitle",content.title));
+    card.appendChild(getQhead(content.title,serial));
     card.appendChild(getDiv("Qdescription",content.description));
 
     const bottom = getDiv("Qbottom",null);
@@ -176,9 +185,22 @@ function getQcard(content){
     return card;
 }
 
-function addQuestion(content){
+function addQuestion(content,serial="->"){
     const container = document.querySelector("#Qcontainer"); 
-    container.appendChild(getQcard(content))
+    container.appendChild(getQcard(content,serial));
+}
+
+function renderEditor(questions) {
+    const container = document.querySelector("#Qcontainer");
+    container.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+
+    questions.forEach((question, index) => {
+        fragment.appendChild(getQcard(question, index + 1));
+    });
+
+    container.appendChild(fragment);
 }
 
 addQuestion(
@@ -192,20 +214,118 @@ addQuestion(
 );
 
 
+
+let Questions = [
+{
+    id: 1,
+    title: "What is your full name?",
+    description: null,
+    type: "short",
+    required: true,
+},
+{
+    id: 2,
+    title: "What is your email address?",
+    description: "We'll use this to contact you.",
+    type: "short",
+    required: true,
+},
+{
+    id: 3,
+    title: "Tell us about yourself.",
+    description: "A brief introduction is enough.",
+    type: "paragraph",
+    required: false,
+},
+{
+    id: 4,
+    title: "What is your highest level of education?",
+    description: null,
+    type: "dropdown",
+    required: true,
+},
+{
+    id: 5,
+    title: "Which programming language do you use the most?",
+    description: "Select one option.",
+    type: "mcq",
+    required: true,
+},
+{
+    id: 6,
+    title: "Which technologies have you worked with?",
+    description: "Select all that apply.",
+    type: "checkbox",
+    required: false,
+},
+{
+    id: 7,
+    title: "How many years of programming experience do you have?",
+    description: null,
+    type: "short",
+    required: true,
+},
+{
+    id: 8,
+    title: "Why do you want to join our team?",
+    description: "Share your motivation.",
+    type: "paragraph",
+    required: true,
+},
+{
+    id: 9,
+    title: "Preferred mode of work",
+    description: "Remote, Hybrid, or On-site",
+    type: "dropdown",
+    required: true,
+},
+{
+    id: 10,
+    title: "Would you recommend our service to others?",
+    description: null,
+    type: "mcq",
+    required: false,
+}
+];
+
+renderEditor(Questions);
+
+
 </script>
 
 <style>
+
+.Qhead{
+    display : flex;
+}
+
+.Qsr{
+    font-weight: 200;
+    font-size: 1rem;
+    margin-top:8px;
+    margin-left: 5px;
+    flex: 0 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.Qtitle {
+    font-size: 1.25rem;   
+    font-weight: 200;
+    margin:5px;
+    min-width: 0;
+}
 
 .Qcontainer{
     display : flex;
     width: 100%;
     max-width: 900px;
     height: 100%;
-    background: white;
+    
+    background: transparent;
    
     margin: 10px auto 0 auto;
     min-height: 100vh;
-    
+    gap: 5px;
+    padding: 12px;
     flex-direction: column;
 }
 .Qdescription {
@@ -217,12 +337,7 @@ addQuestion(
     font-size: 0.8rem;
     font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
 }
-.Qtitle {
-    font-size: 1.25rem;   
-    font-weight: 200;
-    margin:5px;
-    width: 100%;
-}
+
 .Qbottom {
     display: flex;
     justify-content: space-between;
@@ -253,7 +368,7 @@ addQuestion(
     width: 100%;
     margin: 0 auto;
    
-    border: 1px solid rgb(235,235,235);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
     background: white;
     flex-direction: column;
     border-radius: 4px;
