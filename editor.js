@@ -2,7 +2,6 @@
 const container = document.querySelector("#Qcontainer");
 
 
-
 function getDiv(className,textContent=""){
     const div = document.createElement("div");
     div.className = className;
