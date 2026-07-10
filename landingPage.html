@@ -18,6 +18,13 @@
 
 body{
     background:#f3f4f6;
+     width: 100%;
+  height: 100%;
+  --color: #E1E1E1;
+  background-color: #F3F3F3;
+  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
+      linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
+  background-size: 55px 55px;
 }
 
 .back{
@@ -28,15 +35,23 @@ body{
 }
 
 .card{
+    display: flex;
+    flex-direction: column;
+
     background:white;
-    width:min(90%, 560px);
-    padding:64px;
+    width:min(90%, 840px);
+    min-height: 70dvh;
+    padding-top:64px;
+    padding-bottom: 36px;
+    padding-right: 36px;
+    padding-left: 36px;
     border-radius:20px;
     text-align:center;
     transform: translateY(-40px);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  transition: all ease-in-out 0.3s;
+    transition: all ease-in-out 0.3s;
+    
 }
 
 .card:hover {
@@ -53,14 +68,18 @@ body{
     letter-spacing:.5px;
     color:#222;
     font-family: 'Times New Roman', Times, serif;
-}
+    
+    padding: 12px;
+} 
 
 .subtitle{
     margin-top:24px;
     color:#666;
     font-size:1.1rem;
     line-height:1.7;
+    min-height: 3rem;
 }
+
 
 .buttons{
     display:flex;
@@ -166,6 +185,42 @@ body{
   }
 }
 
+.mid{
+
+  display: flex;
+ 
+  align-items: center;
+  
+}
+
+/* From Uiverse.io by leerepublik */ 
+.input {
+  width: 80%;
+  margin-top: auto;
+  margin-left:auto;
+  margin-right: auto;
+  
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+  height: 60px;
+}
+
+.input:hover {
+  border: 2px solid lightgrey;
+  box-shadow: 0px 0px 20px -17px;
+}
+
+.input:active {
+  transform: scale(0.95);
+}
+
+.input:focus {
+  border: 2px solid grey;
+}
 
 </style>
 </head>
@@ -173,30 +228,85 @@ body{
 <body>
 
 <div class="back">
+
     <div class="card animate__animated animate__zoomInUp animate__slow">
-    <div class="header animate__animated animate__fadeInUp animate__delay-2s">Sky Forms</div>
-
-    <div class="subtitle animate__animated animate__fadeIn animate__slow animate__delay-1s">
-        Create, manage and share forms effortlessly.
-    </div>
-
-    <div class="buttons animate__animated animate__fadeIn animate__slow animate__delay-1s">
-        <button class="login">Log In</button>
+   
+      <div class="mid animate__animated animate__fadeIn animate__slow animate__delay-1s">
         <div class="loader"></div>
-        <button class="signup">Sign Up</button>
+         <div class="header animate__animated animate__fadeInUp animate__delay-2s">Sky Forms</div>
+        <div class="loader"></div>
     </div>
+
+    <div id = "Subtitle" class="subtitle animate__animated animate__fadeIn animate__slow animate__delay-1s"></div>
+    
+    <div class="buttons animate__animated animate__fadeIn animate__slow animate__delay-1s">
+        <button class="login">Login</button>
+        <button class="signup">Get Started</button>
+    </div>
+    
+    
+    <input class="input animate__animated animate__fadeIn animate__slow animate__delay-1s" name="text" type="text" placeholder="Prompt to get a draft ..."></input>
+          
+    </div>
+
+    
+    
+    
 </div>
-</div>
+
 
 </body>
 
 <script>
-
 const subtitles = [
     "Create, manage and share forms effortlessly.",
-    "Generate editable drafts with language prompts.",
-    "Get analysis and summarized responses at your fingertips."
+    "From prompt to polished form instantly.",
+    "Simple to build. Delightful to use."
 ];
+
+const subtitle = document.getElementById("Subtitle");
+
+let sentenceIndex = 0;
+let wordIndex = 0;
+
+function typeSentence() {
+    const words = subtitles[sentenceIndex].split(" ");
+
+    subtitle.textContent += words[wordIndex] + " ";
+    wordIndex++;
+
+    if (wordIndex < words.length) {
+        setTimeout(typeSentence, 250);
+    } else {
+        setTimeout(deleteSentence, 2000);
+    }
+}
+
+function deleteSentence() {
+    const words = subtitle.textContent.trim().split(" ");
+
+    words.pop();
+    subtitle.textContent = words.join(" ");
+
+    if (words.length > 0) {
+        subtitle.textContent += " ";
+        setTimeout(deleteSentence, 150);
+    } else {
+        sentenceIndex = (sentenceIndex + 1) % subtitles.length;
+        wordIndex = 0;
+        setTimeout(typeSentence, 250);
+    }
+}
+
+typeSentence();
+
+/*
+<div class="buttons animate__animated animate__fadeIn animate__slow animate__delay-1s">
+        <button class="login">Login</button>
+        <button class="signup">Get Started</button>
+    </div>
+
+*/
 
 </script>
 
