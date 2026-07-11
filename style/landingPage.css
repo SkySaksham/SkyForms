@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sky Forms</title>
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
-   
-<style>
 *{
     margin:0;
     padding:0;
@@ -22,14 +10,13 @@ html{
 }
 
 
-
 .back{
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     padding:24px;
-
+    
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
 
@@ -40,7 +27,6 @@ html{
     linear-gradient(90deg,transparent 24%,var(--color) 25%,var(--color) 26%,transparent 27%,transparent 74%,var(--color) 75%,var(--color) 76%,transparent 77%,transparent);
 
     background-size:55px 55px;
-    
 }
 
 .card{
@@ -374,98 +360,3 @@ input::placeholder{
         font-size:.95rem;
     }
 }
-</style>
-</head>
-
-<body>
-
-<div class="back">
-    
-    <div class="card animate__animated animate__zoomInUp animate__slow">
-    <div>
-      <div class="top animate__animated animate__fadeIn animate__slow animate__delay-1s">
-        <div class="loader"></div>
-         <div class="header animate__animated animate__fadeInUp animate__delay-2s">Sky Forms</div>
-        <div class="loader"></div>
-    </div>
-
-    <div id = "Subtitle" class="subtitle animate__animated animate__fadeIn animate__slow animate__delay-1s"></div>
-    </div>
-
-    <div class="inputwrap">
-      <input id="prompt" placeholder="Describe the form you'd like to create...">
-      <button class="generate">Generate →</button>
-    </div>
-
-    <div class="mid animate__animated animate__fadeIn animate__slow animate__delay-1s">
-        <!-- From Uiverse.io by elijahgummer --> 
-        <button class="styled-button">
-           Register Now
-        </button>
-        <div> Login To Get Started</div>
-    </div>
-          
-    </div>
-
-    
-    
-    
-</div>
-
-
-</body>
-
-<script>
-const subtitles = [
-    "Create, manage and share forms effortlessly.",
-    "From prompt to polished form instantly.",
-    "Simple to build. Delightful to use."
-];
-
-const subtitle = document.getElementById("Subtitle");
-
-let sentenceIndex = 0;
-let wordIndex = 0;
-
-function typeSentence() {
-    const words = subtitles[sentenceIndex].split(" ");
-
-    subtitle.textContent += words[wordIndex] + " ";
-    wordIndex++;
-
-    if (wordIndex < words.length) {
-        setTimeout(typeSentence, 250);
-    } else {
-        setTimeout(deleteSentence, 2000);
-    }
-}
-
-function deleteSentence() {
-    const words = subtitle.textContent.trim().split(" ");
-
-    words.pop();
-    subtitle.textContent = words.join(" ");
-
-    if (words.length > 0) {
-        subtitle.textContent += " ";
-        setTimeout(deleteSentence, 150);
-    } else {
-        sentenceIndex = (sentenceIndex + 1) % subtitles.length;
-        wordIndex = 0;
-        setTimeout(typeSentence, 250);
-    }
-}
-
-typeSentence();
-
-/*
-<div class="buttons animate__animated animate__fadeIn animate__slow animate__delay-1s">
-        <button class="login">Login</button>
-        <button class="signup">Get Started</button>
-    </div>
-
-*/
-
-</script>
-
-</html>

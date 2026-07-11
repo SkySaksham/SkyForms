@@ -1,4 +1,4 @@
-import { getNavbar } from "./navBar.js";
+import { getNavbar } from "./components/navBar.js";
 
 
 const testData = {nav:{left:"<- BACK",middle:"DRAFT FORM",right:"ADD"}}
