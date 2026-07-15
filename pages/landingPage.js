@@ -33,48 +33,54 @@ export function getLandingPage(){
     </div>
 </div>
 `
+
 const subtitles = [
     "Create, manage and share forms effortlessly.",
     "From prompt to polished form instantly.",
     "Simple to build. Delightful to use."
-];
+    ];
 
 const subtitle = page.querySelector("#Subtitle");
 
 let sentenceIndex = 0;
 let wordIndex = 0;
+let typingTimeout;
+
 
 function typeSentence() {
     const words = subtitles[sentenceIndex].split(" ");
-
     subtitle.textContent += words[wordIndex] + " ";
     wordIndex++;
-
     if (wordIndex < words.length) {
-        setTimeout(typeSentence, 250);
+        typingTimeout= setTimeout(typeSentence, 250);
     } else {
-        setTimeout(deleteSentence, 2000);
+        typingTimeout= setTimeout(deleteSentence, 2000);
     }
+    }
+
+    function deleteSentence() {
+        const words = subtitle.textContent.trim().split(" ");
+
+        words.pop();
+        subtitle.textContent = words.join(" ");
+
+        if (words.length > 0) {
+            subtitle.textContent += " ";
+            typingTimeout= setTimeout(deleteSentence, 150);
+        } else {
+            sentenceIndex = (sentenceIndex + 1) % subtitles.length;
+            wordIndex = 0;
+            typingTimeout=setTimeout(typeSentence, 250);
+        }
+    }
+
+function mount () {
+    typeSentence();
 }
 
-function deleteSentence() {
-    const words = subtitle.textContent.trim().split(" ");
-
-    words.pop();
-    subtitle.textContent = words.join(" ");
-
-    if (words.length > 0) {
-        subtitle.textContent += " ";
-        setTimeout(deleteSentence, 150);
-    } else {
-        sentenceIndex = (sentenceIndex + 1) % subtitles.length;
-        wordIndex = 0;
-        setTimeout(typeSentence, 250);
-    }
+function destroy (){
+    clearTimeout(typingTimeout);
 }
 
-typeSentence();
-
-
-return page;
+return {element: page,mount,destroy};
 }
