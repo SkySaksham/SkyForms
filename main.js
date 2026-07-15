@@ -1,5 +1,5 @@
-import { App } from "./app.js";
+import { initRouter } from "./route.js";
 
 const app = document.getElementById("app");
 
-app.replaceChildren(App().element);
+initRouter();

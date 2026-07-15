@@ -75,6 +75,7 @@ function typeSentence() {
     }
 
 function mount () {
+    if (typingTimeout) return;
     typeSentence();
 }
 
