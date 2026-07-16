@@ -13,37 +13,7 @@
 <div id = "nav"></div>
 <div id = "Qcontainer" class = "Qcontainer">
 
-    <div class = "Qcard">
-
-        <div class ="Qhead">
-            <div class = "Qsr">-></div>
-            <div class="Qtitle"> How many items do you have ? </div>
-        </div>
-        
-        <div class="Qdescription" > How many times do i have to tell u</div>
-        <div class="Qbottom">
-            <select class="questionType">
-                <option value="short">Short Answer</option>
-                <option value="paragraph">Paragraph</option>
-                <option value="mcq">Multiple Choice</option>
-                <option value="checkbox">Checkboxes</option>
-                <option value="dropdown">Dropdown</option>
-            </select>
-
-            <div id = "dragHandle" class="dragHandle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <label class="required">
-                <input type="checkbox">
-                Required
-            </label>
-
-        </div>
-
-    </div>
+</div>
 
     
 
@@ -61,11 +31,10 @@ import { renderEditor} from "./components/editor.js";
 
 
 const container = document.querySelector("#Qcontainer");
-
 const nav = document.querySelector("#nav");
 nav.replaceWith(getNavbar({left : 'back', middle : "Draft" , right:'add'}));
 
-new Sortable(document.getElementById("Qcontainer"), {
+let sortable = new Sortable(document.getElementById("Qcontainer"), {
     
     handle: ".dragHandle",
     animation: 150,

@@ -1,5 +1,4 @@
 
-const container = document.querySelector("#Qcontainer");
 
 
 function getDiv(className,textContent=""){
@@ -84,11 +83,11 @@ function getQcard(content,serial="->"){
     return card;
 }
 
-function addQuestion(content,serial="->"){
+function addQuestion(container,content,serial="->"){
     container.appendChild(getQcard(content,serial));
 }
 
-export function renderEditor(questions) {
+export function renderEditor(container,questions) {
     container.innerHTML = "";
     const fragment = document.createDocumentFragment();
     questions.forEach((question, index) => {

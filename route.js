@@ -1,8 +1,10 @@
 import { getLandingPage } from "./pages/landingPage.js"
-
+import { getEditorPage } from "./pages/editorPage.js";
 
 const routes = {
-    "/" : getLandingPage, 
+    "/" : getLandingPage,
+    "/home" : getLandingPage,
+    "/draft" : getEditorPage,
 }
 
 const app = document.querySelector("#app");
@@ -15,7 +17,6 @@ export function navigate(path) {
 }
 
 export function render(){
-
         currentPage?.destroy?.();
         let pathPage = routes[location.pathname];
         if (!pathPage){
@@ -24,13 +25,13 @@ export function render(){
         }
         currentPage = pathPage();
         app.replaceChildren(currentPage.element ?? currentPage);
-        currentPage.mount?.();
+        currentPage.init?.();
 }
 
 
 export function initRouter(){
 
-    render();
+    navigate("/home");
 
     window.addEventListener("popstate", () => {
         render();

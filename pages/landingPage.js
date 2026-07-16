@@ -25,9 +25,9 @@ export function getLandingPage(){
 
         <div class="mid animate__animated animate__fadeIn animate__slow animate__delay-1s">
             <!-- From Uiverse.io by elijahgummer --> 
-            <button class="styled-button">
+            <a href = "/draft" app-route><button class="styled-button">
              Register Now
-            </button>
+            </button></a>
             <div> Login To Get Started</div>
         </div>
     </div>
@@ -74,7 +74,7 @@ function typeSentence() {
         }
     }
 
-function mount () {
+function init () {
     if (typingTimeout) return;
     typeSentence();
 }
@@ -83,5 +83,5 @@ function destroy (){
     clearTimeout(typingTimeout);
 }
 
-return {element: page,mount,destroy};
+return {element: page,init,destroy};
 }
