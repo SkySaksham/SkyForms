@@ -1,7 +1,7 @@
 import { data } from "../store.js";
 
 
-class Draft {
+export class Draft {
     constructor(){
         if (!data.draft || Object.keys(data.draft).length==0){
             this.draft = {
@@ -42,5 +42,10 @@ class Draft {
         this.draft.questions.push(Question)
     }
 
+    updateOrder(event){
+            const [a] = this.draft.questions.splice(event.oldIndex,1);
+            this.draft.questions.splice(event.newIndex,0,a);
+            console.log(this.draft.questions);
+    }
 
 };
