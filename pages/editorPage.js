@@ -34,7 +34,9 @@ export function getEditorPage(){
     }
 
     function closeQuestionEditor() {
+
         addUpdate.classList.add("hidden");
+        addUpdate.innerHTML="";
     }
 
     function updateSerialDom(event){
@@ -52,7 +54,11 @@ export function getEditorPage(){
     function editorActivity(e){
         if (e.target.id === "rNavBtn"){
             openQuestionEditor();
-            console.log("BUTTON CLICKED BRUH");
+        }
+
+        if (e.target.id === "addUpdateCancel"){
+            closeQuestionEditor();
+            console.log ("Button CLicked");
         }
     };
 

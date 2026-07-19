@@ -88,6 +88,7 @@ function getActions() {
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "cancelBtn";
     cancelBtn.textContent = "Cancel";
+    cancelBtn.id = "addUpdateCancel"
 
     const saveBtn = document.createElement("button");
     saveBtn.className = "saveBtn";
@@ -108,7 +109,7 @@ export function getQuestionEditor(content = {}) {
         getRequiredRow(content.required),
         getActions()
     );
-        
+     
     return card;
 }
 
@@ -154,7 +155,7 @@ export function getQuestionEditor(content = {}) {
 
 
         <div class="actions">
-            <button class="cancelBtn">Cancel</button>
+            <button id ="addUpdateCancel" class="cancelBtn">Cancel</button>
             <button class="saveBtn">Save Question</button>
         </div>
 
