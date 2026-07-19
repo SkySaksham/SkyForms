@@ -1,9 +1,7 @@
 import { getNavbar } from "../components/navBar.js";
 import { renderEditor } from "../components/editor.js";
 import { Draft } from "../logic/editorClass.js";
-
-
-import { data } from "../store.js";
+import { getQuestionEditor } from "../components/addUpdateQcard.js";
 
 
 
@@ -12,6 +10,7 @@ export function getEditorPage(){
     const page = document.createElement("div");
 
     page.innerHTML = ` 
+    <div id = "addUpdate"
     <div id = "nav"></div>
     <div id = "Qcontainer" class = "Qcontainer">
     `

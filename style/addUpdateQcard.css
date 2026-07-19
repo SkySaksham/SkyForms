@@ -1,0 +1,83 @@
+
+.questionCard{
+    background:white;
+    border-radius:14px;
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+}
+
+.field span{
+    font-size:1.1rem;
+    font-weight:400;
+    color:Black;   
+}
+
+.field input,
+.field textarea,
+.field select{
+    
+    padding:12px 14px;
+    font-size:15px;
+    border:1px solid #d7d7d7;
+    border-radius:8px;
+    outline:none;
+    transition:.2s;
+    font-family:inherit;
+    resize:vertical;
+    background:white;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+    border-color:grey;
+    box-shadow: 0 0 3px rgba(0,0,0,.18);
+}
+
+.requiredRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:500;
+}
+
+.actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+}
+
+.actions button{
+    border:none;
+    border-radius:8px;
+    padding:12px 22px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.2s;
+}
+
+.cancelBtn{
+    background:#ececec;
+}
+
+.cancelBtn:hover{
+    background:#dddddd;
+}
+
+.saveBtn{
+    background:grey;
+    color:white;
+}
+
+.saveBtn:hover{
+    background:black;
+}
