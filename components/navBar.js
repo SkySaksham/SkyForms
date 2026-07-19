@@ -28,10 +28,14 @@ function getHeader(content) {
 
 export function getNavbar(content){
     const nav = document.createElement("nav");
+    const left = getButton(content.left);
+    left.id = "lNavBtn";
 
-    nav.appendChild(getButton(content.left));
+    const right = getButton(content.right);
+    right.id = "rNavBtn";
+    nav.appendChild(left);
     nav.appendChild(getHeader(content.middle));
-    nav.appendChild(getButton(content.right));
+    nav.appendChild(right);
 
     return nav;    
 }
