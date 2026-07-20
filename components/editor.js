@@ -83,7 +83,7 @@ function getQcard(content,serial="->"){
     return card;
 }
 
-function addQuestion(container,content,serial="->"){
+export function addQuestion(container,content,serial=container.children.length){
     container.appendChild(getQcard(content,serial));
 }
 

@@ -93,6 +93,7 @@ function getActions() {
     const saveBtn = document.createElement("button");
     saveBtn.className = "saveBtn";
     saveBtn.textContent = "Save Question";
+    saveBtn.id = "addUpdateSave";
 
     actions.append(cancelBtn, saveBtn);
     return actions;

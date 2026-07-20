@@ -1,8 +1,8 @@
 import { getNavbar } from "../components/navBar.js";
-import { renderEditor } from "../components/editor.js";
+import { renderEditor,addQuestion } from "../components/editor.js";
 import { Draft } from "../logic/editorClass.js";
 import { getQuestionEditor } from "../components/addUpdateQcard.js";
-
+import { navigate } from "../route.js";
 
 
 export function getEditorPage(){
@@ -50,16 +50,61 @@ export function getEditorPage(){
             }
     }
 
+    function checkMandatoryFields(){
+        if (page.querySelector("#title").value.trim() ==""){
+            alert("Title IS Mandatory !!");
+            return false;
+        }
+        return true;
+    }
+
+    function getAddUpdateInfo() {
+        const question = {
+            id : crypto.randomUUID(),
+            title: page.querySelector("#title").value.trim(),
+            description: page.querySelector("#description").value.trim(),
+            type: page.querySelector("#type").value,
+            required: page.querySelector("#required").checked
+        };
+
+        return question;
+    }
+
+    function appendDraftAndDom(question){
+        try {
+            draft.addQuestion(question);
+            addQuestion(container,question);
+        }  catch (err) {
+            alert(err.message);
+            console.error(err);
+        }
+    }
 
     function editorActivity(e){
-        if (e.target.id === "rNavBtn"){
-            openQuestionEditor();
+
+        switch (e.target.id) {
+            case "lNavBtn":
+                history.back();
+                break;
+            
+            case "rNavBtn":
+                openQuestionEditor();
+                break;
+
+            case "addUpdateCancel":
+                closeQuestionEditor();
+                console.log("Button Clicked");
+                break;
+            
+            case "addUpdateSave":
+                if(checkMandatoryFields()){
+                    appendDraftAndDom(getAddUpdateInfo());
+                    closeQuestionEditor();
+                }
+                break;
+            
         }
 
-        if (e.target.id === "addUpdateCancel"){
-            closeQuestionEditor();
-            console.log ("Button CLicked");
-        }
     };
 
 
