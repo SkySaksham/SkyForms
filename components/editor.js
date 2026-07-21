@@ -26,7 +26,7 @@ function getQuestionType(selectedType = "short") {
         paragraph: "Long Answer",
         mcq: "Multiple Choice",
         checkbox: "Checkbox",
-        dropdown: "Dropdown"
+        
     };
 
     for (const [value, text] of Object.entries(types)) {
@@ -64,6 +64,24 @@ function getRequired(required = false) {
     return label;
 }
 
+function getButton(text, className) {
+    const btn = document.createElement("button");
+    btn.className = className;
+    btn.textContent = text;
+    return btn;
+}
+
+function getActionBar() {
+    const actions = getDiv("Qactions");
+
+    actions.appendChild(getButton("Delete", "deleteBtn"));
+    actions.appendChild(getButton("Update", "updateBtn"));
+
+    return actions;
+}
+
+
+
 function getQcard(content,serial="->"){
     
     const card = document.createElement("div");
@@ -77,13 +95,15 @@ function getQcard(content,serial="->"){
     bottom.appendChild (getQuestionType(content.type));
     bottom.appendChild (getDragHandle());
     bottom.appendChild (getRequired(content.required));
-
+   
     card.appendChild(bottom);
+    card.appendChild (getActionBar());
+
     
     return card;
 }
 
-export function addQuestion(container,content,serial=container.children.length){
+export function addQuestion(container,content,serial=container.children.length+1){
     container.appendChild(getQcard(content,serial));
 }
 

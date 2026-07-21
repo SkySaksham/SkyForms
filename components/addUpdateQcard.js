@@ -47,8 +47,7 @@ function getQuestionType(type = "short") {
         ["short", "Short Answer"],
         ["paragraph", "Paragraph"],
         ["mcq", "Multiple Choice"],
-        ["checkbox", "Checkboxes"],
-        ["dropdown", "Dropdown"]
+        ["checkbox", "Checkboxes"]
     ];
 
     options.forEach(([value, text]) => {

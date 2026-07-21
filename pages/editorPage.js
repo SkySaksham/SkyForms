@@ -39,15 +39,13 @@ export function getEditorPage(){
         addUpdate.innerHTML="";
     }
 
-    function updateSerialDom(event){
-            let a = Math.min(event.newIndex,event.oldIndex);
-            let c = Math.max(event.oldIndex,event.newIndex);
-
-            while (a<=c){
-                let b = container.children[a].querySelector(".Qsr");
-                b.textContent =a+1+".";
-                a++;
+    function updateSerialDom(){
+            
+            for (let i=0;i<container.children.length;i++){
+                let b = container.children[i].querySelector(".Qsr");
+                b.textContent =i+1+".";
             }
+           
     }
 
     function checkMandatoryFields(){
@@ -125,7 +123,7 @@ export function getEditorPage(){
 
             onEnd(evt) {   
                 draft.updateOrder(evt);
-                updateSerialDom(evt);
+                updateSerialDom();
             }
         });
 
