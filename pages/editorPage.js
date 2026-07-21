@@ -78,6 +78,18 @@ export function getEditorPage(){
         }
     }
 
+    function getParentQcardIndex(event) {
+        const qCard = event.target.closest(".Qcard");
+        if (!qCard) return null;
+
+        const qsr = qCard.querySelector(".Qsr");
+        return parseInt(qsr.textContent, 10) - 1; 
+    }
+
+    function removeQcardIndex(index){
+        container.children[index].remove();
+    }
+
     function editorActivity(e){
 
         switch (e.target.id) {
@@ -99,8 +111,21 @@ export function getEditorPage(){
                     appendDraftAndDom(getAddUpdateInfo());
                     closeQuestionEditor();
                 }
+                break; 
+        }
+
+        switch (true) {
+            case e.target.classList.contains("editBtn"):
+                console.log(getParentQcardIndex(e));
                 break;
-            
+
+            case e.target.classList.contains("deleteBtn"):
+                const index = getParentQcardIndex(e);
+                draft.deleteQuestionIndex(index);
+                removeQcardIndex(index);
+                updateSerialDom();
+
+                break;
         }
 
     };
@@ -110,6 +135,7 @@ export function getEditorPage(){
 
         if (sortable) return;
         draft = new Draft();
+        
 
         const questions = draft.questions;
         nav.replaceChildren(getNavbar({left : 'back', middle : "Draft" , right:'add'}));

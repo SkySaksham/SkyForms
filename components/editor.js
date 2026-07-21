@@ -73,9 +73,9 @@ function getButton(text, className) {
 
 function getActionBar() {
     const actions = getDiv("Qactions");
-
+  
     actions.appendChild(getButton("Delete", "deleteBtn"));
-    actions.appendChild(getButton("Update", "updateBtn"));
+    actions.appendChild(getButton("Edit", "editBtn"));
 
     return actions;
 }
