@@ -1,5 +1,5 @@
 import { getNavbar } from "../components/navBar.js";
-import { renderEditor,addQuestion } from "../components/editor.js";
+import { renderEditor,addQuestion,updateQuestion } from "../components/editor.js";
 import { Draft } from "../logic/editorClass.js";
 import { getQuestionEditor } from "../components/addUpdateQcard.js";
 import { navigate } from "../route.js";
@@ -24,12 +24,12 @@ export function getEditorPage(){
     
     let sortable = null;
     let draft = null;
-
-    function openQuestionEditor(question = null) {
+    let updateQIndex = -1;
+    function openQuestionEditor(question = {}) {
 
         addUpdate.classList.remove("hidden");
         addUpdate.replaceChildren(
-            getQuestionEditor()
+            getQuestionEditor(question)
         );
     }
 
@@ -58,6 +58,7 @@ export function getEditorPage(){
 
     function getAddUpdateInfo() {
         const question = {
+
             id : crypto.randomUUID(),
             title: page.querySelector("#title").value.trim(),
             description: page.querySelector("#description").value.trim(),
@@ -77,6 +78,7 @@ export function getEditorPage(){
             console.error(err);
         }
     }
+
 
     function getParentQcardIndex(event) {
         const qCard = event.target.closest(".Qcard");
@@ -103,20 +105,32 @@ export function getEditorPage(){
 
             case "addUpdateCancel":
                 closeQuestionEditor();
-                console.log("Button Clicked");
+                updateQIndex=-1;
                 break;
             
             case "addUpdateSave":
                 if(checkMandatoryFields()){
-                    appendDraftAndDom(getAddUpdateInfo());
-                    closeQuestionEditor();
+                    if (updateQIndex>=0){
+                        const info = getAddUpdateInfo();
+                        info.id = draft.getQuestion(updateQIndex).id;
+                        draft.updateQuestionIndex(info, updateQIndex);
+                        updateQuestion(container, updateQIndex, info);
+                        updateQIndex=-1;
+                        closeQuestionEditor();
+                    }
+
+                    else {
+                        appendDraftAndDom(getAddUpdateInfo());
+                        closeQuestionEditor();
+                    }
                 }
                 break; 
         }
 
         switch (true) {
             case e.target.classList.contains("editBtn"):
-                console.log(getParentQcardIndex(e));
+                updateQIndex = getParentQcardIndex(e);
+                openQuestionEditor(draft.getQuestion(updateQIndex));
                 break;
 
             case e.target.classList.contains("deleteBtn"):
@@ -124,7 +138,6 @@ export function getEditorPage(){
                 draft.deleteQuestionIndex(index);
                 removeQcardIndex(index);
                 updateSerialDom();
-
                 break;
         }
 

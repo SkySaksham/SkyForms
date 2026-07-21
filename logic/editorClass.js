@@ -48,8 +48,7 @@ export class Draft {
             console.log(this.draft.questions);
     }
 
-    getQuestion(index) {
-        
+    getQuestion(index) { 
         if (index < 0 || index >= this.draft.questions.length) {
             return null; 
         }
@@ -59,4 +58,14 @@ export class Draft {
     deleteQuestionIndex(index){
         this.draft.questions.splice(index,1);
     }
+
+    updateQuestionIndex(question, index) {
+        if (index < 0 || index >= this.draft.questions.length) {
+            return false;
+        }
+
+        this.draft.questions[index] = question;
+        return true;
+    }
+
 };

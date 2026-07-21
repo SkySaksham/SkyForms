@@ -103,6 +103,17 @@ function getQcard(content,serial="->"){
     return card;
 }
 
+export function updateQuestion(container, index, content) {
+    const oldCard = container.children[index];
+    if (!oldCard) {
+        throw new Error("Invalid question index");
+    }
+    const serial = index + 1;
+    const newCard = getQcard(content, serial);
+    oldCard.replaceWith(newCard);
+}
+
+
 export function addQuestion(container,content,serial=container.children.length+1){
     container.appendChild(getQcard(content,serial));
 }
