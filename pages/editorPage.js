@@ -144,6 +144,26 @@ export function getEditorPage(){
     };
 
 
+    function editorChangeActivity(e) {
+        switch (true) {
+            case e.target.classList.contains("questionType"):
+                draft.updateTypeIndex(
+                    getParentQcardIndex(e),
+                    e.target.value
+                );
+                console.log(draft.getQuestion(getParentQcardIndex(e)));
+                break;
+
+            case e.target.classList.contains("requiredCheckBox"):
+                draft.updateCheckedIndex(
+                    getParentQcardIndex(e),
+                    e.target.checked
+                );
+                console.log(draft.getQuestion(getParentQcardIndex(e)));
+                break;
+        }
+    }
+
     function init (){
 
         if (sortable) return;
@@ -168,6 +188,7 @@ export function getEditorPage(){
 
 
         page.addEventListener("click",editorActivity);
+        page.addEventListener("change", editorChangeActivity);
     }
 
     function destroy() {

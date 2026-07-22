@@ -1,6 +1,4 @@
 
-
-
 function getDiv(className,textContent=""){
     const div = document.createElement("div");
     div.className = className;
@@ -57,7 +55,7 @@ function getRequired(required = false) {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = required;
-
+    checkbox.className = "requiredCheckBox";
     label.appendChild(checkbox);
     label.append("Required");
 

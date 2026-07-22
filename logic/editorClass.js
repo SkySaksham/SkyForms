@@ -1,6 +1,14 @@
 import { data } from "../store.js";
 
 
+const QUESTION_TYPES = {
+    short: "Short Answer",
+    paragraph: "Long Answer",
+    mcq: "Multiple Choice",
+    checkbox: "Checkbox",
+};
+
+
 export class Draft {
     constructor(){
         if (!data.draft || Object.keys(data.draft).length==0){
@@ -65,6 +73,28 @@ export class Draft {
         }
 
         this.draft.questions[index] = question;
+        return true;
+    }
+
+    updateCheckedIndex(index, checked) {
+        if (index < 0 || index >= this.draft.questions.length) {
+            return false;
+        }
+        if (typeof checked !== "boolean") {
+            return false;
+        }
+        this.draft.questions[index].required = checked;
+        return true;
+    }
+
+    updateTypeIndex(index, type) {
+        if (index < 0 || index >= this.draft.questions.length) {
+            return false;
+        }
+        if (!(type in QUESTION_TYPES)) {
+            return false;
+        }
+        this.draft.questions[index].type = type;
         return true;
     }
 
