@@ -22,7 +22,7 @@ function getQuestionType(selectedType = "short") {
     const types = {
         short: "Short Answer",
         paragraph: "Long Answer",
-        mcq: "Multiple Choice",
+        date: "Date",
         checkbox: "Checkbox",
         
     };

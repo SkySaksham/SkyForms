@@ -46,7 +46,7 @@ function getQuestionType(type = "short") {
     const options = [
         ["short", "Short Answer"],
         ["paragraph", "Paragraph"],
-        ["mcq", "Multiple Choice"],
+        ["date", "Date"],
         ["checkbox", "Checkboxes"]
     ];
 

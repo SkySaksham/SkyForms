@@ -4,7 +4,7 @@ import { data } from "../store.js";
 const QUESTION_TYPES = {
     short: "Short Answer",
     paragraph: "Long Answer",
-    mcq: "Multiple Choice",
+    date: "Date",
     checkbox: "Checkbox",
 };
 
