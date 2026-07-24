@@ -4,7 +4,7 @@ export function getLandingPage(){
 
 
     page.innerHTML = `
-    
+    <div id = "overlay" class = "overlay"> </div>
     
 <div class="Lcontainer">
 
