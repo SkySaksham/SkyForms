@@ -10,7 +10,7 @@ export function getEditorPage(){
     const page = document.createElement("div");
 
     page.innerHTML = ` 
-    <div id = "addUpdate" class = "addUpdate hidden"></div>
+    <div id = "overlay" class = "overlay hidden"></div>
     <div id = "nav"></div>
     <div id = "Qcontainer" class = "Qcontainer"></div>
     `
@@ -19,7 +19,7 @@ export function getEditorPage(){
     
     const container = page.querySelector("#Qcontainer"); 
     const nav = page.querySelector("#nav");
-    const addUpdate = page.querySelector("#addUpdate");
+    const overlay = page.querySelector("#overlay");
 
     
     let sortable = null;
@@ -27,16 +27,16 @@ export function getEditorPage(){
     let updateQIndex = -1;
     function openQuestionEditor(question = {}) {
 
-        addUpdate.classList.remove("hidden");
-        addUpdate.replaceChildren(
+        overlay.classList.add("show");
+        overlay.replaceChildren(
             getQuestionEditor(question)
         );
     }
 
     function closeQuestionEditor() {
 
-        addUpdate.classList.add("hidden");
-        addUpdate.innerHTML="";
+        overlay.classList.remove("show");
+        overlay.innerHTML="";
     }
 
     function updateSerialDom(){
