@@ -1,5 +1,5 @@
 
-.Lcard{
+.Loadercard{
     width:300px;
     padding:30px 24px;
     background:#fff;
@@ -13,7 +13,7 @@
     text-align:center;
 }
 
-.Ltext{
+.Loadertext{
     font-size:1rem;
     color:#555;
     font-weight:500;

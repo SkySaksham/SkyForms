@@ -97,5 +97,15 @@ export class Draft {
         this.draft.questions[index].type = type;
         return true;
     }
+    static updateQuestions(questions) {
+        if (!data.draft) {
+            data.draft = {
+                id: crypto.randomUUID(),
+                questions: []
+            };
+        }
+
+        data.draft.questions = questions;
+    }
 
 };
