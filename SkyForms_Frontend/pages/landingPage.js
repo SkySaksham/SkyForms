@@ -1,12 +1,17 @@
+import { getLoader } from "../components/loader.js"
+import { getLLMResponse } from "../api/llmResponse.js";
+import { Draft } from "../logic/editorClass.js";
+import { navigate } from "../route.js"; 
+
 export function getLandingPage(){
 
     const page = document.createElement("div");
 
 
     page.innerHTML = `
-    <div id = "overlay" class = "overlay"> </div>
     
-<div class="Lcontainer">
+    <div id="overlay" class = "overlay"> </div>
+    <div class="Lcontainer">
 
     <div class="Lhead">SkyForms</div>
     <div id = "Subtitle" class="Lsubhead"></div>
@@ -34,7 +39,7 @@ export function getLandingPage(){
             placeholder="Describe the form you want to create..."
         ></textarea>
 
-        <button class="LsendBtn">
+        <button id="LsendBtn" class="LsendBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 2L11 13"></path>
@@ -95,6 +100,48 @@ function typeSentence() {
     }
 }
 
+function openLoader(){
+    const overlay = page.querySelector("#overlay");
+    overlay.classList.add("show");
+    overlay.replaceChildren(getLoader());
+}
+
+function closeLoader(){
+    const overlay = page.querySelector("#overlay");
+    overlay.classList.remove("show");
+    overlay.innerHTML="";
+}
+
+async function promptButton(data) {
+    openLoader();
+    try {
+        const questions = await getLLMResponse(data);
+        Draft.updateQuestions(questions);
+        navigate("/draft")
+    }catch(e){
+        alert(e);
+        closeLoader();
+    }
+}
+
+
+
+function landingEventListener(e){
+    switch (e.target.id) {
+        case ("LsendBtn"):
+            const prompt = document.querySelector(".LpromptInput").value.trim();
+            if (prompt.length < 25) alert("Minimum 25 Characters Required !!");
+            else {
+                promptButton (prompt)
+            }
+            break
+    }
+
+}
+
+
+
+
 function init() {
     if (typingTimeout) return;
 
@@ -103,6 +150,8 @@ function init() {
     subtitle.textContent = "";
 
     typeSentence();
+    addEventListener("click",landingEventListener)
+    
 }
 
 function destroy() {

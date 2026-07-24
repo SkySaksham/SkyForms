@@ -10,7 +10,7 @@ export function getEditorPage(){
     const page = document.createElement("div");
 
     page.innerHTML = ` 
-    <div id = "overlay" class = "overlay hidden"></div>
+    <div id = "overlay" class = "overlay"></div>
     <div id = "nav"></div>
     <div id = "Qcontainer" class = "Qcontainer"></div>
     `
