@@ -1,10 +1,10 @@
 # we GONNA MAKE end point for prompt to draft form first...
 from fastapi import FastAPI
 from pydantic import BaseModel
+from getAiResponse import getAiResponse
 
-class Data (BaseModel):
-        a: float
-        b: float
+class AiFormRequest(BaseModel):
+    prompt: str
 
 app = FastAPI()
 
@@ -12,7 +12,7 @@ app = FastAPI()
 def home():
     return {"message": "App Running !!"}
 
-@app.post("/multiply")
-def multiply(data:Data):  
-        return {"result" :data.a * data.b}
+@app.post("/AiForm")
+def getAiForm(request :AiFormRequest):  
+        return getAiResponse(request.prompt)
     
