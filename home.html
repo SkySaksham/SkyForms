@@ -5,14 +5,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="profileCard.css">
+    <link rel="stylesheet" href="prompt.css">
 </head>
 
 <body>
 <div class = "HomeContainer">
+   <div id = "pcard"></div> 
     
-    
+    <div class="yourForms">
+        <div>Your Forms</div>
+        <div id ="yFcontainer" class = "formContainer">
+            <div class="formcards">
+                <div class="label">Name</div>
+                <div class="value fname">Registration</div>
+
+                <div class="label">Status</div>
+                <div class="value status active">Active</div>
+            </div>
+            <div class="formcards">
+                <div class="label">Name</div>
+                <div class="value fname">Registration</div>
+
+                <div class="label">Status</div>
+                <div class="value status inactive">inactive</div>
+            </div>
+            <div class="formcards">
+                <div class="label">Name</div>
+                <div class="value fname">Registration</div>
+
+                <div class="label">Status</div>
+                <div class="value status inactive">inactive</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="yourForms">
+        <div>Draft Forms</div>
+        <div id ="yFcontainer" class = "formContainer">
+
+            <div class="formcards addCard">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 5v14"/>
+                    <path d="M5 12h14"/>
+                </svg>
+            </div>
 
 
+            <div class="formcards">
+                <div class="label">Name</div>
+                <div class="value fname">Registration</div>
+
+                <div class="label">Status</div>
+                <div class="value status inactive">Inactive</div>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="Lprompt">
+
+        <textarea
+            class="LpromptInput"
+            placeholder="Describe the form you want to create..."
+        ></textarea>
+
+        <button id="LsendBtn" class="LsendBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 2L11 13"></path>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+        </button>
+
+    </div>
 </div>
 
 
@@ -21,6 +95,120 @@
 
 
 
+<style>
+.yourForms{
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem,5vw,2rem);
+    padding :2rem;
+    padding-top :1rem;
+    padding-bottom: 0;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.formContainer{
+    display: flex;
+    width: 100%;
+    padding :0.5rem;
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap:1.5rem;
+}
+.formcards {
+    aspect-ratio: 3 / 4;
+    width: 100px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 1rem;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+
+.formcards:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    border-color: #e3e3e3;
+}
+
+.label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+
+    padding: 0.3rem 0.75rem;
+
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.addCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #fafafa;
+    border: 2px dashed #d1d5db;
+    color: #9ca3af;
+
+    transition: all 0.25s ease;
+}
+
+.addCard:hover {
+    border-color: #3b82f6;
+    background: #f8fbff;
+    color: #3b82f6;
+
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.15);
+}
+
+.addCard svg {
+    transition: transform 0.25s ease;
+}
+
+.addCard:hover svg {
+    transform: scale(1.15) rotate(90deg);
+}
+</style>
 </body>
 
 <script>
@@ -76,7 +264,7 @@ function getProfileCard(profileData){
     return div;
 }
 
-const page = document.querySelector(".HomeContainer");
+const page = document.querySelector("#pcard");
 page.appendChild(getProfileCard({
     "name":"Saksham Yadav",
     email:"abc@gmail.com"
@@ -89,12 +277,13 @@ page.appendChild(getProfileCard({
 
 <style>
 .HomeContainer{
-    min-height:90vh;
+    min-height:100vh;
     width:90vw;
     margin:2.5vh auto;
     border-radius:16px;
     box-shadow:0 6px 12px rgba(0,0,0,.06);
     background: white;
+    padding-bottom: 2rem;
 }
 
 body {
