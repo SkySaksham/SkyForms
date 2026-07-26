@@ -10,83 +10,11 @@
 
 <body>
 <div class = "HomeContainer">
-   <div id = "pcard"></div> 
+    <div id="pcard"></div> 
+    <div id="yrform"></div>
+    <div id="drform"></div>
+    <div id="promptArea" style="padding:2rem"></div>
     
-    <div class="yourForms">
-        <div>Your Forms</div>
-        <div id ="yFcontainer" class = "formContainer">
-            <div class="formcards">
-                <div class="label">Name</div>
-                <div class="value fname">Registration</div>
-
-                <div class="label">Status</div>
-                <div class="value status active">Active</div>
-            </div>
-            <div class="formcards">
-                <div class="label">Name</div>
-                <div class="value fname">Registration</div>
-
-                <div class="label">Status</div>
-                <div class="value status inactive">inactive</div>
-            </div>
-            <div class="formcards">
-                <div class="label">Name</div>
-                <div class="value fname">Registration</div>
-
-                <div class="label">Status</div>
-                <div class="value status inactive">inactive</div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="yourForms">
-        <div>Draft Forms</div>
-        <div id ="yFcontainer" class = "formContainer">
-
-            <div class="formcards addCard">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    width="48"
-                    height="48"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M12 5v14"/>
-                    <path d="M5 12h14"/>
-                </svg>
-            </div>
-
-
-            <div class="formcards">
-                <div class="label">Name</div>
-                <div class="value fname">Registration</div>
-
-                <div class="label">Status</div>
-                <div class="value status inactive">Inactive</div>
-            </div>
-        
-        </div>
-    </div>
-
-    <div class="Lprompt">
-
-        <textarea
-            class="LpromptInput"
-            placeholder="Describe the form you want to create..."
-        ></textarea>
-
-        <button id="LsendBtn" class="LsendBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 2L11 13"></path>
-                <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-            </svg>
-        </button>
-
-    </div>
 </div>
 
 
@@ -204,7 +132,6 @@
 .addCard svg {
     transition: transform 0.25s ease;
 }
-
 .addCard:hover svg {
     transform: scale(1.15) rotate(90deg);
 }
@@ -264,14 +191,148 @@ function getProfileCard(profileData){
     return div;
 }
 
+function getFormCard(id,name="",status=false){
+    const div = document.createElement("div");
+    div.className = "formcards";
+    div.id = id;
+
+    if (status){
+        div.innerHTML = `
+                    <div class="label">Name</div>
+                    <div class="value fname"></div>
+                    <div class="label">Status</div>
+                    <div class="value status active">Active</div>
+        `
+    }else {
+        div.innerHTML = `
+                <div class="label">Name</div>
+                    <div class="value fname">Registration</div>
+                    <div class="label">Status</div>
+                <div class="value status inactive">Inactive</div>
+        `
+    }
+    const nm = div.querySelector(".fname");
+    nm.textContent = name;
+
+    return div;
+
+}
+
+function getYourForms(data=[]){
+    const elmt = document.createElement("div");
+    elmt.className = "yourForms"
+    elmt.innerHTML = "<div>Your Forms</div>"
+
+    const formContainer = document.createElement("div");
+    formContainer.className = "formContainer"
+    if (data.length===0){
+        const dd = document.createElement("div");
+        dd.innerHTML = `
+            <div class="formcards emptyCard">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="42"
+                    height="42"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                    <path d="M9 13h6"/>
+                    <path d="M9 17h4"/>
+                </svg>
+                <div class="emptyTitle">No Forms</div>
+                <div class="emptySub">Publish a draft to see it here</div>
+            </div>
+        `
+        elmt.append(dd);
+    }else {
+        for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name,i.status));
+        elmt.appendChild(formContainer);
+    }
+        
+    return elmt;
+
+}
+
+function getYourDraftForms(data=[]){
+
+    const area = document.createElement("div");
+    area.className = "yourForms";
+    area.innerHTML= "<div>Draft Forms</div>";
+
+    const formContainer = document.createElement("div");
+    formContainer.className = "formContainer";
+
+    formContainer.innerHTML = `
+            <div class="formcards addCard">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 5v14"/>
+                    <path d="M5 12h14"/>
+                </svg>
+            </div>
+    `
+
+    for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name))
+    area.appendChild(formContainer);
+    return area;
+}
+
+function getPromptArea(){
+    const area = document.createElement("div");
+    area.className = "Lprompt";
+    area.innerHTML = `
+            <textarea
+                class="LpromptInput"
+                placeholder="Describe the form you want to create..."
+            ></textarea>
+
+            <button id="LsendBtn" class="LsendBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+    `;
+
+    return area;
+}
+
+
+
 const page = document.querySelector("#pcard");
 page.appendChild(getProfileCard({
     "name":"Saksham Yadav",
     email:"abc@gmail.com"
 }))
 
+const yf = document.querySelector("#yrform");
+yf.appendChild(getYourForms([{
+        name : "Resigstration",
+        id : 121212,
+        status : true
+    },{
+        name : "Resigstration",
+        id : 121212,
+        status : true
+    }]))
 
+const drf = document.querySelector("#drform");
+drf.appendChild(getYourDraftForms());
 
+const pra = document.querySelector("#promptArea")
+pra.appendChild(getPromptArea());
 </script>
 
 
@@ -291,6 +352,40 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
     font-weight: 400;
 }
+
+.emptyCard{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:.8rem;
+
+    background:#fafafa;
+    border:2px dashed #d1d5db;
+    color:#9ca3af;
+
+    cursor:default;
+}
+
+
+
+.emptyCard svg{
+    opacity:.7;
+}
+
+.emptyTitle{
+    font-size:.95rem;
+    font-weight:600;
+    color:#4b5563;
+}
+
+.emptySub{
+    text-align:center;
+    font-size:.72rem;
+    line-height:1.3;
+    color:#9ca3af;
+}
+
 </style>
 
 
