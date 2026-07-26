@@ -1,0 +1,392 @@
+<html>
+<head>
+    <title>SkyForms</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="profileCard.css">
+    <link rel="stylesheet" href="prompt.css">
+</head>
+
+<body>
+<div class = "HomeContainer">
+    <div id="pcard"></div> 
+    <div id="yrform"></div>
+    <div id="drform"></div>
+    <div id="promptArea" style="padding:2rem"></div>
+    
+</div>
+
+
+
+
+
+
+
+<style>
+.yourForms{
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem,5vw,2rem);
+    padding :2rem;
+    padding-top :1rem;
+    padding-bottom: 0;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.formContainer{
+    display: flex;
+    width: 100%;
+    padding :0.5rem;
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap:1.5rem;
+}
+.formcards {
+    aspect-ratio: 3 / 4;
+    width: 100px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 1rem;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+
+.formcards:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    border-color: #e3e3e3;
+}
+
+.label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+
+    padding: 0.3rem 0.75rem;
+
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.addCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #fafafa;
+    border: 2px dashed #d1d5db;
+    color: #9ca3af;
+
+    transition: all 0.25s ease;
+}
+
+.addCard:hover {
+    border-color: #3b82f6;
+    background: #f8fbff;
+    color: #3b82f6;
+
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.15);
+}
+
+.addCard svg {
+    transition: transform 0.25s ease;
+}
+.addCard:hover svg {
+    transform: scale(1.15) rotate(90deg);
+}
+</style>
+</body>
+
+<script>
+
+function getProfileCard(profileData){
+    const div = document.createElement("div");
+    div.className = "ProfileCard"
+    div.innerHTML= `
+        <div class="ProfileHeader">
+            <div>Welcome ,</div>
+            <div class="Name"></div>
+
+            <div class="GAccount">
+                <div class="googlesvg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+                            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/>
+                            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+                            <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.3l-6.3-5.3C29.3 34.8 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-8l-6.5 5C9.6 39.5 16.2 44 24 44z"/>
+                            <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.6-6 7.3l6.3 5.3C39.2 37.3 44 31.2 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+                    </svg>
+                </div>
+                <span>Logged in as <span id="email">abc@gmail.com</span></span>
+            </div>
+        </div>
+
+    <div class="LogoutSection">
+        <button class="LogoutBtn">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M5 3h10v18H5z"/>
+                <path d="M11 12h.01"/>
+                <path d="M15 12h6"/>
+                <path d="m18 9 3 3-3 3"/>
+            </svg>
+        Log out
+        </button>
+        </div>
+    `
+
+
+    const name = div.querySelector(".Name");
+    name.textContent = profileData.name;
+    const email = div.querySelector("#email");
+    email.textContent=profileData.email;
+
+    return div;
+}
+
+function getFormCard(id,name="",status=false){
+    const div = document.createElement("div");
+    div.className = "formcards";
+    div.id = id;
+
+    if (status){
+        div.innerHTML = `
+                    <div class="label">Name</div>
+                    <div class="value fname"></div>
+                    <div class="label">Status</div>
+                    <div class="value status active">Active</div>
+        `
+    }else {
+        div.innerHTML = `
+                <div class="label">Name</div>
+                    <div class="value fname">Registration</div>
+                    <div class="label">Status</div>
+                <div class="value status inactive">Inactive</div>
+        `
+    }
+    const nm = div.querySelector(".fname");
+    nm.textContent = name;
+
+    return div;
+
+}
+
+function getYourForms(data=[]){
+    const elmt = document.createElement("div");
+    elmt.className = "yourForms"
+    elmt.innerHTML = "<div>Your Forms</div>"
+
+    const formContainer = document.createElement("div");
+    formContainer.className = "formContainer"
+    if (data.length===0){
+        const dd = document.createElement("div");
+        dd.innerHTML = `
+            <div class="formcards emptyCard">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="42"
+                    height="42"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                    <path d="M9 13h6"/>
+                    <path d="M9 17h4"/>
+                </svg>
+                <div class="emptyTitle">No Forms</div>
+                <div class="emptySub">Publish a draft to see it here</div>
+            </div>
+        `
+        elmt.append(dd);
+    }else {
+        for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name,i.status));
+        elmt.appendChild(formContainer);
+    }
+        
+    return elmt;
+
+}
+
+function getYourDraftForms(data=[]){
+
+    const area = document.createElement("div");
+    area.className = "yourForms";
+    area.innerHTML= "<div>Draft Forms</div>";
+
+    const formContainer = document.createElement("div");
+    formContainer.className = "formContainer";
+
+    formContainer.innerHTML = `
+            <div class="formcards addCard">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 5v14"/>
+                    <path d="M5 12h14"/>
+                </svg>
+            </div>
+    `
+
+    for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name))
+    area.appendChild(formContainer);
+    return area;
+}
+
+function getPromptArea(){
+    const area = document.createElement("div");
+    area.className = "Lprompt";
+    area.innerHTML = `
+            <textarea
+                class="LpromptInput"
+                placeholder="Describe the form you want to create..."
+            ></textarea>
+
+            <button id="LsendBtn" class="LsendBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+    `;
+
+    return area;
+}
+
+
+
+const page = document.querySelector("#pcard");
+page.appendChild(getProfileCard({
+    "name":"Saksham Yadav",
+    email:"abc@gmail.com"
+}))
+
+const yf = document.querySelector("#yrform");
+yf.appendChild(getYourForms([{
+        name : "Resigstration",
+        id : 121212,
+        status : true
+    },{
+        name : "Resigstration",
+        id : 121212,
+        status : true
+    }]))
+
+const drf = document.querySelector("#drform");
+drf.appendChild(getYourDraftForms());
+
+const pra = document.querySelector("#promptArea")
+pra.appendChild(getPromptArea());
+</script>
+
+
+<style>
+.HomeContainer{
+    min-height:100vh;
+    width:90vw;
+    margin:2.5vh auto;
+    border-radius:16px;
+    box-shadow:0 6px 12px rgba(0,0,0,.06);
+    background: white;
+    padding-bottom: 2rem;
+}
+
+body {
+    background: rgb(230,230,230);
+    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
+    font-weight: 400;
+}
+
+.emptyCard{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:.8rem;
+
+    background:#fafafa;
+    border:2px dashed #d1d5db;
+    color:#9ca3af;
+
+    cursor:default;
+}
+
+
+
+.emptyCard svg{
+    opacity:.7;
+}
+
+.emptyTitle{
+    font-size:.95rem;
+    font-weight:600;
+    color:#4b5563;
+}
+
+.emptySub{
+    text-align:center;
+    font-size:.72rem;
+    line-height:1.3;
+    color:#9ca3af;
+}
+
+</style>
+
+
+</html>
