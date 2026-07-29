@@ -1,146 +1,4 @@
-<html>
-<head>
-    <title>SkyForms</title>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="profileCard.css">
-    <link rel="stylesheet" href="prompt.css">
-</head>
-
-<body>
-<div class = "HomeContainer">
-    <div id="pcard"></div> 
-    <div id="yrform"></div>
-    <div id="drform"></div>
-    <div id="promptArea" style="padding:2rem"></div>
-    
-</div>
-
-
-
-
-
-
-
-<style>
-.yourForms{
-    display: flex;
-    flex-direction: column;
-    font-size: clamp(1rem,5vw,2rem);
-    padding :2rem;
-    padding-top :1rem;
-    padding-bottom: 0;
-    font-weight: 500;
-    line-height: 1.2;
-}
-
-.formContainer{
-    display: flex;
-    width: 100%;
-    padding :0.5rem;
-    
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap:1.5rem;
-}
-.formcards {
-    aspect-ratio: 3 / 4;
-    width: 100px;
-    flex-shrink: 0;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-
-    padding: 1rem;
-
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-    transition: all 0.25s ease;
-    cursor: pointer;
-}
-
-
-.formcards:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
-    border-color: #e3e3e3;
-}
-
-.label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.value {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 0.5rem;
-}
-
-.status {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-
-    padding: 0.3rem 0.75rem;
-
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.status.active {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status.inactive {
-    background: #fee2e2;
-    color: #991b1b;
-}
-.addCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: #fafafa;
-    border: 2px dashed #d1d5db;
-    color: #9ca3af;
-
-    transition: all 0.25s ease;
-}
-
-.addCard:hover {
-    border-color: #3b82f6;
-    background: #f8fbff;
-    color: #3b82f6;
-
-    transform: translateY(-5px);
-    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.15);
-}
-
-.addCard svg {
-    transition: transform 0.25s ease;
-}
-.addCard:hover svg {
-    transform: scale(1.15) rotate(90deg);
-}
-</style>
-</body>
-
-<script>
-
-function getProfileCard(profileData){
+export function getProfileCard(profileData){
     const div = document.createElement("div");
     div.className = "ProfileCard"
     div.innerHTML= `
@@ -187,11 +45,12 @@ function getProfileCard(profileData){
     name.textContent = profileData.name;
     const email = div.querySelector("#email");
     email.textContent=profileData.email;
-
     return div;
 }
 
-function getFormCard(id,name="",status=false){
+
+
+export function getFormCard(id,name="",status=false){
     const div = document.createElement("div");
     div.className = "formcards";
     div.id = id;
@@ -218,7 +77,7 @@ function getFormCard(id,name="",status=false){
 
 }
 
-function getYourForms(data=[]){
+export function getYourForms(data=[]){
     const elmt = document.createElement("div");
     elmt.className = "yourForms"
     elmt.innerHTML = "<div>Your Forms</div>"
@@ -257,7 +116,7 @@ function getYourForms(data=[]){
 
 }
 
-function getYourDraftForms(data=[]){
+export function getYourDraftForms(data=[]){
 
     const area = document.createElement("div");
     area.className = "yourForms";
@@ -288,7 +147,7 @@ function getYourDraftForms(data=[]){
     return area;
 }
 
-function getPromptArea(){
+export function getPromptArea(){
     const area = document.createElement("div");
     area.className = "Lprompt";
     area.innerHTML = `
@@ -309,84 +168,3 @@ function getPromptArea(){
     return area;
 }
 
-
-
-const page = document.querySelector("#pcard");
-page.appendChild(getProfileCard({
-    "name":"Saksham Yadav",
-    email:"abc@gmail.com"
-}))
-
-const yf = document.querySelector("#yrform");
-yf.appendChild(getYourForms([{
-        name : "Resigstration",
-        id : 121212,
-        status : true
-    },{
-        name : "Resigstration",
-        id : 121212,
-        status : true
-    }]))
-
-const drf = document.querySelector("#drform");
-drf.appendChild(getYourDraftForms());
-
-const pra = document.querySelector("#promptArea")
-pra.appendChild(getPromptArea());
-</script>
-
-
-<style>
-.HomeContainer{
-    min-height:100vh;
-    width:90vw;
-    margin:2.5vh auto;
-    border-radius:16px;
-    box-shadow:0 6px 12px rgba(0,0,0,.06);
-    background: white;
-    padding-bottom: 2rem;
-}
-
-body {
-    background: rgb(230,230,230);
-    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
-    font-weight: 400;
-}
-
-.emptyCard{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:.8rem;
-
-    background:#fafafa;
-    border:2px dashed #d1d5db;
-    color:#9ca3af;
-
-    cursor:default;
-}
-
-
-
-.emptyCard svg{
-    opacity:.7;
-}
-
-.emptyTitle{
-    font-size:.95rem;
-    font-weight:600;
-    color:#4b5563;
-}
-
-.emptySub{
-    text-align:center;
-    font-size:.72rem;
-    line-height:1.3;
-    color:#9ca3af;
-}
-
-</style>
-
-
-</html>

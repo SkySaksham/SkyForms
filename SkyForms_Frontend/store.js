@@ -6,7 +6,10 @@ Filled WIth TEst DATa During Development !!
 
 
 export let data = {
-    userInfo : {},
+    userInfo : {
+        name:"Saksham Yadav",
+        email: "skysaksham2@gmail.com"
+    },
 
     yourForms : [{
         name : "Resigstration",
@@ -19,6 +22,9 @@ export let data = {
                 questions : [{},{}],
             },
         ],
+
+    draftForms: [{name : "Resigstration",
+        id : 121212,},],
 
     draft : { 
         id : "jsajks" ,

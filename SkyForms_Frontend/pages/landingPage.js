@@ -51,7 +51,7 @@ export function getLandingPage(){
 
     <div class="Lbottom">
         <span class="LbottomText">Ready to save your forms?</span>
-        <a href="/draft" app-route>
+        <a href="/home" app-route>
             <button class="LgoogleBtn">
                 <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.73 1.22 9.24 3.61l6.9-6.9C35.95 2.3 30.42 0 24 0 14.64 0 6.57 5.38 2.63 13.22l8.03 6.24C12.5 13.66 17.8 9.5 24 9.5z"/>
