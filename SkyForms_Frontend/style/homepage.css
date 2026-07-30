@@ -1,0 +1,217 @@
+.ProfileCard{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:2rem;
+    background: rgb(252, 252, 252);
+    border-bottom: 1px solid rgb(202, 202, 202);
+    padding:2rem;
+    padding-top:3rem ;
+}
+
+.ProfileHeader{
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    font-size: clamp(1rem,3vw,1.2rem);
+}
+
+.Name{
+    font-size:clamp(2.6rem,5vw,5rem);
+    font-weight:700;
+    line-height:1;
+}
+
+.GAccount{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+}
+
+.LogoutBtn{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.8rem 1.4rem;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    
+    font:600 1rem sans-serif;
+    cursor:pointer;
+}
+
+@media (max-width:640px){
+
+    .ProfileCard{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:1.5rem;
+    }
+
+    .LogoutBtn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .LogoutSection{
+        width:100%;
+    }
+
+}
+
+.HomeContainer{
+    min-height:100vh;
+    width:90vw;
+    margin:2.5vh auto;
+    border-radius:16px;
+    box-shadow:0 6px 12px rgba(0,0,0,.06);
+    background: white;
+    padding-bottom: 2rem;
+    
+}
+
+.emptyCard{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:.8rem;
+
+    background:#fafafa;
+    border:2px dashed #d1d5db;
+    color:#9ca3af;
+
+    cursor:default;
+}
+
+
+
+.emptyCard svg{
+    opacity:.7;
+}
+
+.emptyTitle{
+    font-size:.95rem;
+    font-weight:600;
+    color:#4b5563;
+}
+
+.emptySub{
+    text-align:center;
+    font-size:.72rem;
+    line-height:1.3;
+    color:#9ca3af;
+}
+
+
+.yourForms{
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem,5vw,2rem);
+    padding :2rem;
+    padding-top :1rem;
+    padding-bottom: 0;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.formContainer{
+    display: flex;
+    width: 100%;
+    padding :0.5rem;
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap:1.5rem;
+}
+.formcards {
+    aspect-ratio: 3 / 4;
+    width: 100px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 1rem;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+
+.formcards:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    border-color: #e3e3e3;
+}
+
+.label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+
+    padding: 0.3rem 0.75rem;
+
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.addCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #fafafa;
+    border: 2px dashed #d1d5db;
+    color: #9ca3af;
+
+    transition: all 0.25s ease;
+}
+
+.addCard:hover {
+    border-color: #3b82f6;
+    background: #f8fbff;
+    color: #3b82f6;
+
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.15);
+}
+
+.addCard svg {
+    transition: transform 0.25s ease;
+}
+.addCard:hover svg {
+    transform: scale(1.15) rotate(90deg);
+}

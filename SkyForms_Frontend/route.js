@@ -1,9 +1,10 @@
 import { getLandingPage } from "./pages/landingPage.js"
 import { getEditorPage } from "./pages/editorPage.js";
+import { getHomePage } from "./pages/homePage.js";
 
 const routes = {
     "/" : getLandingPage,
-    "/home" : getLandingPage,
+    "/home" : getHomePage,
     "/draft" : getEditorPage,
 }
 
@@ -31,7 +32,7 @@ export function render(){
 
 export function initRouter(){
 
-    navigate("/home");
+    navigate("/");
 
     window.addEventListener("popstate", () => {
         render();
