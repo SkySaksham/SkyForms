@@ -16,12 +16,6 @@ export let data = {
         id : 121212,
         status : true
     }],
-    previewForms : [
-            {
-                formID : 121,
-                questions : [{},{}],
-            },
-        ],
 
     draftForms: [{name : "Resigstration",
         id : 121212,},],
