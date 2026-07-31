@@ -10,18 +10,31 @@ const QUESTION_TYPES = {
 
 
 export class Draft {
-    constructor(){
-        if (!data.draft || Object.keys(data.draft).length==0){
-            this.draft = {
-                id : crypto.randomUUID(),
-                questions : []
+    constructor(id=null){
+
+        if (id === null){
+            id = crypto.randomUUID();
+            data.draftForms.push(
+                {
+                    "id" : id,
+                    "name": "Untitled"
+                }
+            );
+
+            data.drafts[id] = {
+                version :0,
+                name: "Untitled",
+                questions: []
             }
-            data.draft = this.draft ;
         }
-        else{
-            this.draft = data.draft;
+
+        if (id in data.drafts){
+            this.draft = data.drafts[id]
         }
+        
+        else throw new Error("Draft not found");
     }
+    
 
     isValidQuestion(question) {
         return (
@@ -39,10 +52,7 @@ export class Draft {
         return this.draft.questions;
     }
 
-    getId(){
-        return this.draft.id;
-    }
-
+    
     addQuestion(Question){
         if (!this.isValidQuestion(Question)){
             throw new Error("Invalid question");
@@ -97,15 +107,21 @@ export class Draft {
         this.draft.questions[index].type = type;
         return true;
     }
-    static updateQuestions(questions) {
-        if (!data.draft) {
-            data.draft = {
-                id: crypto.randomUUID(),
+    static updateQuestions(id, questions) {
+        if (!(id in data.drafts)) {
+            data.drafts[id] = {
+                version: 0,
+                name: "Untitled",
                 questions: []
             };
+
+            data.draftForms.push({
+                id,
+                name: "Untitled"
+            });
         }
 
-        data.draft.questions = questions;
+    data.drafts[id].questions = questions;
     }
 
 };

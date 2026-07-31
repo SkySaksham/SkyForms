@@ -167,7 +167,27 @@ export function getEditorPage(){
     function init (){
 
         if (sortable) return;
-        draft = new Draft();
+
+        const params = new URLSearchParams(location.search);
+        let draftId = params.get("draft");
+        if (draftId) {
+                try{
+                    draft = new Draft(draftId);
+                }catch (er) {
+                    alert("Draft DoesntExist !!");
+                    navigate("/");
+                    return;
+                }
+            
+            } else {
+                draftId = crypto.randomUUID();
+                draft = new Draft(draftId);
+                history.replaceState(
+                    {},
+                    "",
+                    `/draft?draft=${draftId}`
+                );
+        }
         
 
         const questions = draft.questions;
@@ -198,6 +218,7 @@ export function getEditorPage(){
             sortable = null;
         }
         page.removeEventListener("click", editorActivity);
+        page.removeEventListener("change", editorChangeActivity);
     }
 
     return {element :page , init , destroy};
