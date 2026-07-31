@@ -116,8 +116,9 @@ async function promptButton(data) {
     openLoader();
     try {
         const questions = await getLLMResponse(data);
-        Draft.updateQuestions(questions);
-        navigate("/draft")
+        const id = crypto.randomUUID();
+        Draft.updateQuestions(id,questions);
+        navigate(`/draft?draft=${id}`)
     }catch(e){
         alert(e);
         closeLoader();
