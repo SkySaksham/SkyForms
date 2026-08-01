@@ -191,7 +191,7 @@ export function getEditorPage(){
         
 
         const questions = draft.questions;
-        nav.replaceChildren(getNavbar({left : 'back', middle : "Draft" , right:'add'}));
+        nav.replaceChildren(getNavbar({left : 'back', middle : draft.getName , right:'add'}));
         renderEditor(container,questions);
         sortable = new Sortable(container, {
     

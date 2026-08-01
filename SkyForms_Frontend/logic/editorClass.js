@@ -124,4 +124,8 @@ export class Draft {
     data.drafts[id].questions = questions;
     }
 
+    get getName(){
+        return this.draft.name;
+    }
+
 };
