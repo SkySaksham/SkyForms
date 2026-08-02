@@ -17,8 +17,8 @@ export let data = {
         status : true
     }],
 
-    draftForms: [{name : "Resigstration",
-        id : 121212,},],
+    draftForms: [{name: "hii",
+        id : "jsajks"}],
 
     drafts : { 
         "jsajks" : {
@@ -39,6 +39,20 @@ export let data = {
                 required: true,
             },{
                 id: 3,
+                title: "Tell us about yourself.",
+                description: "A brief introduction is enough.",
+                type: "paragraph",
+                required: false,
+            },
+            {
+                id: 4,
+                title: "Tell us about yourself.",
+                description: "A brief introduction is enough.",
+                type: "paragraph",
+                required: false,
+            },
+            {
+                id: 5,
                 title: "Tell us about yourself.",
                 description: "A brief introduction is enough.",
                 type: "paragraph",

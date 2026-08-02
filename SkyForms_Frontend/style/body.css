@@ -1,6 +1,9 @@
+html,
+
+
 body {
+    margin: 0;
     background: rgb(230,230,230);
-    font-family: Georgia, 'Times New Roman', Times, serif, Times, serif;
-    font-weight: 400;
+    font: 400 16px Georgia, "Times New Roman", Times, serif;
 }
 

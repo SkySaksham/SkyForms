@@ -1,12 +1,13 @@
 import { getLoader } from "../components/loader.js"
 import { getLLMResponse } from "../api/llmResponse.js";
 import { Draft } from "../logic/editorClass.js";
-import { navigate } from "../route.js"; 
+import { navigate } from "../route.js";
+ 
 
 export function getLandingPage(){
 
     const page = document.createElement("div");
-
+   
 
     page.innerHTML = `
     

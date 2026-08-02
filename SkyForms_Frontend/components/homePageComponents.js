@@ -50,10 +50,10 @@ export function getProfileCard(profileData){
 
 
 
-export function getFormCard(id,name="",status=false){
+export function getFormCard(id,name="",status=false,type="published"){
     const div = document.createElement("div");
-    div.className = "formcards";
-    div.id = id;
+    div.classList.add("formcards",type);
+    div.id= id;
 
     if (status){
         div.innerHTML = `
@@ -142,7 +142,7 @@ export function getYourDraftForms(data=[]){
             </div>
     `
 
-    for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name))
+    for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name,false,"draftForm"))
     area.appendChild(formContainer);
     return area;
 }
