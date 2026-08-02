@@ -24,11 +24,20 @@ export function getHomePage(){
 
 
     function homeActivity(e) {
-        const draftCard = e.target.closest(".draftForm");
-        if (!draftCard) return;
+   
+        switch (e.target.id) {
+            case "createNewDraft":
+                navigate("/draft");
+                return;
+        }
 
-        const draftId = draftCard.id;
-        navigate(`/draft?draft=${draftId}`);
+        const draftCard = e.target.closest(".draftForm");
+        if (draftCard) {
+            const draftId = draftCard.id;
+            navigate(`/draft?draft=${draftId}`);
+            return;
+        }
+        return;
     }
 
     function init() {

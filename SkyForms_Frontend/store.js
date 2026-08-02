@@ -24,6 +24,7 @@ export let data = {
         "jsajks" : {
             version : 0,
             name: "hii",
+            id:"jsajks",
             questions:
             [{
                 id: 1,

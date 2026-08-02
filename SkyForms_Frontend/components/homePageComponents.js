@@ -126,7 +126,7 @@ export function getYourDraftForms(data=[]){
     formContainer.className = "formContainer";
 
     formContainer.innerHTML = `
-            <div class="formcards addCard">
+            <div id = "createNewDraft" class="formcards addCard">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     width="48"
                     height="48"

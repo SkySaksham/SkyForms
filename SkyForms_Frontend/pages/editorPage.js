@@ -182,8 +182,9 @@ export function getEditorPage(){
                 }
             
             } else {
-                draftId = crypto.randomUUID();
-                draft = new Draft(draftId);
+                
+                draft = new Draft();
+                draftId=draft.draftID;
                 history.replaceState(
                     {},
                     "",
