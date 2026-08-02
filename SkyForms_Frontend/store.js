@@ -17,13 +17,14 @@ export let data = {
         status : true
     }],
 
-    draftForms: [{name : "Resigstration",
-        id : 121212,},],
+    draftForms: [{name: "hii",
+        id : "jsajks"}],
 
     drafts : { 
         "jsajks" : {
             version : 0,
             name: "hii",
+            id:"jsajks",
             questions:
             [{
                 id: 1,
@@ -39,6 +40,20 @@ export let data = {
                 required: true,
             },{
                 id: 3,
+                title: "Tell us about yourself.",
+                description: "A brief introduction is enough.",
+                type: "paragraph",
+                required: false,
+            },
+            {
+                id: 4,
+                title: "Tell us about yourself.",
+                description: "A brief introduction is enough.",
+                type: "paragraph",
+                required: false,
+            },
+            {
+                id: 5,
                 title: "Tell us about yourself.",
                 description: "A brief introduction is enough.",
                 type: "paragraph",
@@ -59,6 +74,6 @@ let testData = {
 
 
 
-
+ 
 }
 

@@ -1,13 +1,19 @@
 nav {
-    display:grid;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    height:12vh;
-    background:    whitesmoke ;
-    border-radius:5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 10px;
-    font-family: 'Times New Roman', Times, serif;
+
+    height: 12vh;
     min-height: 70px;
+
+    padding: 10px;
+    background: whitesmoke;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    font-family: "Times New Roman", Times, serif;
 }
 
 nav > div:nth-child(2) {

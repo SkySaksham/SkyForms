@@ -1,5 +1,5 @@
 import { getNavbar } from "../components/navBar.js";
-import { renderEditor,addQuestion,updateQuestion } from "../components/editor.js";
+import { renderEditor,addQuestion,updateQuestion,getBottomBar } from "../components/editor.js";
 import { Draft } from "../logic/editorClass.js";
 import { getQuestionEditor } from "../components/addUpdateQcard.js";
 import { navigate } from "../route.js";
@@ -8,11 +8,12 @@ import { navigate } from "../route.js";
 export function getEditorPage(){
 
     const page = document.createElement("div");
-
+    page.className = "EditorPage"
     page.innerHTML = ` 
     <div id = "overlay" class = "overlay"></div>
     <div id = "nav"></div>
     <div id = "Qcontainer" class = "Qcontainer"></div>
+    <div id= "Btmbar"></div>
     `
 
 
@@ -20,6 +21,7 @@ export function getEditorPage(){
     const container = page.querySelector("#Qcontainer"); 
     const nav = page.querySelector("#nav");
     const overlay = page.querySelector("#overlay");
+    const btmbar = page.querySelector("#Btmbar");
 
     
     let sortable = null;
@@ -180,8 +182,9 @@ export function getEditorPage(){
                 }
             
             } else {
-                draftId = crypto.randomUUID();
-                draft = new Draft(draftId);
+                
+                draft = new Draft();
+                draftId=draft.draftID;
                 history.replaceState(
                     {},
                     "",
@@ -191,7 +194,7 @@ export function getEditorPage(){
         
 
         const questions = draft.questions;
-        nav.replaceChildren(getNavbar({left : 'back', middle : "Draft" , right:'add'}));
+        nav.replaceChildren(getNavbar({left : 'back', middle : draft.getName , right:'add'}));
         renderEditor(container,questions);
         sortable = new Sortable(container, {
     
@@ -206,6 +209,7 @@ export function getEditorPage(){
             }
         });
 
+        btmbar.appendChild(getBottomBar());
 
         page.addEventListener("click",editorActivity);
         page.addEventListener("change", editorChangeActivity);

@@ -197,3 +197,13 @@ let Questions = [
     required: false,
 }
 ];
+export function getBottomBar() {
+    const bar = getDiv("bottomBar");
+
+    const editName = getButton("Edit Name", "editNameBtn");
+    const next = getButton("Next", "nextBtn");
+
+    bar.append(editName, next);
+
+    return bar;
+}

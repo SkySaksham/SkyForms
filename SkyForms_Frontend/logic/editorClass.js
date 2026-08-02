@@ -24,7 +24,8 @@ export class Draft {
             data.drafts[id] = {
                 version :0,
                 name: "Untitled",
-                questions: []
+                id:id,
+                questions: [] 
             }
         }
 
@@ -52,6 +53,9 @@ export class Draft {
         return this.draft.questions;
     }
 
+    get draftID(){
+        return this.draft.id;
+    }
     
     addQuestion(Question){
         if (!this.isValidQuestion(Question)){
@@ -122,6 +126,10 @@ export class Draft {
         }
 
     data.drafts[id].questions = questions;
+    }
+
+    get getName(){
+        return this.draft.name;
     }
 
 };
