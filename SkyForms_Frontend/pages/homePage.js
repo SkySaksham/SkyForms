@@ -11,6 +11,7 @@ export function getHomePage(){
     const page = document.createElement("div");
     page.classList.add("HomeContainer");
     page.innerHTML = `
+        <div id = "overlay" class = "overlay"></div>
         <div id="pcard"></div> 
         <div id="yrform"></div>
         <div id="drform"></div>
