@@ -1,5 +1,5 @@
 import { getNavbar } from "../components/navBar.js";
-import { renderEditor,addQuestion,updateQuestion,getBottomBar } from "../components/editor.js";
+import { renderEditor,addQuestion,updateQuestion,getBottomBar, getNameEditor } from "../components/editor.js";
 import { Draft } from "../logic/editorClass.js";
 import { getQuestionEditor } from "../components/addUpdateQcard.js";
 import { navigate } from "../route.js";
@@ -41,6 +41,13 @@ export function getEditorPage(){
         overlay.innerHTML="";
     }
 
+    function openNameEditor(){
+        overlay.classList.add("show");
+        overlay.replaceChildren(
+            getNameEditor(draft.getName)
+        );
+    }
+
     function updateSerialDom(){
             
             for (let i=0;i<container.children.length;i++){
@@ -50,12 +57,27 @@ export function getEditorPage(){
            
     }
 
-    function checkMandatoryFields(){
-        if (page.querySelector("#title").value.trim() ==""){
-            alert("Title IS Mandatory !!");
-            return false;
+    function checkMandatoryFields(i="qedit"){
+        switch(i){
+            case "qedit":
+                if (page.querySelector("#title").value.trim() ==""){
+                    alert("Title IS Mandatory !!");
+                    return false;
+                }
+                return true;
+            case "nedit":
+                const a = page.querySelector("#nameEditOverlay").value.trim().length;
+                if (a===0){
+                    alert("Name is Mandatory !!");
+                    return false;
+                }
+                if (a>20){
+                    alert("Name Should be less than 20 Characters");
+                    return false;
+                }
+                return true;
         }
-        return true;
+        return false;
     }
 
     function getAddUpdateInfo() {
@@ -126,7 +148,23 @@ export function getEditorPage(){
                         closeQuestionEditor();
                     }
                 }
-                break; 
+                break;
+
+            case "updateNameCancel":
+                closeQuestionEditor();
+                break;
+
+            case "updateNameSave":
+                if(checkMandatoryFields("nedit")){
+                    const name = page.querySelector("#nameEditOverlay").value;
+                    draft.updateFormName(name);
+                    console.log(draft.getName);
+                    renderNavbar()
+                    closeQuestionEditor();
+                    
+                }
+                break;
+
         }
 
         switch (true) {
@@ -141,6 +179,11 @@ export function getEditorPage(){
                 removeQcardIndex(index);
                 updateSerialDom();
                 break;
+
+            case e.target.classList.contains("editNameBtn"):
+                openNameEditor();
+                break;
+        break;
         }
 
     };
@@ -162,10 +205,13 @@ export function getEditorPage(){
                     e.target.checked
                 );
                 console.log(draft.getQuestion(getParentQcardIndex(e)));
-                break;
+                break;    
         }
     }
 
+    function renderNavbar(){
+            nav.replaceChildren(getNavbar({left : 'back', middle : draft.getName , right:'add'}));
+    }
     function init (){
 
         if (sortable) return;
@@ -185,6 +231,7 @@ export function getEditorPage(){
                 
                 draft = new Draft();
                 draftId=draft.draftID;
+                
                 history.replaceState(
                     {},
                     "",
@@ -194,7 +241,7 @@ export function getEditorPage(){
         
 
         const questions = draft.questions;
-        nav.replaceChildren(getNavbar({left : 'back', middle : draft.getName , right:'add'}));
+        
         renderEditor(container,questions);
         sortable = new Sortable(container, {
     
@@ -210,6 +257,7 @@ export function getEditorPage(){
         });
 
         btmbar.appendChild(getBottomBar());
+        renderNavbar();
 
         page.addEventListener("click",editorActivity);
         page.addEventListener("change", editorChangeActivity);

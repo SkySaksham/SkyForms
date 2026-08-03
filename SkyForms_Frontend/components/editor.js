@@ -125,78 +125,6 @@ export function renderEditor(container,questions) {
     container.appendChild(fragment);
 }
 
-let Questions = [
-{
-    id: 1,
-    title: "What is your full name?",
-    description: null,
-    type: "short",
-    required: true,
-},
-{
-    id: 2,
-    title: "What is your email address?",
-    description: "We'll use this to contact you.",
-    type: "short",
-    required: true,
-},
-{
-    id: 3,
-    title: "Tell us about yourself.",
-    description: "A brief introduction is enough.",
-    type: "paragraph",
-    required: false,
-},
-{
-    id: 4,
-    title: "What is your highest level of education?",
-    description: null,
-    type: "dropdown",
-    required: true,
-},
-{
-    id: 5,
-    title: "Which programming language do you use the most?",
-    description: "Select one option.",
-    type: "mcq",
-    required: true,
-},
-{
-    id: 6,
-    title: "Which technologies have you worked with?",
-    description: "Select all that apply.",
-    type: "checkbox",
-    required: false,
-},
-{
-    id: 7,
-    title: "How many years of programming experience do you have?",
-    description: null,
-    type: "short",
-    required: true,
-},
-{
-    id: 8,
-    title: "Why do you want to join our team?",
-    description: "Share your motivation.",
-    type: "paragraph",
-    required: true,
-},
-{
-    id: 9,
-    title: "Preferred mode of work",
-    description: "Remote, Hybrid, or On-site",
-    type: "dropdown",
-    required: true,
-},
-{
-    id: 10,
-    title: "Would you recommend our service to others?",
-    description: null,
-    type: "mcq",
-    required: false,
-}
-];
 export function getBottomBar() {
     const bar = getDiv("bottomBar");
 
@@ -206,4 +134,58 @@ export function getBottomBar() {
     bar.append(editName, next);
 
     return bar;
+}
+
+function getLabelSpan(content = "") {
+    const label = document.createElement("label");
+    label.className = "field";
+
+    const span = document.createElement("span");
+    span.textContent = content;
+
+    label.appendChild(span);
+    return label;
+}
+
+function getName(value = "") {
+    const label = getLabelSpan("Form Name");
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "nameEditOverlay";
+    input.placeholder = "Enter form name...";
+    input.value = value;
+
+    label.appendChild(input);
+    return label;
+}
+
+function getActions() {
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "cancelBtn";
+    cancelBtn.id = "updateNameCancel";
+    cancelBtn.textContent = "Cancel";
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "saveBtn";
+    saveBtn.id = "updateNameSave";
+    saveBtn.textContent = "Save Name";
+
+    actions.append(cancelBtn, saveBtn);
+    return actions;
+}
+
+export function getNameEditor(name = "") {
+    const card = document.createElement("div");
+    card.className = "nameCard";
+
+    card.append(
+        getName(name),
+        getActions()
+    );
+
+    return card;
 }

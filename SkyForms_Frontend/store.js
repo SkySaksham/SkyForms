@@ -17,8 +17,6 @@ export let data = {
         status : true
     }],
 
-    draftForms: [{name: "hii",
-        id : "jsajks"}],
 
     drafts : { 
         "jsajks" : {
@@ -63,17 +61,12 @@ export let data = {
     }
 }
 
-let formSubmissor = {
-    id : 1212,
-    questions : [{},{}]
+
+export function getDraftsMetaData(){
+    const meta = [];
+    for (const i of Object.values(data.drafts)) meta.push({id:i.id,name:i.name});
+    return meta;
 }
-
-
-let testData = {
-
-
-
-
  
-}
+
 
