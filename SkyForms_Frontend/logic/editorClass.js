@@ -31,6 +31,7 @@ export class Draft {
 
         if (id in data.drafts){
             this.draft = data.drafts[id]
+            
         }
         
         else throw new Error("Draft not found");
@@ -132,4 +133,7 @@ export class Draft {
         return this.draft.name;
     }
 
+    updateFormName(name){
+        this.draft.name = name;
+    }
 };

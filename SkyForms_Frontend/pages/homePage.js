@@ -1,4 +1,4 @@
-import { data } from "../store.js";
+import { data, getDraftsMetaData} from "../store.js";
 import { getProfileCard, getYourForms, getYourDraftForms,getPromptArea } from "../components/homePageComponents.js";
 import { navigate } from "../route.js";
 
@@ -6,7 +6,7 @@ export function getHomePage(){
 
     const profile = data.userInfo;
     const ownedForms = data.yourForms;
-    const draftForms = data.draftForms;
+    const draftForms = getDraftsMetaData();
     
     const page = document.createElement("div");
     page.classList.add("HomeContainer");
