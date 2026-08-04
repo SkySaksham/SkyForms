@@ -5,8 +5,11 @@ Filled WIth TEst DATa During Development !!
 */
 
 
+
+
 export let data = {
     userInfo : {
+        id: "1234",
         name:"Saksham Yadav",
         email: "skysaksham2@gmail.com"
     },
@@ -61,12 +64,25 @@ export let data = {
     }
 }
 
+export function updateDataModelLocally(){
+    const id = data.userInfo.id;
+    localStorage.setItem(`SkyForms__${id}`,JSON.stringify(data));
+}
+
+export function getDataModelLocally(){
+    const id = data.userInfo.id;
+    return JSON.parse(localStorage.getItem(`SkyForms__${id}`));
+}
 
 export function getDraftsMetaData(){
     const meta = [];
     for (const i of Object.values(data.drafts)) meta.push({id:i.id,name:i.name});
     return meta;
 }
+
+
+const d = getDataModelLocally();
+if (d) data = d;
  
 
 
