@@ -20,11 +20,14 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 
 🚧 **Work in Progress**
 
-Current development is focused on:
+Next Steps Are :
+* Local Data Persistance, in memory and local data in sync without polling , repopulate in memory state after validating datamodel stored locally, draftForms Latest verion mathcing weeding out stale data
+* Event Driven Auto Save, Locally
+* Google Outh integration
+* post reload, httponly jwt cookie verification server side and re populating in memory from state stored locally
+* get state and repopulate both in memory and local storage after a successfull authentication 
 
 * Building the form preview experience.
 * Implementing the draft-to-published form workflow.
-* Setting up a minimal FastAPI backend.
-* Developing the prompt-to-editable draft form pipeline.
 
 The project is actively evolving, and the scope and feature set will continue to expand as development progresses.

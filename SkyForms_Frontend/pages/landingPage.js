@@ -129,7 +129,9 @@ async function promptButton(data) {
 
 
 function landingEventListener(e){
-    switch (e.target.id) {
+    const target = e.target.closest("[id]");
+    if (!target) return;
+    switch (target.id) {
         case ("LsendBtn"):
             const prompt = document.querySelector(".LpromptInput").value.trim();
             if (prompt.length < 25) alert("Minimum 25 Characters Required !!");
@@ -159,6 +161,7 @@ function init() {
 function destroy() {
     clearTimeout(typingTimeout);
     typingTimeout = null;
+    removeEventListener("click",landingEventListener)
 }
 
 return {element: page,init,destroy};

@@ -1,4 +1,4 @@
-import { data } from "../store.js";
+import { data, updateDataModelLocally} from "../store.js";
 
 
 const QUESTION_TYPES = {
@@ -11,15 +11,11 @@ const QUESTION_TYPES = {
 
 export class Draft {
     constructor(id=null){
+        updateDataModelLocally();
 
         if (id === null){
             id = crypto.randomUUID();
-            data.draftForms.push(
-                {
-                    "id" : id,
-                    "name": "Untitled"
-                }
-            );
+            
 
             data.drafts[id] = {
                 version :0,

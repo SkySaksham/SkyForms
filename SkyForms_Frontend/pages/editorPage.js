@@ -117,55 +117,58 @@ export function getEditorPage(){
     }
 
     function editorActivity(e){
+        const target = e.target.closest("[id]");
+        if (target){
+            switch (target.id) {
+                case "lNavBtn":
+                    history.back();
+                    break;
+                
+                case "rNavBtn":
+                    openQuestionEditor();
+                    break;
 
-        switch (e.target.id) {
-            case "lNavBtn":
-                history.back();
-                break;
-            
-            case "rNavBtn":
-                openQuestionEditor();
-                break;
-
-            case "addUpdateCancel":
-                closeQuestionEditor();
-                updateQIndex=-1;
-                break;
-            
-            case "addUpdateSave":
-                if(checkMandatoryFields()){
-                    if (updateQIndex>=0){
-                        const info = getAddUpdateInfo();
-                        info.id = draft.getQuestion(updateQIndex).id;
-                        draft.updateQuestionIndex(info, updateQIndex);
-                        updateQuestion(container, updateQIndex, info);
-                        updateQIndex=-1;
-                        closeQuestionEditor();
-                    }
-
-                    else {
-                        appendDraftAndDom(getAddUpdateInfo());
-                        closeQuestionEditor();
-                    }
-                }
-                break;
-
-            case "updateNameCancel":
-                closeQuestionEditor();
-                break;
-
-            case "updateNameSave":
-                if(checkMandatoryFields("nedit")){
-                    const name = page.querySelector("#nameEditOverlay").value;
-                    draft.updateFormName(name);
-                    console.log(draft.getName);
-                    renderNavbar()
+                case "addUpdateCancel":
                     closeQuestionEditor();
-                    
-                }
-                break;
+                    updateQIndex=-1;
+                    break;
+                
+                case "addUpdateSave":
+                    if(checkMandatoryFields()){
+                        if (updateQIndex>=0){
+                            const info = getAddUpdateInfo();
+                            info.id = draft.getQuestion(updateQIndex).id;
+                            draft.updateQuestionIndex(info, updateQIndex);
+                            updateQuestion(container, updateQIndex, info);
+                            updateQIndex=-1;
+                            closeQuestionEditor();
+                        }
 
+                        else {
+                            appendDraftAndDom(getAddUpdateInfo());
+                            closeQuestionEditor();
+                        }
+                    }
+                    break;
+
+                case "updateNameCancel":
+                    closeQuestionEditor();
+                    break;
+
+                case "updateNameSave":
+                    if(checkMandatoryFields("nedit")){
+                        const name = page.querySelector("#nameEditOverlay").value;
+                        draft.updateFormName(name);
+                        console.log(draft.getName);
+                        renderNavbar()
+                        closeQuestionEditor();
+                        
+                    }
+                    break;
+
+            }
         }
+        
 
         switch (true) {
             case e.target.classList.contains("editBtn"):
