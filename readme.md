@@ -10,10 +10,17 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 - Vanilla JavaScript
 - HTML
 - CSS
+- Sortable.js
 
 **Backend**
 - FastAPI
-- Supabase (Authentication & PostgreSQL)
+- Pydantic
+- asyncpg
+- websockets
+- Groq API
+
+**Database**
+- PostgreSQL
 
 ## Database Schema
 
