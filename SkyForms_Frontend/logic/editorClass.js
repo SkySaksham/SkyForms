@@ -8,15 +8,25 @@ const QUESTION_TYPES = {
     checkbox: "Checkbox",
 };
 
+const ACTION_WEIGHT = {
+    addQ : 5,
+    updateOrd: 5,
+    deleteQ : 5,
+    updateQ : 4,
+    minor : 2,
+    updateNm: 5
+}
+
+const THRESHOLD = 15;
+
+
 
 export class Draft {
     constructor(id=null){
-        updateDataModelLocally();
-
+        
         if (id === null){
             id = crypto.randomUUID();
             
-
             data.drafts[id] = {
                 version :0,
                 name: "Untitled",
@@ -27,10 +37,15 @@ export class Draft {
 
         if (id in data.drafts){
             this.draft = data.drafts[id]
-            
+            updateDataModelLocally();
+            this.staleCount = 0;
         }
-        
         else throw new Error("Draft not found");
+    }
+
+    updateLocally(){
+        updateDataModelLocally();
+        this.staleCount = 0;
     }
     
 
@@ -59,12 +74,16 @@ export class Draft {
             throw new Error("Invalid question");
         }
         this.draft.questions.push(Question)
+        this.staleCount += ACTION_WEIGHT.addQ;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
     }
 
     updateOrder(event){
             const [a] = this.draft.questions.splice(event.oldIndex,1);
             this.draft.questions.splice(event.newIndex,0,a);
             console.log(this.draft.questions);
+            this.staleCount += ACTION_WEIGHT.updateOrd;
+            if (this.staleCount>=THRESHOLD) this.updateLocally();
     }
 
     getQuestion(index) { 
@@ -76,6 +95,8 @@ export class Draft {
     
     deleteQuestionIndex(index){
         this.draft.questions.splice(index,1);
+        this.staleCount += ACTION_WEIGHT.deleteQ;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
     }
 
     updateQuestionIndex(question, index) {
@@ -84,6 +105,8 @@ export class Draft {
         }
 
         this.draft.questions[index] = question;
+        this.staleCount += ACTION_WEIGHT.updateQ;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
         return true;
     }
 
@@ -95,6 +118,9 @@ export class Draft {
             return false;
         }
         this.draft.questions[index].required = checked;
+        this.staleCount += ACTION_WEIGHT.minor;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
+        
         return true;
     }
 
@@ -106,6 +132,8 @@ export class Draft {
             return false;
         }
         this.draft.questions[index].type = type;
+        this.staleCount += ACTION_WEIGHT.minor;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
         return true;
     }
     static updateQuestions(id, questions) {
@@ -131,5 +159,7 @@ export class Draft {
 
     updateFormName(name){
         this.draft.name = name;
+        this.staleCount += ACTION_WEIGHT.updateNm;
+        if (this.staleCount>=THRESHOLD) this.updateLocally();
     }
 };
