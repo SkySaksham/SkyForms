@@ -1,11 +1,22 @@
 # we GONNA MAKE end point for prompt to draft form first...
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from get_questions_llm import getAiResponse
-from schema.llm_response import llm_form_request
+from services.get_questions_llm import getAiResponse
+from model.llm_response import llm_form_request
+import db.startup as db
+import asyncio
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await db.connect_db()
+    print("Database connected")
+
+    yield
+    await db.POOL.close()
+
+app = FastAPI(lifespan=lifespan)
 
 
 app.add_middleware(
@@ -21,7 +32,9 @@ app.add_middleware(
 
 @app.get("/")
 def home():
-    return {"message": "App Running !!"}
+    if (db.POOL) :
+        return {"message": "App Running !!","idle conn":db.POOL.get_idle_size()}
+    raise HTTPException(status_code=500, detail="APP's Not Up Well !!")
 
 @app.post("/llm_form")
 def get_llm_form(request :llm_form_request):

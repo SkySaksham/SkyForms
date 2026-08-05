@@ -1,11 +1,10 @@
 from groq import Groq # type: ignore
 from dotenv import load_dotenv
 import os
-from schema.llm_response import ValidQuestion, ValidQuestions
+from model.llm_response import ValidQuestion, ValidQuestions
+from config import GROQ_API_KEY
 
-
-load_dotenv()  
-groq_api_key = os.getenv("GROQ_API_KEY")
+ 
 
 
 prompt = '''
@@ -15,7 +14,7 @@ Select the most suitable input type for each question and mark only essential qu
 Return only valid JSON that strictly follows the provided schema.
 '''
 
-client = Groq(api_key=groq_api_key)
+client = Groq(api_key=GROQ_API_KEY)
 
 
 def getAiResponse(userInput :str) ->ValidQuestions :

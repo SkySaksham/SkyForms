@@ -10,24 +10,35 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 - Vanilla JavaScript
 - HTML
 - CSS
+- Sortable.js
 
 **Backend**
 - FastAPI
-- Supabase (Authentication & PostgreSQL)
+- Pydantic
+- asyncpg
+- websockets
+- Groq API
 
+**Database**
+- PostgreSQL
+
+## Database Schema
+
+<p align="center">
+  <img src="images/db.png" alt="SkyForms Database Schema" width="900">
+</p>
 
 ## Current Status
 
 🚧 **Work in Progress**
 
-Next Steps Are :
-* Local Data Persistance, in memory and local data in sync without polling , repopulate in memory state after validating datamodel stored locally, draftForms Latest verion mathcing weeding out stale data
-* Event Driven Auto Save, Locally
-* Google Outh integration
-* post reload, httponly jwt cookie verification server side and re populating in memory from state stored locally
-* get state and repopulate both in memory and local storage after a successfull authentication 
-
-* Building the form preview experience.
-* Implementing the draft-to-published form workflow.
+Next Steps Are:
+- Local data persistence, keeping in-memory and local state synchronized without polling, and repopulating in-memory state after validating the locally stored data model while removing stale draft versions.
+- Event-driven local auto-save.
+- Google OAuth integration.
+- Post-reload HTTP-only JWT cookie verification on the server and repopulating in-memory state from locally stored state.
+- Synchronizing both in-memory and local storage after successful authentication.
+- Building the form preview experience.
+- Implementing the draft-to-published form workflow.
 
 The project is actively evolving, and the scope and feature set will continue to expand as development progresses.
