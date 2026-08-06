@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from services.get_questions_llm import getAiResponse
 from model.llm_response import llm_form_request
+from model.google_id_token import GoogleIdToken
 import db.startup as db
 import asyncio
 from contextlib import asynccontextmanager
@@ -47,6 +48,9 @@ def get_llm_form(request :llm_form_request):
                         detail="Failed to generate form. Please try again."
                 )
 
+@app.post("/auth/signin")
+def auth_signin(request :GoogleIdToken) :
+      return {"msg":"Recieved"}
 
 
 
