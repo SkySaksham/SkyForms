@@ -26,6 +26,7 @@ class GoogleAuth {
 
       const res = await fetch("http://127.0.0.1:8000/auth/signin",{
           method : "POST",
+          credentials: "include",
           headers : {"Content-Type": "application/json"},
           body : JSON.stringify({"id_token":jwt}),
       });

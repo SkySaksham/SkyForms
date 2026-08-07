@@ -1,6 +1,6 @@
 import { getLoader } from "../components/loader.js"
 import { getLLMResponse } from "../api/llmResponse.js";
-import { Draft } from "../logic/editorClass.js";
+import { Draft } from "../logic/draftClass.js";
 import { navigate } from "../route.js";
 import { googleAuth } from "../api/google_auth.js"; 
 

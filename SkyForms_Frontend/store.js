@@ -73,6 +73,7 @@ export function getDraftsMetaData(){
 export function updateDataModelLocally(){
     const id = data.userInfo.id;
     localStorage.setItem(`SkyForms__${id}`,JSON.stringify(data));
+    console.log(JSON.stringify(data))
 }
 
 function getDataModelLocally() {
@@ -113,7 +114,8 @@ export function repopulateDataModel(){
     }
 
 }
-repopulateDataModel();
+
+
 
 
  
