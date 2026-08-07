@@ -6,3 +6,4 @@ pydantic
 asyncpg
 google-auth
 requests
+PyJWT

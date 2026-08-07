@@ -1,18 +1,21 @@
-# we GONNA MAKE end point for prompt to draft form first...
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
+
 
 from services.get_questions_llm import get_ai_response
 from services.verify_google_id_token import verify_id_token_jwt
+from services.create_verify_jwt import create_jwt,verify_jwt
+
 
 from model.llm_response import llm_form_request
 from model.google_id_token import GoogleIdToken
 
+
 import db.startup as db
 from db.user import get_user_from_email, create_user
 
-from contextlib import asynccontextmanager
 
+from contextlib import asynccontextmanager
 
 
 @asynccontextmanager
@@ -55,7 +58,7 @@ async def get_llm_form(request :llm_form_request):
                 )
 
 @app.post("/auth/signin")
-async def auth_signin(request :GoogleIdToken) :
+async def auth_signin(request: GoogleIdToken, response: Response) :
         try :
             idinfo = verify_id_token_jwt(request.id_token)
         except Exception as e :
@@ -64,7 +67,19 @@ async def auth_signin(request :GoogleIdToken) :
         try :
             user_info = await get_user_from_email(idinfo["email"])
             if (user_info is None) : user_info = await create_user(idinfo["name"],idinfo["email"])
+
             print(user_info)
+
+            access_token = create_jwt(user_info["id"])
+
+            response.set_cookie(
+                  key = "access_token",
+                  value=access_token,
+                  httponly=True,
+                  samesite="lax",
+                  secure=False, # currenty for dev
+                  max_age=30 * 24 * 60 * 60
+            )
 
             return {"userInfo":dict(user_info)}
         except Exception as e :
@@ -73,3 +88,27 @@ async def auth_signin(request :GoogleIdToken) :
         
 
 
+
+@app.get("/auth/verify")
+async def verify_access_token(request: Request) :
+    access_token = request.cookies.get("access_token")
+    if access_token is None: raise HTTPException(status_code=401,detail="Missing access token")
+
+    payload = verify_jwt(access_token)
+    if (payload is None) : raise HTTPException(status_code=401, detail="Invalid/Expired access token")
+
+    return {"userId":payload["sub"]}
+
+      
+      
+
+@app.post("/auth/logout")
+async def logout(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        samesite="lax",
+        secure=False,
+    )
+
+    return {"message": "Logged out"}
