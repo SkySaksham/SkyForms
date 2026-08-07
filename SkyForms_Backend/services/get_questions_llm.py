@@ -17,8 +17,8 @@ Return only valid JSON that strictly follows the provided schema.
 client = Groq(api_key=GROQ_API_KEY)
 
 
-def getAiResponse(userInput :str) ->ValidQuestions :
-    chat_completion = client.chat.completions.create(
+async def get_ai_response(userInput :str) ->ValidQuestions :
+    chat_completion = await client.chat.completions.create(
         messages=[
             {
                 "role": "system",

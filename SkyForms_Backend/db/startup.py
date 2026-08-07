@@ -1,16 +1,8 @@
-import os
-from dotenv import load_dotenv
 import asyncpg
 import asyncio
+from config import DATABASE_URL
 
-load_dotenv()
-
-
-
-DATABASE_URL = os.getenv("DATABASE_URL")
 POOL = None
-
-
 
 async def connect_db() :
     try :
@@ -22,6 +14,11 @@ async def connect_db() :
         )
     except Exception as e :
         print ("Failed TO Connect",e)
+
+def get_pool():
+    if POOL is None:
+        raise RuntimeError("Database not connected")
+    return POOL
 
 
 if (__name__ == "__main__") :

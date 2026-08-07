@@ -4,3 +4,5 @@ groq
 python-dotenv
 pydantic
 asyncpg
+google-auth
+requests
