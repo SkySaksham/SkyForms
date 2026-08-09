@@ -70,51 +70,10 @@ export function getDraftsMetaData(){
     return meta;
 }
 
-export function updateDataModelLocally(){
-    const id = data.userInfo.id;
-    localStorage.setItem(`SkyForms__${id}`,JSON.stringify(data));
-    console.log(`SkyForms__${id}`);
-    console.log(JSON.stringify(data));
-}
 
-function getDataModelLocally() {
-  const id = data.userInfo.id;
 
-  const raw = localStorage.getItem(`SkyForms__${id}`);
 
-  if (!raw) {
-    throw Error("NO Data Locally");
-  }
-  const parsed = JSON.parse(raw);
-  return dataSchema.parse(parsed);
-}
 
-export function repopulateDataModel(){
-    try {
-        const d = getDataModelLocally();
-        data.userInfo = d.userInfo ;
-        data.yourForms = d.yourForms;
-
-        for (const key in d.drafts){
-            if (key in data.drafts){
-                data.drafts[key] =d.drafts[key].version >= data.drafts[key].version ? d.drafts[key] : data.drafts[key];
-            }
-            else {
-                let present = false;
-                for (const i of data.yourForms){
-                    if (key in i) {
-                        present = true;
-                        break;
-                    }
-                }
-                if (!present) data.drafts[key] = d.drafts[key];
-            }
-        }
-    } catch(e) {
-        console.log({"Some Error Ocurred Validating" : e});
-    }
-
-}
 
 
 

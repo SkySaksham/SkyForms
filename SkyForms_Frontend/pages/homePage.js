@@ -1,6 +1,10 @@
 import { data, getDraftsMetaData} from "../store.js";
-import { getProfileCard, getYourForms, getYourDraftForms,getPromptArea } from "../components/homePageComponents.js";
+import { getProfileCard, getYourForms, 
+    getYourDraftForms,getPromptArea, getLogOutConfirmation
+ } from "../components/homePageComponents.js";
 import { navigate } from "../route.js";
+import { getLoader } from "../components/loader.js";
+import { logout } from "../api/logout.js";
 
 export function getHomePage(){
 
@@ -18,19 +22,40 @@ export function getHomePage(){
         <div id="promptArea" style="padding:2rem"></div> 
     `
 
+
     const  pcard = page.querySelector("#pcard");
     const yf = page.querySelector("#yrform");
     const drf = page.querySelector("#drform");
     const pra = page.querySelector("#promptArea")
+    const overlay = page.querySelector("#overlay");
 
+    function overlayShow(){ overlay.classList.add("show");}
+    function overlayClose() {overlay.classList.remove("show");overlay.innerHTML="";}
 
-    function homeActivity(e) {
-   
-        switch (e.target.id) {
+    async function homeActivity(e) {
+        const target = e.target.closest("[id]"); 
+        if (target) {
+            switch (target.id) {
             case "createNewDraft":
                 navigate("/draft");
                 return;
+            case ("logOutButton") :
+                overlayShow();
+                overlay.appendChild(getLogOutConfirmation());
+                return;
+            case ("logoutCancelBtn"):
+                overlayClose();
+                return;
+            case ("logoutConfirmBtn") :
+                overlay.innerHTML=``;
+                getLoader("Loggin Out !!");
+                const res = await logout();
+                if (res) navigate("/");
+                else overlayClose();
+                return;
         }
+        } 
+        
 
         const draftCard = e.target.closest(".draftForm");
         if (draftCard) {

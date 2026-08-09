@@ -1,5 +1,5 @@
 import { initRouter, navigate } from "./route.js";
-import { verifyAccessToken } from "./api/verify_jwt.js";
+import { verifyAccessToken } from "./api/verifyJwt.js";
 import { Sync } from "./logic/syncClass.js";
 
 const app = document.getElementById("app");
