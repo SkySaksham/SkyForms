@@ -1,4 +1,6 @@
+
 const DEV_URL = "http://127.0.0.1:8000/";
+
 
 export async function logout() {
     const res = await fetch(`${DEV_URL}auth/logout`, {
@@ -7,8 +9,9 @@ export async function logout() {
     });
 
     if (!res.ok) {
-        throw new Error("Logout failed!");
+        alert("LogOut Failed !!")
+        return false;
     }
-
-    return await res.json();
+    console.log("Logged Out Successfully !!");
+    return true;
 }

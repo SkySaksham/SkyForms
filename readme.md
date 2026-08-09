@@ -6,21 +6,11 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 
 ## Tech Stack
 
-**Frontend**
-- Vanilla JavaScript
-- HTML
-- CSS
-- Sortable.js
 
-**Backend**
-- FastAPI
-- Pydantic
-- asyncpg
-- websockets
-- Groq API
-
-**Database**
-- PostgreSQL
+**Frontend:** Vanilla JavaScript · HTML · CSS · Sortable.js · Zod  
+**Backend:** FastAPI · Pydantic · asyncpg · websockets · Groq API · SQL
+**Database:** PostgreSQL
+**Auth:** Google OpenId Connect with JWT Based Session Authentication
 
 ## Database Schema
 
@@ -33,11 +23,9 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 🚧 **Work in Progress**
 
 Next Steps Are:
-- Local data persistence, keeping in-memory and local state synchronized without polling, and repopulating in-memory state after validating the locally stored data model while removing stale draft versions.
-- Event-driven local auto-save.
-- Google OAuth integration.
-- Post-reload HTTP-only JWT cookie verification on the server and repopulating in-memory state from locally stored state.
-- Synchronizing both in-memory and local storage after successful authentication.
+
+- endpoint to fetch entire landing page info
+- endpoint to upadte version based unpublished draft
 - Building the form preview experience.
 - Implementing the draft-to-published form workflow.
 

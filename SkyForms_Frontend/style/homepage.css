@@ -215,3 +215,15 @@
 .addCard:hover svg {
     transform: scale(1.15) rotate(90deg);
 }
+
+
+
+.logoutCard {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.logoutCard .field span {
+    font-size: 1.25rem;
+    font-weight: 500;
+}

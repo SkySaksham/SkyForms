@@ -20,7 +20,7 @@ export function getProfileCard(profileData){
         </div>
 
     <div class="LogoutSection">
-        <button class="LogoutBtn">
+        <button class="LogoutBtn" id= "logOutButton">
             <svg xmlns="http://www.w3.org/2000/svg"
                 width="18"
                 height="18"
@@ -168,3 +168,17 @@ export function getPromptArea(){
     return area;
 }
 
+export function getLogOutConfirmation(){
+    const div = document.createElement("div");
+    div.innerHTML= `<div class="questionCard logoutCard">
+    <div class="field">
+        <span>Do you wanna log out?</span>
+    </div>
+
+    <div class="actions">
+        <button class="cancelBtn" id="logoutCancelBtn">Cancel</button>
+        <button class="saveBtn" id="logoutConfirmBtn"Btn>Log Out</button>
+    </div>
+</div>`
+    return div;
+}
