@@ -1,5 +1,5 @@
-import { data, updateDataModelLocally} from "../store.js";
-
+import { data} from "../store.js";
+import { syncManager } from "../main.js";
 
 const QUESTION_TYPES = {
     short: "Short Answer",
@@ -9,21 +9,21 @@ const QUESTION_TYPES = {
 };
 
 const ACTION_WEIGHT = {
-    addQ : 5,
-    updateOrd: 5,
-    deleteQ : 5,
-    updateQ : 4,
-    minor : 2,
-    updateNm: 5
+    "add" : 5,
+    "updateOrder": 5,
+    "delete" : 5,
+    "updateQ" : 4,
+    "minor" : 2,
+    "updateN": 5
 }
 
 const THRESHOLD = 15;
 
 
 
+
 export class Draft {
     constructor(id=null){
-        
         if (id === null){
             id = crypto.randomUUID();
             
@@ -37,14 +37,26 @@ export class Draft {
 
         if (id in data.drafts){
             this.draft = data.drafts[id]
-            updateDataModelLocally();
+            syncManager.cacheLocally();
             this.staleCount = 0;
         }
         else throw new Error("Draft not found");
     }
 
+    accomodateStaleData(action){
+        try{
+            this.staleCount += ACTION_WEIGHT[action];
+            if (this.staleCount>=THRESHOLD) {
+                this.updateLocally();
+            }
+        }catch (e){
+            console.log(e);
+            alert("Syncing Error");
+        }
+    }
+
     updateLocally(){
-        updateDataModelLocally();
+        syncManager.cacheLocally();
         this.staleCount = 0;
     }
     
@@ -73,17 +85,18 @@ export class Draft {
         if (!this.isValidQuestion(Question)){
             throw new Error("Invalid question");
         }
-        this.draft.questions.push(Question)
-        this.staleCount += ACTION_WEIGHT.addQ;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
+        this.draft.questions.push(Question);
+        console.log("Question added !!");
+        
+        this.accomodateStaleData("add");
     }
 
     updateOrder(event){
             const [a] = this.draft.questions.splice(event.oldIndex,1);
             this.draft.questions.splice(event.newIndex,0,a);
-            console.log(this.draft.questions);
-            this.staleCount += ACTION_WEIGHT.updateOrd;
-            if (this.staleCount>=THRESHOLD) this.updateLocally();
+            console.log("Order Updated !!");
+            
+            this.accomodateStaleData("updateOrder");
     }
 
     getQuestion(index) { 
@@ -95,8 +108,7 @@ export class Draft {
     
     deleteQuestionIndex(index){
         this.draft.questions.splice(index,1);
-        this.staleCount += ACTION_WEIGHT.deleteQ;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
+        this.accomodateStaleData("delete");
     }
 
     updateQuestionIndex(question, index) {
@@ -105,8 +117,7 @@ export class Draft {
         }
 
         this.draft.questions[index] = question;
-        this.staleCount += ACTION_WEIGHT.updateQ;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
+        this.accomodateStaleData("updateQ");
         return true;
     }
 
@@ -117,10 +128,10 @@ export class Draft {
         if (typeof checked !== "boolean") {
             return false;
         }
+
         this.draft.questions[index].required = checked;
-        this.staleCount += ACTION_WEIGHT.minor;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
-        
+
+        this.accomodateStaleData("minor");
         return true;
     }
 
@@ -132,10 +143,11 @@ export class Draft {
             return false;
         }
         this.draft.questions[index].type = type;
-        this.staleCount += ACTION_WEIGHT.minor;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
+
+        this.accomodateStaleData("minor");
         return true;
     }
+
     static updateQuestions(id, questions) {
         if (!(id in data.drafts)) {
             data.drafts[id] = {
@@ -159,7 +171,6 @@ export class Draft {
 
     updateFormName(name){
         this.draft.name = name;
-        this.staleCount += ACTION_WEIGHT.updateNm;
-        if (this.staleCount>=THRESHOLD) this.updateLocally();
+        this.accomodateStaleData("updateN");
     }
 };

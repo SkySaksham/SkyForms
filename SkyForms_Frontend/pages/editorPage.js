@@ -1,6 +1,6 @@
 import { getNavbar } from "../components/navBar.js";
 import { renderEditor,addQuestion,updateQuestion,getBottomBar, getNameEditor } from "../components/editor.js";
-import { Draft } from "../logic/editorClass.js";
+import { Draft } from "../logic/draftClass.js";
 import { getQuestionEditor } from "../components/addUpdateQcard.js";
 import { navigate } from "../route.js";
 

@@ -32,7 +32,7 @@ export function render(){
 
 export function initRouter(){
 
-    navigate("/");
+    // navigate("/");
 
     window.addEventListener("popstate", () => {
         render();

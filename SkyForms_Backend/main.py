@@ -70,7 +70,7 @@ async def auth_signin(request: GoogleIdToken, response: Response) :
 
             print(user_info)
 
-            access_token = create_jwt(user_info["id"])
+            access_token = create_jwt(str(user_info["id"]))
 
             response.set_cookie(
                   key = "access_token",
@@ -96,8 +96,8 @@ async def verify_access_token(request: Request) :
 
     payload = verify_jwt(access_token)
     if (payload is None) : raise HTTPException(status_code=401, detail="Invalid/Expired access token")
-
-    return {"userId":payload["sub"]}
+    print (str(payload["sub"]))
+    return {"userId":str(payload["sub"])}
 
       
       
