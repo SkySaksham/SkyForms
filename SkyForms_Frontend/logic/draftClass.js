@@ -1,5 +1,5 @@
-import { data, updateDataModelLocally} from "../store.js";
-
+import { data} from "../store.js";
+import { syncManager } from "../main.js";
 
 const QUESTION_TYPES = {
     short: "Short Answer",
@@ -37,14 +37,14 @@ export class Draft {
 
         if (id in data.drafts){
             this.draft = data.drafts[id]
-            updateDataModelLocally();
+            syncManager.cacheLocally();
             this.staleCount = 0;
         }
         else throw new Error("Draft not found");
     }
 
     updateLocally(){
-        updateDataModelLocally();
+        syncManager.cacheLocally();
         this.staleCount = 0;
     }
     

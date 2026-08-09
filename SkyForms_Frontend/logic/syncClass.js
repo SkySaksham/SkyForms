@@ -12,11 +12,13 @@ export class Sync{
         const raw = localStorage.getItem(`SkyForms__${this.userId}`);
         console.log(raw);
         if (!raw) {
-            cons
             throw Error("NO Data Locally");
         }
         const parsed = dataSchema.parse(JSON.parse(raw));
         this.data.userInfo = parsed.userInfo;
+
+        console.log (parsed);
+        
         this.data.yourForms = parsed.yourForms;
         if (Object.keys(this.data.drafts).length === 0) {
             this.data.drafts = parsed.drafts;
@@ -32,7 +34,10 @@ export class Sync{
     }
 
     cacheLocally(){
-        localStorage.setItem(`SkyForms__${this.userId}`,this.data)
+        console.log("updated !!")
+        console.log(this.data);
+        console.log(data);
+        localStorage.setItem(`SkyForms__${this.userId}`,JSON.stringify(this.data))
     }
 
     

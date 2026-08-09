@@ -1,18 +1,17 @@
 import { initRouter, navigate } from "./route.js";
 import { verifyAccessToken } from "./api/verify_jwt.js";
 import { Sync } from "./logic/syncClass.js";
-import { repopulateDataModel } from "./store.js";
 
 const app = document.getElementById("app");
 
 initRouter();
-
+export let syncManager = null;
 
 
 async function start_up(params) {
     try {
-    const check = await verifyAccessToken();
-    export const syncManager = new Sync(check);
+    const id = await verifyAccessToken();
+    syncManager = new Sync(id);
     }catch (e){
         console.log(e);
         navigate("/");
@@ -21,7 +20,9 @@ async function start_up(params) {
 
     try {
         syncManager.repopulateMemoryFromLocal();
+        navigate("/home");
     } catch (e) {
+        console.log(e);
         navigate("/home");
     }  
 }
