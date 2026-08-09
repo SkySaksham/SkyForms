@@ -35,14 +35,10 @@ export class Sync{
 
     cacheLocally(){
         console.log("updated !!")
-        console.log(this.data);
-        console.log(data);
         localStorage.setItem(`SkyForms__${this.userId}`,JSON.stringify(this.data))
     }
-
     
-
-
+    
     } 
 
 
