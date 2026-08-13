@@ -127,7 +127,7 @@ async def update_draft(request :Update_Draft_Schema, http_request : Request) :
             print(e)
             raise HTTPException(status_code=401,detail="Invalid/Expired access token")
         
-        updated_row = await update_draft(request.owner_id,request.id,request.name,request.version,request.data)
+        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.data)
         if updated_row is None:raise HTTPException(status_code=404,detail="Draft not found")
         if (updated_row.owner_id != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
         try :
