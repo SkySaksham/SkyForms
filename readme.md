@@ -6,11 +6,10 @@ The project is being developed as a Single Page Application using Vanilla JavaSc
 
 ## Tech Stack
 
-
 **Frontend:** Vanilla JavaScript · HTML · CSS · Sortable.js · Zod  
-**Backend:** FastAPI · Pydantic · asyncpg · websockets · Groq API · SQL
-**Database:** PostgreSQL
-**Auth:** Google OpenId Connect with JWT Based Session Authentication
+**Backend:** FastAPI · Pydantic · asyncpg · WebSockets · Groq API · SQL  
+**Database:** PostgreSQL  
+**Auth:** Google OpenID Connect · JWT-based session authentication
 
 ## Database Schema
 
