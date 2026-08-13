@@ -9,11 +9,11 @@ from services.create_verify_jwt import create_jwt,verify_jwt
 
 from model.llm_response import llm_form_request
 from model.google_id_token import GoogleIdToken
-
+from model.update_drafts import Update_Draft_Schema
 
 import db.startup as db
 from db.user import get_user_from_email, create_user
-
+from db.update_draft_forms import update_userdraft
 
 from contextlib import asynccontextmanager
 
@@ -112,3 +112,51 @@ async def logout(response: Response):
     )
 
     return {"message": "Logged out"}
+
+
+
+@app.post("/updatedraft")
+async def update_draft(request :Update_Draft_Schema, http_request : Request) :
+        try :
+            access_token = http_request.cookies.get("access_token")
+            payload = verify_jwt(access_token)
+
+            if (payload.sub != request.owner_id) : raise Exception ("RESTRICTED ACCESS!! owner_id Doesnt match with jwt")
+            
+        except Exception as e :
+            print(e)
+            raise HTTPException(status_code=401,detail="Invalid/Expired access token")
+        
+        updated_row = await update_draft(request.owner_id,request.id,request.name,request.version,request.data)
+        if updated_row is None:raise HTTPException(status_code=404,detail="Draft not found")
+        if (updated_row.owner_id != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
+        try :
+            validated = Update_Draft_Schema.model_validate(dict(updated_row))
+        except Exception as e : raise HTTPException(
+                status_code=500,
+                detail="Database returned data with an invalid schema"
+            )
+        
+
+        if (validated.data != request.data) :
+              return {"status" : "Stale","row" : validated}
+
+        return {"status" : "Success", "row" : validated}
+
+
+@app.post("/userdata")
+async def userdata(response : Response):
+    try :
+          access_token = response.cookies.get("access_token")
+          verify_access_token(access_token)
+    except Exception as e :
+          print(e)
+          raise HTTPException(status_code=401,detail="Invalid/Expired access token")
+
+    # yet to complete
+
+
+
+
+    
+        

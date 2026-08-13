@@ -160,7 +160,7 @@ export function getEditorPage(){
                         const name = page.querySelector("#nameEditOverlay").value;
                         draft.updateFormName(name);
                         console.log(draft.getName);
-                        renderNavbar()
+                        renderNavbar();
                         closeQuestionEditor();
                         
                     }
