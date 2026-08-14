@@ -12,6 +12,7 @@ from model.google_id_token import GoogleIdToken
 from model.update_drafts import Update_Draft_Schema
 
 import db.startup as db
+from db.startup import connect_db
 from db.user import get_user_from_email, create_user
 from db.update_draft_forms import update_userdraft
 
@@ -20,8 +21,9 @@ from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await db.connect_db()
-    print("Database connected")
+
+    await connect_db()
+        
 
     yield
     await db.POOL.close()
@@ -127,7 +129,7 @@ async def update_draft(request :Update_Draft_Schema, http_request : Request) :
             print(e)
             raise HTTPException(status_code=401,detail="Invalid/Expired access token")
         
-        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.data)
+        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.questions)
         if updated_row is None:raise HTTPException(status_code=404,detail="Draft not found")
         if (updated_row.owner_id != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
         try :
@@ -137,7 +139,6 @@ async def update_draft(request :Update_Draft_Schema, http_request : Request) :
                 detail="Database returned data with an invalid schema"
             )
         
-
         if (validated.data != request.data) :
               return {"status" : "Stale","row" : validated}
 

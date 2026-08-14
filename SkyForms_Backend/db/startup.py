@@ -12,6 +12,7 @@ async def connect_db() :
             min_size=2,
             max_size=10
         )
+        print("DATABASE CONNECTED !!")
     except Exception as e :
         print ("Failed TO Connect",e)
 

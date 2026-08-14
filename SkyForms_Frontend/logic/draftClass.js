@@ -43,11 +43,12 @@ export class Draft {
         else throw new Error("Draft not found");
     }
 
-    accomodateStaleData(action){
+    async accomodateStaleData(action){
         try{
             this.staleCount += ACTION_WEIGHT[action];
             if (this.staleCount>=THRESHOLD) {
                 this.updateLocally();
+                syncManager.updateDraftServer(this);
             }
         }catch (e){
             console.log(e);
@@ -59,6 +60,8 @@ export class Draft {
         syncManager.cacheLocally();
         this.staleCount = 0;
     }
+
+
     
 
     isValidQuestion(question) {
@@ -73,6 +76,10 @@ export class Draft {
         );
     }
 
+    incrementVersion(){
+        this.draft.version+=1;
+    }
+
     get questions() {
         return this.draft.questions;
     }
@@ -80,8 +87,12 @@ export class Draft {
     get draftID(){
         return this.draft.id;
     }
+
+    get entireDraft() {
+        return this.draft;
+    }
     
-    addQuestion(Question){
+    async addQuestion(Question){
         if (!this.isValidQuestion(Question)){
             throw new Error("Invalid question");
         }
@@ -91,7 +102,7 @@ export class Draft {
         this.accomodateStaleData("add");
     }
 
-    updateOrder(event){
+    async updateOrder(event){
             const [a] = this.draft.questions.splice(event.oldIndex,1);
             this.draft.questions.splice(event.newIndex,0,a);
             console.log("Order Updated !!");
@@ -106,12 +117,12 @@ export class Draft {
         return this.draft.questions[index];
     }
     
-    deleteQuestionIndex(index){
+    async deleteQuestionIndex(index){
         this.draft.questions.splice(index,1);
         this.accomodateStaleData("delete");
     }
 
-    updateQuestionIndex(question, index) {
+    async updateQuestionIndex(question, index) {
         if (index < 0 || index >= this.draft.questions.length) {
             return false;
         }
@@ -121,7 +132,7 @@ export class Draft {
         return true;
     }
 
-    updateCheckedIndex(index, checked) {
+    async updateCheckedIndex(index, checked) {
         if (index < 0 || index >= this.draft.questions.length) {
             return false;
         }
@@ -135,7 +146,7 @@ export class Draft {
         return true;
     }
 
-    updateTypeIndex(index, type) {
+    async updateTypeIndex(index, type) {
         if (index < 0 || index >= this.draft.questions.length) {
             return false;
         }
@@ -169,7 +180,7 @@ export class Draft {
         return this.draft.name;
     }
 
-    updateFormName(name){
+    async updateFormName(name){
         this.draft.name = name;
         this.accomodateStaleData("updateN");
     }

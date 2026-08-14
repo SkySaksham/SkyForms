@@ -116,7 +116,7 @@ export function getEditorPage(){
         container.children[index].remove();
     }
 
-    function editorActivity(e){
+    async function editorActivity(e){
         const target = e.target.closest("[id]");
         if (target){
             switch (target.id) {
@@ -192,7 +192,7 @@ export function getEditorPage(){
     };
 
 
-    function editorChangeActivity(e) {
+    async function editorChangeActivity(e) {
         switch (true) {
             case e.target.classList.contains("questionType"):
                 draft.updateTypeIndex(
