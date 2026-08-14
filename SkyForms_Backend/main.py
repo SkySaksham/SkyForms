@@ -12,16 +12,19 @@ from model.google_id_token import GoogleIdToken
 from model.update_drafts import Update_Draft_Schema
 
 import db.startup as db
+from db.startup import connect_db
 from db.user import get_user_from_email, create_user
-from db.update_draft_forms import update_userdraft
+from db.update_draft_forms import update_user_draft,get_draft_from_id,insert_new_draft
 
 from contextlib import asynccontextmanager
+from uuid import UUID
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await db.connect_db()
-    print("Database connected")
+
+    await connect_db()
+        
 
     yield
     await db.POOL.close()
@@ -114,34 +117,83 @@ async def logout(response: Response):
     return {"message": "Logged out"}
 
 
-
 @app.post("/updatedraft")
-async def update_draft(request :Update_Draft_Schema, http_request : Request) :
+async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
+
+    try :
+        access_token = http_request.cookies.get("access_token")
+        payload = verify_jwt(access_token)
+        owner_id = UUID(payload["sub"])
+    except Exception as e:
+        print (e)
+        raise HTTPException(status_code=401)
+    
+    if (owner_id != request.owner_id) :
+        print ("Client Doesnt Own the draft")
+        raise HTTPException(status_code=403)
+
+    current_draft = await get_draft_from_id(request.id)
+    if (current_draft is None) :
+        try :
+            result = await insert_new_draft(request.owner_id,request.id,request.name,request.version,request.questions)
+            if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
+            return {"status":"success"} | result
+        except Exception as e :
+            print (e)
+            raise HTTPException(status_code=500)
+
+    if (request.version <= current_draft["version"]) :
+        return {"status":"stale"} | current_draft
+
+    try :
+        result = await update_user_draft(request.id,request.name,request.version,request.questions)
+        if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
+        return {"status":"success"} | result
+    except Exception as e :
+                print (e)
+                raise HTTPException(status_code=500)
+
+    
+
+    '''
+    try :
         try :
             access_token = http_request.cookies.get("access_token")
+            
             payload = verify_jwt(access_token)
-
-            if (payload.sub != request.owner_id) : raise Exception ("RESTRICTED ACCESS!! owner_id Doesnt match with jwt")
+            print (payload["sub"])
+            print (request.owner_id)
+            if (UUID(payload["sub"]) != request.owner_id) : raise Exception ("RESTRICTED ACCESS!! owner_id Doesnt match with jwt")
             
         except Exception as e :
             print(e)
             raise HTTPException(status_code=401,detail="Invalid/Expired access token")
         
-        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.data)
+        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.questions)
         if updated_row is None:raise HTTPException(status_code=404,detail="Draft not found")
-        if (updated_row.owner_id != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
-        try :
+        if (updated_row["owner_id"] != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
+        try:
             validated = Update_Draft_Schema.model_validate(dict(updated_row))
-        except Exception as e : raise HTTPException(
+        except Exception as e:
+            print("VALIDATION ERROR:")
+            print(repr(e))
+            print("DATABASE ROW:")
+            print(dict(updated_row))
+
+            raise HTTPException(
                 status_code=500,
-                detail="Database returned data with an invalid schema"
+                detail=str(e)
             )
         
-
-        if (validated.data != request.data) :
+        if (validated.questions != request.questions) :
               return {"status" : "Stale","row" : validated}
 
         return {"status" : "Success", "row" : validated}
+
+    except Exception as e :
+         print (e)
+         raise HTTPException(status_code=500)
+    '''
 
 
 @app.post("/userdata")
