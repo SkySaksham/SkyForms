@@ -14,7 +14,7 @@ from model.update_drafts import Update_Draft_Schema
 import db.startup as db
 from db.startup import connect_db
 from db.user import get_user_from_email, create_user
-from db.update_draft_forms import update_draft,get_draft_from_id,insert_new_draft
+from db.update_draft_forms import update_user_draft,get_draft_from_id,insert_new_draft
 
 from contextlib import asynccontextmanager
 from uuid import UUID
@@ -132,21 +132,21 @@ async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
         print ("Client Doesnt Own the draft")
         raise HTTPException(status_code=403)
 
-    current_draft = get_draft_from_id(request.id)
+    current_draft = await get_draft_from_id(request.id)
     if (current_draft is None) :
         try :
-            result = insert_new_draft(request.owner_id,request.id,request.name,request.version,request.questions)
+            result = await insert_new_draft(request.owner_id,request.id,request.name,request.version,request.questions)
             if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
             return {"status":"success"} | result
         except Exception as e :
             print (e)
             raise HTTPException(status_code=500)
 
-    if (request.version <= current_draft.version) :
+    if (request.version <= current_draft["version"]) :
         return {"status":"stale"} | current_draft
 
     try :
-        result = update_draft(request.id,request.name,request.version,request.questions)
+        result = await update_user_draft(request.id,request.name,request.version,request.questions)
         if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
         return {"status":"success"} | result
     except Exception as e :

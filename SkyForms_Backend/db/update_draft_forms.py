@@ -1,8 +1,9 @@
 from db.startup import get_pool
 from uuid import UUID
-from asyncpg.types import Json
+import json
 
-async def update_draft(id,name,version,questions):
+
+async def update_user_draft(id,name,version,questions):
     POOL = get_pool()
     async with POOL.acquire() as conn :
         row = await conn.fetchrow(
@@ -13,7 +14,7 @@ async def update_draft(id,name,version,questions):
             questions = $4
         WHERE id = $1
         RETURNING *;
-        ''' ,id,name,version,Json(questions)
+        ''' ,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions])
         )
 
         return dict(row) if row else None
@@ -32,7 +33,7 @@ async def insert_new_draft(owner_id,id,name,version,questions) :
     pool = get_pool()
     async with pool.acquire() as conn :
         row = await conn.fetchrow(
-            "INSERT INTO draft_forms(owner_id,id,name,version,questions) VALUES($1,$2,%3,$4,$5)",
-            owner_id,id,name,version,Json(questions)
+            "INSERT INTO draft_forms(owner_id,id,name,version,questions) VALUES($1,$2,$3,$4,$5) RETURNING *",
+            owner_id,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions])
         )
         return dict(row) if row else None
