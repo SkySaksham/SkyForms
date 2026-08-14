@@ -10,7 +10,7 @@ export class Sync{
 
     repopulateMemoryFromLocal(){
         const raw = localStorage.getItem(`SkyForms__${this.userId}`);
-        console.log(raw);
+       
         if (!raw) {
             throw Error("NO Data Locally");
         }
@@ -41,6 +41,7 @@ export class Sync{
     async updateDraftServer(draft){
         draft.incrementVersion();
         let postBody = {"owner_id" :this.userId, ...draft.entireDraft}
+        console.log(postBody);
         let res = await updateDraftServer(postBody); 
         if (res.status === "success"){
             console.log("Successfully synced !!");

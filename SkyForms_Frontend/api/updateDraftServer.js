@@ -5,6 +5,9 @@ export async function updateDraftServer(data){
     const res = await fetch(`${DEV_URL}updatedraft`, {
         method: "POST",
         credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body : JSON.stringify(data)
     });
 

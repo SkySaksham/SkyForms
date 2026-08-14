@@ -13,7 +13,7 @@ export const formSchema = z.object({
 });
 
 export const questionSchema = z.object({
-  id: z.number(),
+  id: z.string().uuid(),
   title: z.string(),
   description: z.string().nullable(),
   type: z.enum(["short", "paragraph"]),

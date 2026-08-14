@@ -1,10 +1,19 @@
 from pydantic import BaseModel,Field
 from typing import List,Literal
-from model.llm_response import ValidQuestions
+from model.llm_response import ValidQuestion
+from uuid import UUID
 
-class Update_Draft_Schema(BaseModel) :
+class ValidQuestion(BaseModel):
+    id: UUID
+    title: str
+    description: str = ""
+    type: Literal["short", "paragraph", "date", "checkbox"]
+    required: bool
+
+
+class Update_Draft_Schema(BaseModel):
     name: str
-    owner_id : str
-    id : str
-    version : int
-    questions : ValidQuestions
+    owner_id: UUID
+    id: UUID
+    version: int
+    questions: List[ValidQuestion]
