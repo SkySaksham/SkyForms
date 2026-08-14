@@ -1,26 +1,38 @@
 from db.startup import get_pool
-import json
+from uuid import UUID
+from asyncpg.types import Json
 
-async def update_userdraft(owner_id,id,name,version,questions):
+async def update_draft(id,name,version,questions):
     POOL = get_pool()
-
-    questions_json = json.dumps([
-        question.model_dump(mode="json")
-        for question in questions
-    ])
-
     async with POOL.acquire() as conn :
-        return await conn.fetchrow(
+        row = await conn.fetchrow(
         '''
-        INSERT INTO draft_forms (owner_id, id, name, version, questions)
-            VALUES ($1, $2, $3, $4, $5)
-            ON CONFLICT (id) DO UPDATE
-            SET
-                name = EXCLUDED.name,
-                version = EXCLUDED.version,
-                questions = EXCLUDED.questions
-            WHERE draft_forms.version < EXCLUDED.version
-            RETURNING *; 
-        ''' ,owner_id,id,name,version,questions_json
+        UPDATE draft_forms
+        SET name = $2,
+            version = $3,
+            questions = $4
+        WHERE id = $1
+        RETURNING *;
+        ''' ,id,name,version,Json(questions)
         )
-    
+
+        return dict(row) if row else None
+
+
+async def get_draft_from_id(id :UUID) :
+    pool = get_pool()
+    async with pool.acquire() as conn :
+        row =  await conn.fetchrow(
+            "SELECT * FROM draft_forms WHERE id = $1",id
+        )
+        return dict(row) if row else None
+        
+
+async def insert_new_draft(owner_id,id,name,version,questions) :
+    pool = get_pool()
+    async with pool.acquire() as conn :
+        row = await conn.fetchrow(
+            "INSERT INTO draft_forms(owner_id,id,name,version,questions) VALUES($1,$2,%3,$4,$5)",
+            owner_id,id,name,version,Json(questions)
+        )
+        return dict(row) if row else None

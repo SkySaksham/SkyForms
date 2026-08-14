@@ -14,7 +14,7 @@ from model.update_drafts import Update_Draft_Schema
 import db.startup as db
 from db.startup import connect_db
 from db.user import get_user_from_email, create_user
-from db.update_draft_forms import update_userdraft
+from db.update_draft_forms import update_draft,get_draft_from_id,insert_new_draft
 
 from contextlib import asynccontextmanager
 from uuid import UUID
@@ -117,9 +117,45 @@ async def logout(response: Response):
     return {"message": "Logged out"}
 
 
-
 @app.post("/updatedraft")
-async def update_draft(request :Update_Draft_Schema, http_request : Request) :
+async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
+
+    try :
+        access_token = http_request.cookies.get("access_token")
+        payload = verify_jwt(access_token)
+        owner_id = UUID(payload["sub"])
+    except Exception as e:
+        print (e)
+        raise HTTPException(status_code=401)
+    
+    if (owner_id != request.owner_id) :
+        print ("Client Doesnt Own the draft")
+        raise HTTPException(status_code=403)
+
+    current_draft = get_draft_from_id(request.id)
+    if (current_draft is None) :
+        try :
+            result = insert_new_draft(request.owner_id,request.id,request.name,request.version,request.questions)
+            if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
+            return {"status":"success"} | result
+        except Exception as e :
+            print (e)
+            raise HTTPException(status_code=500)
+
+    if (request.version <= current_draft.version) :
+        return {"status":"stale"} | current_draft
+
+    try :
+        result = update_draft(request.id,request.name,request.version,request.questions)
+        if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
+        return {"status":"success"} | result
+    except Exception as e :
+                print (e)
+                raise HTTPException(status_code=500)
+
+    
+
+    '''
     try :
         try :
             access_token = http_request.cookies.get("access_token")
@@ -157,6 +193,7 @@ async def update_draft(request :Update_Draft_Schema, http_request : Request) :
     except Exception as e :
          print (e)
          raise HTTPException(status_code=500)
+    '''
 
 
 @app.post("/userdata")
