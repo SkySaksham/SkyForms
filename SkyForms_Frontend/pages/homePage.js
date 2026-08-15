@@ -5,6 +5,7 @@ import { getProfileCard, getYourForms,
 import { navigate } from "../route.js";
 import { getLoader } from "../components/loader.js";
 import { logout } from "../api/logout.js";
+import { syncManager } from "../main.js";
 
 export function getHomePage(){
 
@@ -50,7 +51,10 @@ export function getHomePage(){
                 overlay.innerHTML=``;
                 getLoader("Loggin Out !!");
                 const res = await logout();
-                if (res) navigate("/");
+                if (res){
+                    navigate("/");
+                    syncManager.clearLocalCache();
+                }
                 else overlayClose();
                 return;
         }

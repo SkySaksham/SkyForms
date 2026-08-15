@@ -43,26 +43,22 @@ export class Draft {
         else throw new Error("Draft not found");
     }
 
+
+
     async accomodateStaleData(action){
         try{
             this.staleCount += ACTION_WEIGHT[action];
             if (this.staleCount>=THRESHOLD) {
-                this.updateLocally();
-                syncManager.updateDraftServer(this);
+                this.incrementVersion();
+                const res = await syncManager.updateDraftServer(this.draft.id);
+                if (!res) this.decrementVersion();
+                syncManager.cacheLocally();
             }
         }catch (e){
             console.log(e);
             alert("Syncing Error");
         }
     }
-
-    updateLocally(){
-        syncManager.cacheLocally();
-        this.staleCount = 0;
-    }
-
-
-    
 
     isValidQuestion(question) {
         return (
@@ -79,7 +75,9 @@ export class Draft {
     incrementVersion(){
         this.draft.version+=1;
     }
-
+    decrementVersion() {
+        this.draft.version -=1;
+    }
     get questions() {
         return this.draft.questions;
     }
