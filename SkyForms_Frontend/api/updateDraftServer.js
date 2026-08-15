@@ -13,7 +13,7 @@ export async function updateDraftServer(data){
 
     if (!res.ok) {
         console.log(res)
-        alert("Unable to Update Draft");
+        return null;
     }
 
     const data2 = await res.json();

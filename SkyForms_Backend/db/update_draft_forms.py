@@ -3,7 +3,7 @@ from uuid import UUID
 import json
 
 
-async def update_user_draft(id,name,version,questions):
+async def update_user_draft(id,name,version,questions,owner_id):
     POOL = get_pool()
     async with POOL.acquire() as conn :
         row = await conn.fetchrow(
@@ -12,9 +12,9 @@ async def update_user_draft(id,name,version,questions):
         SET name = $2,
             version = $3,
             questions = $4
-        WHERE id = $1
+        WHERE id = $1 AND owner_id = $5
         RETURNING *;
-        ''' ,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions])
+        ''' ,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions]),owner_id
         )
 
         return dict(row) if row else None

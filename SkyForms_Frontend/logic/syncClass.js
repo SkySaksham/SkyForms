@@ -1,6 +1,8 @@
 import {data} from "../store.js";
 import { userInfoSchema,dataSchema } from "../schema/dataSchema.js";
 import { updateDraftServer } from "../api/updateDraftServer.js";
+import { draftFormSchema } from "../schema/dataSchema.js";
+import { navigate } from "../route.js";
 export class Sync{
     constructor (id) {
         this.data = data;
@@ -34,19 +36,44 @@ export class Sync{
     }
 
     cacheLocally(){
-        console.log("updated !!")
-        localStorage.setItem(`SkyForms__${this.userId}`,JSON.stringify(this.data))
+        localStorage.setItem(`SkyForms__${this.userId}`,JSON.stringify(this.data));
+        console.log("updated Locally !!");
+    }
+
+    clearLocalCache() {
+        localStorage.removeItem(`SkyForms__${this.userId}`);
+        console.log("DELETED CACHE !!");
     }
     
-    async updateDraftServer(draft){
-        draft.incrementVersion();
-        let postBody = {"owner_id" :this.userId, ...draft.entireDraft}
-        console.log(postBody);
+    async updateDraftServer(draftID){
+        let postBody = {"owner_id" :this.userId, ...data.drafts[draftID]}
         let res = await updateDraftServer(postBody); 
+
+        if (!res) {
+            return false
+        }
         if (res.status === "success"){
             console.log("Successfully synced !!");
+            return true;
         }
-        else console.log("Stale Data !!");
+        else if (res.status==="stale") {
+            console.log(res);
+            delete res.owner_id;
+            res.questions=JSON.parse(res.questions);
+            const validate = draftFormSchema.safeParse(res);
+            if (validate.success) {
+                data.drafts[draftID] = validate.data;
+                alert("Stale Draft Form !! Synced With Latest Version !!")
+                // this.cacheLocally();
+                navigate(`\draft?draft=${draftID}`);
+                return true;
+            }
+            else {
+                console.log(validate.error);
+                return false;
+            }
+        }
+        
     }
     } 
 

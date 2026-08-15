@@ -22,10 +22,7 @@ from uuid import UUID
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
     await connect_db()
-        
-
     yield
     await db.POOL.close()
 
@@ -119,7 +116,6 @@ async def logout(response: Response):
 
 @app.post("/updatedraft")
 async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
-
     try :
         access_token = http_request.cookies.get("access_token")
         payload = verify_jwt(access_token)
@@ -146,54 +142,14 @@ async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
         return {"status":"stale"} | current_draft
 
     try :
-        result = await update_user_draft(request.id,request.name,request.version,request.questions)
+        result = await update_user_draft(request.id,request.name,request.version,request.questions,request.owner_id)
         if (result is None) : raise Exception("DATABASE COULDNT INSERT ROW !!")
         return {"status":"success"} | result
     except Exception as e :
                 print (e)
                 raise HTTPException(status_code=500)
 
-    
 
-    '''
-    try :
-        try :
-            access_token = http_request.cookies.get("access_token")
-            
-            payload = verify_jwt(access_token)
-            print (payload["sub"])
-            print (request.owner_id)
-            if (UUID(payload["sub"]) != request.owner_id) : raise Exception ("RESTRICTED ACCESS!! owner_id Doesnt match with jwt")
-            
-        except Exception as e :
-            print(e)
-            raise HTTPException(status_code=401,detail="Invalid/Expired access token")
-        
-        updated_row = await update_userdraft(request.owner_id,request.id,request.name,request.version,request.questions)
-        if updated_row is None:raise HTTPException(status_code=404,detail="Draft not found")
-        if (updated_row["owner_id"] != request.owner_id): raise HTTPException(status_code=401,detail = "You Dont Own The Data")
-        try:
-            validated = Update_Draft_Schema.model_validate(dict(updated_row))
-        except Exception as e:
-            print("VALIDATION ERROR:")
-            print(repr(e))
-            print("DATABASE ROW:")
-            print(dict(updated_row))
-
-            raise HTTPException(
-                status_code=500,
-                detail=str(e)
-            )
-        
-        if (validated.questions != request.questions) :
-              return {"status" : "Stale","row" : validated}
-
-        return {"status" : "Success", "row" : validated}
-
-    except Exception as e :
-         print (e)
-         raise HTTPException(status_code=500)
-    '''
 
 
 @app.post("/userdata")
