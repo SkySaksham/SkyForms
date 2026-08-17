@@ -3,6 +3,9 @@ import { userInfoSchema,dataSchema } from "../schema/dataSchema.js";
 import { updateDraftServer } from "../api/updateDraftServer.js";
 import { draftFormSchema } from "../schema/dataSchema.js";
 import { navigate } from "../route.js";
+import { getUserHomePageData } from "../api/getUserHomePageData.js";
+
+
 export class Sync{
     constructor (id) {
         this.data = data;
@@ -59,7 +62,7 @@ export class Sync{
         else if (res.status==="stale") {
             console.log(res);
             delete res.owner_id;
-            res.questions=JSON.parse(res.questions);
+            // res.questions=JSON.parse(res.questions);
             const validate = draftFormSchema.safeParse(res);
             if (validate.success) {
                 data.drafts[draftID] = validate.data;
@@ -74,6 +77,26 @@ export class Sync{
             }
         }
         
+    }
+
+
+
+    async fetchAppState(){
+        const response = await getUserHomePageData();
+
+        if (!response){
+            console.log(response);
+            alert ("Cant Reach Servers !!!");
+            navigate("/");
+        }
+        else {
+            for (const key in response["draft"]) {
+                this.data.drafts[key] = response["draft"][key]
+            }
+            console.log("drafts SYnced !!");
+            console.log("only syncing drafts rn");
+            console.log(this.data.drafts);
+        }
     }
     } 
 

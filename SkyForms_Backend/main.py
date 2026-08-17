@@ -157,7 +157,7 @@ async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
 
 
 @app.post("/userdata")
-async def userdata(response : Response):
+async def userdata(response :Request):
 
     try :
         access_token = response.cookies.get("access_token")

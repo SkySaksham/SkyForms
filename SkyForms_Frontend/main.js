@@ -1,7 +1,7 @@
 import { initRouter, navigate } from "./route.js";
 import { verifyAccessToken } from "./api/verifyJwt.js";
 import { Sync } from "./logic/syncClass.js";
-
+import { getUserHomePageData } from "./api/getUserHomePageData.js";
 const app = document.getElementById("app");
 
 initRouter();
@@ -19,10 +19,11 @@ async function start_up(params) {
     }
 
     try {
-        syncManager.repopulateMemoryFromLocal();
+        await syncManager.repopulateMemoryFromLocal();
         navigate("/home");
     } catch (e) {
         console.log(e);
+        await syncManager.fetchAppState()
         navigate("/home");
     }  
 }
