@@ -14,7 +14,7 @@ async def update_user_draft(id,name,version,questions,owner_id):
             questions = $4
         WHERE id = $1 AND owner_id = $5
         RETURNING *;
-        ''' ,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions]),owner_id
+        ''' ,id,name,version,[q.model_dump(mode="json") for q in questions],owner_id
         )
 
         return dict(row) if row else None

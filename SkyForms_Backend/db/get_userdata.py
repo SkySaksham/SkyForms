@@ -26,12 +26,16 @@ async def get_userdata(id : UUID) :
     draft = await get_draft_forms(id)
     publish = await get_publish_forms(id)
 
-    print (draft)
-    print (publish)
+    #print (draft)
+    #print (publish)
 
     res = {"draft" : {}, "publish" : {}}
-    if (draft) : res["draft"] = draft
-    if (publish) : res["publish"] = publish
+    if (draft) :
+          for i in draft :
+                res["draft"][i['id']] = i
+    if (publish) : 
+          for j in publish :
+                res["publish"][j['id']] = j
 
     return res
 

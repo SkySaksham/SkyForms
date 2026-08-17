@@ -4,17 +4,17 @@ Filled WIth TEst DATa During Development !!
 
 */
 import { dataSchema } from "./schema/dataSchema.js";
-/*
+
 export let data = {
     userInfo : {},
-    yourForms : {},
-    drafts : [],
+    yourForms : [],
+    drafts : {},
     
 
 }
-*/
- 
 
+ 
+/*
 export let data = {
     userInfo : {
         id: "550e8460-e29b-41d4-a716-446655440900",
@@ -75,6 +75,8 @@ export let data = {
         }
     }
 }
+
+*/
 
 export function getDraftsMetaData(){
     const meta = [];
