@@ -11,10 +11,10 @@ from model.llm_response import llm_form_request
 from model.google_id_token import GoogleIdToken
 from model.update_drafts import Update_Draft_Schema
 
-import db.startup as db
-from db.startup import connect_db
+from db.startup import connect_db,get_pool
 from db.user import get_user_from_email, create_user
 from db.update_draft_forms import update_user_draft,get_draft_from_id,insert_new_draft
+from db.get_userdata import get_userdata
 
 from contextlib import asynccontextmanager
 from uuid import UUID
@@ -23,8 +23,11 @@ from uuid import UUID
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_db()
+    
+
     yield
-    await db.POOL.close()
+    POOL = get_pool()
+    await POOL.close()
 
 app = FastAPI(lifespan=lifespan)
 
@@ -42,8 +45,9 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    if (db.POOL) :
-        return {"message": "App Running !!","idle conn":db.POOL.get_idle_size()}
+    POOL = get_pool()
+    if (POOL) :
+        return {"message": "App Running !!","idle conn":POOL.get_idle_size()}
     raise HTTPException(status_code=500, detail="APP's Not Up Well !!")
 
 @app.post("/llm_form")
@@ -154,12 +158,22 @@ async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
 
 @app.post("/userdata")
 async def userdata(response : Response):
+    '''
     try :
-          access_token = response.cookies.get("access_token")
-          verify_access_token(access_token)
+        access_token = response.cookies.get("access_token")
+        payload = verify_jwt(access_token)
+        owner_id = UUID(payload["sub"])
     except Exception as e :
-          print(e)
-          raise HTTPException(status_code=401,detail="Invalid/Expired access token")
+        print(e)
+        raise HTTPException(status_code=401)
+    '''
+
+    data = get_userdata()
+    print(data)
+
+    return data
+
+    
 
     # yet to complete
 
