@@ -158,7 +158,7 @@ async def update_draft( request: Update_Draft_Schema ,http_request : Request) :
 
 @app.post("/userdata")
 async def userdata(response : Response):
-    '''
+
     try :
         access_token = response.cookies.get("access_token")
         payload = verify_jwt(access_token)
@@ -166,9 +166,9 @@ async def userdata(response : Response):
     except Exception as e :
         print(e)
         raise HTTPException(status_code=401)
-    '''
-
-    data = get_userdata()
+    
+    
+    data =await get_userdata(owner_id)
     print(data)
 
     return data
