@@ -98,6 +98,17 @@ export class Sync{
             console.log(this.data.drafts);
         }
     }
+
+    syncUserInfo(data){
+        let a = userInfoSchema.safeParse(data);
+        if (a.success) {
+            this.data.userInfo = a.data;
+            console.log(this.data.userInfo);
+            return true;
+        }
+        console.error(result.error);
+        return false;
+    }
     } 
 
 

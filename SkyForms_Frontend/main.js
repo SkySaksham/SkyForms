@@ -6,12 +6,14 @@ const app = document.getElementById("app");
 
 initRouter();
 export let syncManager = null;
-
+export function setSyncManager(id) {
+    syncManager = new Sync(id);
+}
 
 async function start_up(params) {
     try {
     const id = await verifyAccessToken();
-    syncManager = new Sync(id);
+    setSyncManager(id)
     }catch (e){
         console.log(e);
         navigate("/");

@@ -1,3 +1,7 @@
+import { syncManager,setSyncManager } from "../main.js";
+import { Sync } from "../logic/syncClass.js";
+import { navigate } from "../route.js";
+
 class GoogleAuth {
   constructor(clientId) {
     google.accounts.id.initialize({
@@ -34,7 +38,16 @@ class GoogleAuth {
         throw new Error(`HTTP ${res.status}`);
       } 
       const data = await res.json();
-      console.log(data);
+      
+      setSyncManager(data.userInfo.id);
+      let res2 =  syncManager.syncUserInfo(data["userInfo"]);
+      if (!res2){
+          alert("Couldnt Fetch UserInfo!!");
+          return;
+      }
+      await navigate("\home");
+      await syncManager.fetchAppState();
+      
   }
 }
 
