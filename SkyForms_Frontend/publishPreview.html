@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id = "head-title">SkyForms</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/navBar.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+</head>
+<body>
+<div id = "publish_form">
+    <div id = "navBar"></div>
+    
+<div>
+    <label for="date">Date:</label>
+    <input type="date" id="date">
+</div>
+</div>
+</body>
+<script type="module" >
+import { getNavbar } from "./components/navBar.js";
+const navBar = document.querySelector("#navBar");
+navBar.appendChild(getNavbar({middle:"hiii"}));
+
+
+</script>
+
+
+
+
+<style>
+
+
+body {
+    margin: 0;
+    background: rgb(230,230,230);
+    font: 400 16px Georgia, "Times New Roman", Times, serif;
+}
+
+</style>
+
+</html>

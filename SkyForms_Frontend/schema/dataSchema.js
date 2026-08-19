@@ -16,7 +16,7 @@ export const questionSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   description: z.string().nullable(),
-  type: z.enum(["short", "paragraph"]),
+  type: z.enum(["short", "paragraph","date","checkbox"]),
   required: z.boolean(),
 });
 
