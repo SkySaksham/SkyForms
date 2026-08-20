@@ -125,14 +125,13 @@ export function renderEditor(container,questions) {
     container.appendChild(fragment);
 }
 
-export function getBottomBar() {
+export function getBottomBar(left="Edit Name",right="Next") {
     const bar = getDiv("bottomBar");
-
-    const editName = getButton("Edit Name", "editNameBtn");
-    const next = getButton("Next", "nextBtn");
-
-    bar.append(editName, next);
-
+    // left Button Id is This --> editNameBtn
+    const leftbtn = getButton(left, "editNameBtn");
+    // right Button Id is This --> nextBtn
+    const rightbtn = getButton(right, "nextBtn");
+    bar.append(leftbtn, rightbtn);
     return bar;
 }
 
