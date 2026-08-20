@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id = "head-title">SkyForms</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/navBar.css">
+    <link rel="stylesheet" href="./style/editor.css">
+
+    
+    
+</head>
+<body>
+<div class = "PublishPage">
+    <div id="overlay"> </div>
+    <div id = "navBar"></div>
+    <div id = "PublishContainer" class = "PublishContainer">
+        <div class = "topLabel"> <div style="margin:auto">Review The Form Before Publishing </div></div>
+        <div class="Publish-question">
+
+            <div class="Publish-questionNumber">
+                Question 1
+            </div>
+
+            <div class="Publish-questionArea">
+
+                <div class="Publish-questionTitle">
+                    What is your full name?
+                    <span class="Publish-required">*</span>
+                </div>
+
+                <input
+                    class="Publish-questionInput"
+                    type="text"
+                    placeholder="Your answer"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="Publish-question">
+
+            <div class="Publish-questionNumber">
+                Question 2
+            </div>
+
+            <div class="Publish-questionArea">
+
+                <div class="Publish-questionTitle">
+                    Tell us about yourself
+                </div>
+
+                <textarea
+                    class="Publish-questionInput"
+                    rows="5"
+                    placeholder="Your answer"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="Publish-question">
+
+            <div class="Publish-questionNumber">
+                Question 3
+            </div>
+
+            <div class="Publish-questionArea">
+
+                <div class="Publish-questionTitle">
+                    What is your date of birth?
+                    <span class="Publish-required">*</span>
+                </div>
+
+                <input
+                    class="Publish-questionInput"
+                    type="date"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="Publish-question">
+
+            <div class="Publish-questionNumber">
+                Question 4
+            </div>
+
+            <div class="Publish-questionArea">
+
+                <div class="Publish-questionTitle">
+                    I agree to the terms and conditions
+                    <span class="Publish-required">*</span>
+                </div>
+
+                <input
+                    class="Publish-questionCheckbox"
+                    type="checkbox"
+                >
+
+            </div>
+
+        </div>
+                
+                
+    </div>
+    
+    <div id = "bottomBar"></div>
+
+</div>
+</body>
+<script type="module" >
+import { getNavbar } from "./components/navBar.js";
+const navBar = document.querySelector("#navBar");
+navBar.appendChild(getNavbar({middle:"PUBLISH FORM"}));
+
+import {getBottomBar} from "./components/editor.js";
+const bottomBar = document.querySelector("#bottomBar");
+bottomBar.appendChild(getBottomBar("Back","Publish"));
+
+</script>
+
+
+
+
+<style>
+
+
+body {
+    margin: 0;
+    background: rgb(230,230,230);
+    font: 400 16px Georgia, "Times New Roman", Times, serif;
+}
+
+.PublishContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px;
+    box-sizing: border-box;
+    background: white;
+}
+
+.PublishPage {
+    padding-top: 15vh;
+    padding-bottom: 80px;
+}
+
+.topLabel{
+    background : rgb(255, 240, 240);
+    min-height: 5vh;
+    border-radius: 8px;
+    font-weight: 300;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: flex;
+    text-align: center;
+}
+
+.Publish-question {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border-top: 1px solid rgb(220, 220, 220);
+    box-sizing: border-box;
+}
+
+.Publish-questionNumber {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(100, 100, 100);
+}
+
+.Publish-questionArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.Publish-questionTitle {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.Publish-required {
+    color: red;
+    margin-left: 4px;
+}
+
+.Publish-questionDescription {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(100, 100, 100);
+}
+
+.Publish-questionInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 5px;
+    font: inherit;
+}
+
+textarea.Publish-questionInput {
+    resize: vertical;
+}
+
+.Publish-questionCheckbox {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: rgb(80, 80, 80);
+}
+
+
+</style>
+
+</html>
