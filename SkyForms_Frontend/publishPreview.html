@@ -15,101 +15,7 @@
 <div class = "PublishPage">
     <div id="overlay"> </div>
     <div id = "navBar"></div>
-    <div id = "PublishContainer" class = "PublishContainer">
-        <div class = "topLabel"> <div style="margin:auto">Review The Form Before Publishing </div></div>
-        <div class="Publish-question">
-
-            <div class="Publish-questionNumber">
-                Question 1
-            </div>
-
-            <div class="Publish-questionArea">
-
-                <div class="Publish-questionTitle">
-                    What is your full name?
-                    <span class="Publish-required">*</span>
-                </div>
-
-                <input
-                    class="Publish-questionInput"
-                    type="text"
-                    placeholder="Your answer"
-                >
-
-            </div>
-
-        </div>
-
-
-        <div class="Publish-question">
-
-            <div class="Publish-questionNumber">
-                Question 2
-            </div>
-
-            <div class="Publish-questionArea">
-
-                <div class="Publish-questionTitle">
-                    Tell us about yourself
-                </div>
-
-                <textarea
-                    class="Publish-questionInput"
-                    rows="5"
-                    placeholder="Your answer"
-                ></textarea>
-
-            </div>
-
-        </div>
-
-
-        <div class="Publish-question">
-
-            <div class="Publish-questionNumber">
-                Question 3
-            </div>
-
-            <div class="Publish-questionArea">
-
-                <div class="Publish-questionTitle">
-                    What is your date of birth?
-                    <span class="Publish-required">*</span>
-                </div>
-
-                <input
-                    class="Publish-questionInput"
-                    type="date"
-                >
-
-            </div>
-
-        </div>
-
-
-        <div class="Publish-question">
-
-            <div class="Publish-questionNumber">
-                Question 4
-            </div>
-
-            <div class="Publish-questionArea">
-
-                <div class="Publish-questionTitle">
-                    I agree to the terms and conditions
-                    <span class="Publish-required">*</span>
-                </div>
-
-                <input
-                    class="Publish-questionCheckbox"
-                    type="checkbox"
-                >
-
-            </div>
-
-        </div>
-                
-                
+    <div id = "PublishContainer">
     </div>
     
     <div id = "bottomBar"></div>
@@ -124,6 +30,65 @@ navBar.appendChild(getNavbar({middle:"PUBLISH FORM"}));
 import {getBottomBar} from "./components/editor.js";
 const bottomBar = document.querySelector("#bottomBar");
 bottomBar.appendChild(getBottomBar("Back","Publish"));
+
+import {getPublishContainer} from "./previewPublish.js";
+const pp = document.querySelector("#PublishContainer");
+
+const dummyData = [
+    {
+        id: "7f3a9c21-5d84-4e67-a912-3b8f6c2d1e45",
+        title: "What is your full name?",
+        description: "Please enter your first and last name.",
+        type: "short",
+        required: true,
+    },
+    {
+        id: "b2e8d741-9f35-4a16-c728-5d3b0e91f624",
+        title: "What is your email address?",
+        description: "We'll use this to contact you.",
+        type: "short",
+        required: false,
+    },
+    {
+        id: "c6a1f839-2b47-4d05-e913-8f6c7a2e5140",
+        title: "Tell us about yourself.",
+        description: "A brief introduction is enough.",
+        type: "paragraph",
+        required: false,
+    },
+    {
+        id: "e4d7b192-6c53-48af-a821-9b0f3d75c624",
+        title: "Why are you interested in joining us?",
+        description: "Tell us what motivated you to apply.",
+        type: "paragraph",
+        required: true,
+    },
+    {
+        id: "a9c5e318-7f62-4b04-d836-2e1a9c57f840",
+        title: "What is your date of birth?",
+        description: "Please enter your date of birth.",
+        type: "date",
+        required: true,
+    },
+    {
+        id: "d8b2f461-3e97-4c15-a829-6f0d5b73e214",
+        title: "I agree to the terms and conditions.",
+        description: "You must agree before submitting this form.",
+        type: "checkbox",
+        required: true,
+    },
+    {
+        id: "f3c7a915-8d24-4b61-e530-2a9f6c18d742",
+        title: "I would like to receive updates by email.",
+        description: "You can unsubscribe at any time.",
+        type: "checkbox",
+        required: false,
+    },
+];
+
+
+pp.appendChild(getPublishContainer(dummyData));
+
 
 </script>
 
