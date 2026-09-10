@@ -9,7 +9,6 @@ export let data = {
     userInfo : {},
     yourForms : [],
     drafts : {},
-    
 
 }
 
