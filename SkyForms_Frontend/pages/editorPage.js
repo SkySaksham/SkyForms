@@ -121,7 +121,7 @@ export function getEditorPage(){
         if (target){
             switch (target.id) {
                 case "lNavBtn":
-                    history.back();
+                    navigate("\home");
                     break;
                 
                 case "rNavBtn":

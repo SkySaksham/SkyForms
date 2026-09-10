@@ -1,6 +1,6 @@
 import { getBottomBar} from "../components/editor.js";
 import { getNavbar } from "../components/navBar.js";
-import { getPublishContainer } from "../components/previewPublish.js";
+import { getPublishContainer,getPublishingFormOverlay } from "../components/previewPublish.js";
 import { getLoader } from "../components/loader.js";
 import { data } from "../store.js";
 import { Draft } from "../logic/draftClass.js";
@@ -11,7 +11,7 @@ export function getPublishPage(){
     const page = document.createElement("div");
     page.className = "PublishPage";
     page.innerHTML = `
-            <div id="overlay"> </div>
+            <div id="overlay" class = "overlay"> </div>
             <div id = "navBar"></div>
             <div id = "PublishContainer"></div>
             <div id = "bottomBar"></div>
@@ -19,12 +19,32 @@ export function getPublishPage(){
     const navbar = page.querySelector("#navBar");
     const pConatiner = page.querySelector("#PublishContainer");
     const btmBar = page.querySelector("#bottomBar");
+    const overlay = page.querySelector("#overlay");
     let draftId = null;
 
+    function openPublishOverlay(){
+        overlay.classList.add("show");
+        overlay.appendChild(getPublishingFormOverlay());
+    }
+
+    function closeOverlay(){
+        overlay.classList.remove("show");
+        overlay.innerHTML = "";
+    }
+
     async function publishActivity(e){
+            const target = e.target.closest("[id]");
+            if (target) {
+                switch (target.id) {
+                    case ("publishCancel") :
+                        closeOverlay();
+                        break;
+                break;
+                }
+            }
             switch (true) {
                 case e.target.classList.contains("nextBtn") :
-                       console.log("button Clicked");
+                        openPublishOverlay();
                         break;
     
                 case e.target.classList.contains("editNameBtn"):
