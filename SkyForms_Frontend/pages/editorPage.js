@@ -17,7 +17,7 @@ export function getEditorPage(){
     `
 
 
-    
+    let draftId = null;
     const container = page.querySelector("#Qcontainer"); 
     const nav = page.querySelector("#nav");
     const overlay = page.querySelector("#overlay");
@@ -165,6 +165,7 @@ export function getEditorPage(){
                         
                     }
                     break;
+                
 
             }
         }
@@ -186,6 +187,9 @@ export function getEditorPage(){
             case e.target.classList.contains("editNameBtn"):
                 openNameEditor();
                 break;
+            case e.target.classList.contains("nextBtn") :
+                    navigate(`\publish?draft=${draftId}`);
+                    break;
         break;
         }
 
@@ -220,7 +224,7 @@ export function getEditorPage(){
         if (sortable) return;
 
         const params = new URLSearchParams(location.search);
-        let draftId = params.get("draft");
+        draftId = params.get("draft");
         if (draftId) {
                 try{
                     draft = new Draft(draftId);

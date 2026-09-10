@@ -1,11 +1,13 @@
 import { getLandingPage } from "./pages/landingPage.js"
 import { getEditorPage } from "./pages/editorPage.js";
 import { getHomePage } from "./pages/homePage.js";
+import { getPublishPage } from "./pages/publishPage.js";
 
 const routes = {
     "/" : getLandingPage,
     "/home" : getHomePage,
     "/draft" : getEditorPage,
+    "/publish" : getPublishPage,
 }
 
 const app = document.querySelector("#app");

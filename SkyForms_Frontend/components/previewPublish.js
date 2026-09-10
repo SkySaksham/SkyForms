@@ -5,7 +5,8 @@ function getPublishQ(Qno,id,Question,description,Type,Required=false){
     div.innerHTML = `
             <div class="Publish-questionNumber"> </div>
             <div class="Publish-questionArea">
-                <div class="Publish-questionTitle"></div>
+                <div class="Publish-questionTitle">
+                </div>
             </div>
     `
     const questionNumber = div.querySelector(".Publish-questionNumber");
@@ -82,6 +83,7 @@ function getPublishQ(Qno,id,Question,description,Type,Required=false){
 export function getPublishContainer(QuestionArray) {
     const div = document.createElement("div");
     div.className = "PublishContainer";
+    div.innerHTML = '<div class = "topLabel"> <div style="margin:auto">Review The Form Before Publishing </div></div>';
 
     for (let i =0 ; i<QuestionArray.length ; i++) {
         div.appendChild(getPublishQ(
