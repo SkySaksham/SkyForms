@@ -1,6 +1,6 @@
 import {data} from "../store.js";
 import { userInfoSchema,dataSchema } from "../schema/dataSchema.js";
-import { updateDraftServer } from "../api/updateDraftServer.js";
+import { updateDraftServer,submitDraftServer } from "../api/updateDraftServer.js";
 import { draftFormSchema } from "../schema/dataSchema.js";
 import { navigate } from "../route.js";
 import { getUserHomePageData } from "../api/getUserHomePageData.js";
@@ -109,6 +109,85 @@ export class Sync{
         console.error(result.error);
         return false;
     }
+
+
+   async submitDraft(draftID) {
+    let postBody = {
+        owner_id: this.userId,
+        ...data.drafts[draftID]
+    };
+
+    let res = await submitDraftServer(postBody);
+
+    if (!res) {
+        return false;
+    }
+
+    if (res.status === "latest") {
+        console.log("Successfully submitted !!");
+
+        const submittedDraft = data.drafts[draftID];
+
+        delete data.drafts[draftID];
+
+        data.yourForms.push({
+            id: submittedDraft.id,
+            name: submittedDraft.name,
+            status: "submitted"
+        });
+
+        this.cacheLocally();
+
+        return true;
+    }
+
+    else if (res.status === "stale") {
+        console.log("Local form is stale");
+        console.log(res);
+
+        delete res.owner_id;
+
+        const validate = draftFormSchema.safeParse(res);
+
+        if (validate.success) {
+            data.drafts[draftID] = validate.data;
+
+            alert("Updated Form Found !! Synced With Latest Version !!");
+            navigate(`\\draft?draft=${draftID}`);
+
+            return true;
+        }
+        else {
+            console.log(validate.error);
+            return false;
+        }
+    }
+
+    else if (res.status === "stale_publish") {
+        console.log("Form was already published elsewhere");
+
+        const submittedDraft = data.drafts[draftID];
+
+        delete data.drafts[draftID];
+
+        data.yourForms.push({
+            id: submittedDraft.id,
+            name: submittedDraft.name,
+            status: "submitted"
+        });
+
+        this.cacheLocally();
+
+        alert("This form was already published from another device.");
+
+        navigate("/home");
+
+        return true;
+    }
+
+    return false;
+}
+
     } 
 
 

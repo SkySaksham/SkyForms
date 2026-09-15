@@ -93,3 +93,35 @@ export function getPublishContainer(QuestionArray) {
 
     return div;
 }
+
+export function getPublishingFormOverlay() {
+    const div = document.createElement("div");
+
+    div.innerHTML = `
+        <div class="Publish-confirmation">
+            <div class="Publish-confirmationTitle">
+                Do you want to publish?
+            </div>
+
+            <div class="Publish-confirmationActions">
+                <button
+                    type="button"
+                    class="Publish-confirmationCancel"
+                    id="publishCancel"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="Publish-confirmationSubmit"
+                    id="publishSubmit"
+                >
+                    Publish
+                </button>
+            </div>
+        </div>
+    `;
+
+    return div;
+}
