@@ -180,7 +180,7 @@ export class Sync{
 
         alert("This form was already published from another device.");
 
-        navigate("/");
+        navigate("/home");
 
         return true;
     }
