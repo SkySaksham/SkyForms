@@ -1,24 +1,22 @@
 from db.startup import get_pool
-from uuid import UUID
-import json
 import asyncpg
 
 
 async def submit_draft_form(owner_id, id, name, data):
-    POOL = get_pool()
+    pool = get_pool()
 
-    async with POOL.acquire() as conn:
+    async with pool.acquire() as conn:
         try:
             row = await conn.fetchrow(
                 """
                 INSERT INTO publish_form(owner_id, id, name, data)
                 VALUES($1, $2, $3, $4)
-                RETURNING *
+                RETURNING *;
                 """,
                 owner_id,
                 id,
                 name,
-                json.dumps([q.model_dump(mode="json") for q in data])
+                [q.model_dump(mode="json") for q in data]
             )
 
             return dict(row) if row else None
