@@ -121,7 +121,7 @@ export function getEditorPage(){
         if (target){
             switch (target.id) {
                 case "lNavBtn":
-                    navigate("\home");
+                    navigate("/home");
                     break;
                 
                 case "rNavBtn":
@@ -188,7 +188,7 @@ export function getEditorPage(){
                 openNameEditor();
                 break;
             case e.target.classList.contains("nextBtn") :
-                    navigate(`\publish?draft=${draftId}`);
+                    navigate(`/publish?draft=${draftId}`);
                     break;
         break;
         }

@@ -1,0 +1,20 @@
+{
+  "name": "skyforms_frontend",
+  "version": "1.0.0",
+  "description": "> **A Modern Vanilla JavaScript Single Page Application (SPA) for intelligent form creation and distribution**",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5500 --strictPort",
+    "build": "vite",
+    "preview": "vite preview"
+  },
+
+  
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}
