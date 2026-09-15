@@ -5,7 +5,7 @@ import { getLoader } from "../components/loader.js";
 import { data } from "../store.js";
 import { Draft } from "../logic/draftClass.js";
 import { navigate } from "../route.js";
-
+import { syncManager } from "../main.js";
 
 export function getPublishPage(){
     const page = document.createElement("div");
@@ -32,12 +32,25 @@ export function getPublishPage(){
         overlay.innerHTML = "";
     }
 
+    async function publishForm(){
+        overlay.replaceChildren(getLoader());
+        let res = await syncManager.submitDraft(draftId);
+        if (res){
+            alert("Form SuccessFully Created !!")
+        }
+        navigate("\home");
+    }
+
     async function publishActivity(e){
             const target = e.target.closest("[id]");
             if (target) {
                 switch (target.id) {
                     case ("publishCancel") :
                         closeOverlay();
+                        break;
+
+                    case ("publishSubmit") :
+                        publishForm();
                         break;
                 break;
                 }

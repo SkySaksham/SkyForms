@@ -21,11 +21,8 @@ export let data = {
         email: "skysaksham2@gmail.com"
     },
 
-    yourForms : [{
-        name : "Resigstration",
-        id : "500e8460-e29b-49d4-a716-446655440900",
-        status : true
-    }],
+    yourForms : {
+    },
 
 
     drafts : { 

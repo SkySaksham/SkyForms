@@ -37,3 +37,18 @@ async def insert_new_draft(owner_id,id,name,version,questions) :
             owner_id,id,name,version,json.dumps([q.model_dump(mode="json") for q in questions])
         )
         return dict(row) if row else None
+
+async def delete_draft(id: UUID, owner_id: UUID):
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            """
+            DELETE FROM draft_forms
+            WHERE id = $1 AND owner_id = $2
+            RETURNING *;
+            """,
+            id,
+            owner_id
+        )
+
+        return dict(row) if row else None   

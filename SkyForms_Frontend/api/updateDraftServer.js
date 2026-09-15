@@ -19,3 +19,22 @@ export async function updateDraftServer(data){
     const data2 = await res.json();
     return data2;
 }
+
+export async function submitDraftServer(data) {
+    const res = await fetch(`${DEV_URL}submit_form`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+        console.log(res);
+        return null;
+    }
+
+    const data2 = await res.json();
+    return data2;
+}

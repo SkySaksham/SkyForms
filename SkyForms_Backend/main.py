@@ -13,9 +13,9 @@ from model.update_drafts import Update_Draft_Schema
 
 from db.startup import connect_db,get_pool
 from db.user import get_user_from_email, create_user
-from db.update_draft_forms import update_user_draft,get_draft_from_id,insert_new_draft
+from db.update_draft_forms import update_user_draft,get_draft_from_id,insert_new_draft,delete_draft
 from db.get_userdata import get_userdata
-
+from db.submit_draft import submit_draft_form
 from contextlib import asynccontextmanager
 from uuid import UUID
 
@@ -178,7 +178,61 @@ async def userdata(response :Request):
     # yet to complete
 
 
+@app.post("/submit_form")
+async def submit_form(request: Update_Draft_Schema, http_request: Request):
+    try:
+        access_token = http_request.cookies.get("access_token")
 
+        if access_token is None:
+            raise HTTPException(status_code=401)
 
-    
+        payload = verify_jwt(access_token)
+
+        if payload is None:
+            raise HTTPException(status_code=401)
+
+        owner_id = UUID(payload["sub"])
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=401)
+
+    if owner_id != request.owner_id:
+        raise HTTPException(status_code=403)
+
+    current_draft = await get_draft_from_id(request.id)
+
+    if current_draft is not None and request.version != current_draft["version"]:
+        return {"status": "stale"} | current_draft
+
+    try:
+        update_res = await submit_draft_form(
+            request.owner_id,
+            request.id,
+            request.name,
+            request.questions
+        )
+
+        if update_res == "duplicate":
+            return {"status": "stale_publish"}
+
+        if update_res is None:
+            raise Exception("DATABASE DIDNT RETURN ROW")
+
+        if current_draft is not None:
+            delete_res = await delete_draft(
+                request.id,
+                request.owner_id
+            )
+
+            if delete_res is None:
+                raise Exception("DRAFT COULD NOT BE DELETED")
+
+        return {"status": "latest"} | update_res
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500)   
         
