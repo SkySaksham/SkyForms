@@ -9,7 +9,7 @@ export const userInfoSchema = z.object({
 export const formSchema = z.object({
   name: z.string(),
   id: z.string().uuid(),
-  status: z.boolean(),
+  active: z.boolean(),
 });
 
 export const questionSchema = z.object({

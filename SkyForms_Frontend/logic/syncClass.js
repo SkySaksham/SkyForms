@@ -93,8 +93,14 @@ export class Sync{
             for (const key in response["draft"]) {
                 this.data.drafts[key] = response["draft"][key]
             }
+
+            if (response["publish"]){
+                this.data.yourForms = response["publish"];
+            }
+            
             console.log("drafts SYnced !!");
             console.log("only syncing drafts rn");
+            console.log(this.data.yourForms);
             console.log(this.data.drafts);
         }
     }
@@ -130,11 +136,7 @@ export class Sync{
 
         delete data.drafts[draftID];
 
-        data.yourForms.push({
-            id: submittedDraft.id,
-            name: submittedDraft.name,
-            status: "submitted"
-        });
+        data.yourForms.push(res);
 
         this.cacheLocally();
 
@@ -169,12 +171,8 @@ export class Sync{
         const submittedDraft = data.drafts[draftID];
 
         delete data.drafts[draftID];
-
-        data.yourForms.push({
-            id: submittedDraft.id,
-            name: submittedDraft.name,
-            status: "submitted"
-        });
+        delete res.status;
+        data.yourForms.push(res);
 
         this.cacheLocally();
 

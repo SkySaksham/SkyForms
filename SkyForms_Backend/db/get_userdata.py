@@ -1,43 +1,52 @@
 from db.startup import get_pool
 from uuid import UUID
 
-async def get_draft_forms(id :UUID) :
-        POOL = get_pool()
-        async with POOL.acquire() as conn :
-            rows = await conn.fetch(
-                "SELECT * FROM draft_forms WHERE owner_id = $1",id
-            )
-            if rows == [] : return None
-            return (rows)
 
-async def get_publish_forms(id :UUID) :
-            POOL = get_pool()
-            async with POOL.acquire() as conn :
-                rows = await conn.fetch(
-                    "SELECT * FROM publish_form WHERE owner_id = $1",id
-                )
-                if rows == [] : return None
-                return (rows)
-     
+async def get_draft_forms(id: UUID):
+    POOL = get_pool()
+
+    async with POOL.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT * FROM draft_forms WHERE owner_id = $1",
+            id
+        )
+
+        if not rows:
+            return None
+
+        return [dict(row) for row in rows]
 
 
+async def get_publish_forms(id: UUID):
+    POOL = get_pool()
 
-async def get_userdata(id : UUID) :
+    async with POOL.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT * FROM publish_form WHERE owner_id = $1",
+            id
+        )
+
+        if not rows:
+            return None
+
+        return [dict(row) for row in rows]
+
+
+async def get_userdata(id: UUID):
     draft = await get_draft_forms(id)
     publish = await get_publish_forms(id)
 
-    #print (draft)
-    #print (publish)
+    res = {
+        "draft": {},
+        "publish": []
+    }
 
-    res = {"draft" : {}, "publish" : {}}
-    if (draft) :
-          for i in draft :
-                res["draft"][i['id']] = i
-    if (publish) : 
-          for j in publish :
-                res["publish"][j['id']] = j
+    if draft:
+        for i in draft:
+            res["draft"][str(i["id"])] = i
+
+    if publish:
+        for j in publish:
+            res["publish"].append(j)
 
     return res
-
-    
-

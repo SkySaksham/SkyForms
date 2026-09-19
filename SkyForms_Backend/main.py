@@ -177,8 +177,6 @@ async def userdata(response :Request):
 
     
 
-    # yet to complete
-
 
 @app.post("/submit_form")
 async def submit_form(request: Update_Draft_Schema, http_request: Request):

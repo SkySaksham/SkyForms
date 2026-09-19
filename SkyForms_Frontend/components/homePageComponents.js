@@ -108,7 +108,7 @@ export function getYourForms(data=[]){
         `
         elmt.append(dd);
     }else {
-        for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name,i.status));
+        for (let i of data) formContainer.appendChild(getFormCard(i.id,i.name,i.active));
         elmt.appendChild(formContainer);
     }
         
