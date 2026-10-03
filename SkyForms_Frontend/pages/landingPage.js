@@ -18,16 +18,16 @@ export function getLandingPage(){
     <div id = "Subtitle" class="Lsubhead"></div>
 
     <div class="Lshowcase">
-        <div class="Lcard Lside Lleft">
-            <img src="https://picsum.photos/600/338?random=1" alt="Demo">
+        <div class="Lcard" data-position="left">
+            <img src="/assets/1.png" alt="Build forms in seconds">
         </div>
 
-        <div class="Lcard Lcenter">
-            <img src="https://picsum.photos/600/338?random=2" alt="Demo">
+        <div class="Lcard" data-position="center">
+            <img src="/assets/2.png" alt="Preview your forms easily">
         </div>
 
-        <div class="Lcard Lside Lright">
-            <img src="https://picsum.photos/600/338?random=3" alt="Demo">
+        <div class="Lcard" data-position="right">
+            <img src="/assets/3.png" alt="Manage all your forms">
         </div>
     </div>
 
@@ -131,6 +131,18 @@ function landingEventListener(e){
     }
 }
 
+const cards = page.querySelectorAll(".Lcard");
+const positions = ["left", "center", "right"];
+let rotationInterval = null;
+
+function rotateCards() {
+    cards.forEach(card => {
+        const current = card.dataset.position;
+        const idx = positions.indexOf(current);
+        card.dataset.position = positions[(idx + 1) % 3];
+    });
+}
+
 function init() {
     if (typingTimeout) return;
     googleAuth.renderButton("google-signin-btn");
@@ -141,12 +153,15 @@ function init() {
 
     typeSentence();
     addEventListener("click",landingEventListener)
+    rotationInterval = setInterval(rotateCards, 5000);
     
 }
 
 function destroy() {
     clearTimeout(typingTimeout);
     typingTimeout = null;
+    clearInterval(rotationInterval);
+    rotationInterval = null;
     removeEventListener("click",landingEventListener)
 }
 

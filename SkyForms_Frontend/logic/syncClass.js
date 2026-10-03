@@ -39,6 +39,7 @@ export class Sync{
     }
 
     cacheLocally(){
+        console.log (this.data);
         localStorage.setItem(`SkyForms__${this.userId}`,JSON.stringify(this.data));
         console.log("updated Locally !!");
     }
