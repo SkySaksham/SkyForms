@@ -164,11 +164,6 @@ export class Draft {
                 name: "Untitled",
                 questions: []
             };
-
-            data.draftForms.push({
-                id,
-                name: "Untitled"
-            });
         }
 
     data.drafts[id].questions = questions;

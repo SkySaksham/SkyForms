@@ -45,6 +45,7 @@ class GoogleAuth {
           alert("Couldnt Fetch UserInfo!!");
           return;
       }
+      syncManager.cacheLocally();
       await navigate("\home");
       await syncManager.fetchAppState();
       

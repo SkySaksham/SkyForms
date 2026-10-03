@@ -1,9 +1,10 @@
-from pydantic import BaseModel,Field
-from typing import List,Literal
-
+from typing import List, Literal
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ValidQuestion(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     title: str = Field(
         description="The question displayed to the applicant."
     )
@@ -25,8 +26,12 @@ class ValidQuestion(BaseModel):
         description="Whether answering this question is mandatory."
     )
 
-class ValidQuestions(BaseModel) :
-    questions : List[ValidQuestion]
+
+class ValidQuestions(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    questions: List[ValidQuestion]
+
 
 class llm_form_request(BaseModel):
     prompt: str

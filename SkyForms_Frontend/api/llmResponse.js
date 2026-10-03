@@ -17,10 +17,22 @@ export async function getLLMResponse(userPrompt){
         })
     })
     if (!response.ok) {
-        throw new Error("Please try again later.");
+    const errorData = await response.json();
+
+    console.error("LLM API error:", errorData);
+
+    throw new Error(
+        errorData.detail || "Failed to generate form"
+    );
     }
     const data = await response.json();
+    console.log("FULL RESPONSE:", data);
+    console.log("QUESTIONS:", data.questions);
+    console.log("QUESTIONS IS ARRAY:", Array.isArray(data.questions));
+
+    
     processResponse(data.questions)
+    
     return data.questions
   
 } 

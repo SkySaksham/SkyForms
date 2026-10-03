@@ -55,7 +55,9 @@ async def home():
 @app.post("/llm_form")
 async def get_llm_form(request :llm_form_request):
         try : 
-                return await get_ai_response(request.prompt)
+                ddd = await get_ai_response(request.prompt)
+                print (ddd)
+                return ddd
         except Exception as e:
                 print(e)  
                 raise HTTPException(
@@ -176,8 +178,6 @@ async def userdata(response :Request):
     return data
 
     
-
-    # yet to complete
 
 
 @app.post("/submit_form")

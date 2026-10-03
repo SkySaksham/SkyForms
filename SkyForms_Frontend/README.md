@@ -1,362 +1,145 @@
-# Sky Forms
+# SkyForms Frontend
 
-> **A Modern Vanilla JavaScript Single Page Application (SPA) for intelligent form creation and distribution**
-
-> **⚠️ Work in Progress**
-> Sky Forms is currently under active development. Features and APIs are subject to change.
+> **Lightweight, local-first Vanilla JavaScript Single Page Application (SPA) for AI-powered form creation, editing, and publishing.**
 
 ---
 
-## 📋 Table of Contents
+## ⚡ Overview
 
-- [About](#about)
-- [Why Vanilla JavaScript?](#why-vanilla-javascript)
-- [Current Progress](#current-progress)
-- [Project Scope & Goals](#project-scope--goals)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Key Features](#key-features)
+SkyForms Frontend is built with **modern Vanilla JavaScript (ES6+ Modules)** without heavy UI frameworks. It features a custom SPA router, local-first state persistence, event-weighted background synchronization, and instant natural language form generation powered by an LLM backend.
 
 ---
 
-## About
+## 🚀 Working Features
 
-**Sky Forms** is a sophisticated Single Page Application (SPA) built entirely with **vanilla JavaScript**, HTML, and CSS. It's designed to enable users to create, manage, and distribute forms with an intuitive drag-and-drop interface and intelligent form generation capabilities.
+### 1. 🤖 AI Form Generation
+- **Prompt to Form**: Generates structured forms from natural language prompts (minimum 25 characters) via backend LLM endpoint (`POST /llm_form`).
+- Accessible from both the Landing Page and Home Dashboard.
+- Automatically assigns client UUIDs and transitions directly into the draft editor.
 
-The application loads once and dynamically updates the interface without full page reloads, providing a seamless, fast user experience. This project demonstrates best practices in vanilla JavaScript SPA development, including custom routing, state management, reusable components, and modular architecture—all without relying on external frameworks.
+### 2. 📝 Visual Form Editor (`/draft?draft=<id>`)
+- **Question Management**: Add, update, and delete questions with validation (title required, character limits).
+- **Supported Question Types**:
+  - Short Answer (`short`)
+  - Long Answer / Paragraph (`paragraph`)
+  - Date (`date`)
+  - Checkbox (`checkbox`)
+- **Drag & Drop Reordering**: Fluid question reordering powered by `Sortable.js`.
+- **Inline Controls**: Rapid question type switching and required field toggling directly on cards.
+- **Form Renaming**: Modal to update draft form title.
 
----
+### 3. 👁️ Preview & Publishing Flow (`/publish?draft=<id>`)
+- **Live Form Preview**: Form review container displaying all questions in their final interactive layout.
+- **Publish Modal**: Confirmation modal triggering `POST /submit_form`.
+- **Publish Conflict Handling**: Gracefully handles stale drafts and forms already published from other sessions.
 
-## Why Vanilla JavaScript?
+### 4. 👤 Authentication & Dashboard (`/home`)
+- **Google Sign-In**: Integrated Google Identity Services (GSI) OAuth (`POST /auth/signin`).
+- **Session Verification**: Automated startup token check (`GET /auth/verify`) with route guards.
+- **Home Dashboard**:
+  - User profile card with email and secure logout (`POST /auth/logout`).
+  - Active/Inactive status list of published forms (`yourForms`).
+  - Quick-access draft forms list (`draftForms`) and "Create New Draft" action.
+  - Inline AI prompt generator box.
 
-We deliberately chose **vanilla JavaScript** over popular frameworks (React, Vue, Angular) for several strategic reasons:
+### 5. 🔄 Local-First Storage & Event-Weighted Sync
+- **Local Cache**: Instant offline/local persistence in `localStorage` (`SkyForms__<userId>`).
+- **Event-Weighted Synchronization**: Changes accumulate weights (`add: 5`, `updateOrder: 5`, `delete: 5`, `updateQ: 4`, `minor: 2`, `updateN: 5`); sync triggers when threshold (15) is met (`POST /updatedraft`).
+- **Version Tracking & Conflict Resolution**: Incremental draft versioning with rollback on failure and automatic remote merge when receiving stale status.
+- **Runtime Validation**: Strict schema enforcement using `Zod` (`userInfoSchema`, `draftFormSchema`, `questionSchema`, `dataSchema`).
 
-### 1. **Full Control & Flexibility**
-   - No framework constraints or opinions dictating architecture
-   - Complete control over DOM manipulation and rendering logic
-   - Freedom to optimize exactly as needed for this use case
-
-### 2. **Zero Dependencies**
-   - No npm package bloat; only essential utilities (Sortable.js for drag-and-drop)
-   - Faster initial load times and smaller bundle size
-   - Easier deployment and maintenance
-   - No dependency version conflicts or security updates to manage
-
-### 3. **Educational Value**
-   - Deep understanding of how SPAs actually work under the hood
-   - Learning core web concepts: routing, state management, component patterns, event handling
-   - No magic—every feature is explicitly written and understandable
-   - Great foundation for understanding framework internals
-
-### 4. **Performance**
-   - Direct DOM access without virtual DOM overhead
-   - Optimized rendering without framework reconciliation
-   - Lightweight and fast on all devices, including older hardware
-
-### 5. **Lightweight & Maintainable**
-   - Simpler codebase that's easy to understand and modify
-   - No breaking changes from framework updates
-   - Built to last without dependency management headaches
-
----
-
-## Current Progress
-
-### ✅ Completed Components & Features
-
-- **Landing Page** (`pages/landingPage.js`)
-  - Welcome screen with animated UI using Animate.css
-  - AI form description input (UI ready for AI integration)
-  - Quick access to form editor
-  - Responsive design with smooth animations
-
-- **Custom Router** (`route.js`)
-  - Full SPA routing without a framework
-  - History API integration (browser back/forward support)
-  - Dynamic page loading and rendering
-  - Cleanup lifecycle hooks for components
-
-- **Navigation Bar Component** (`components/navBar.js`)
-  - Reusable navbar with configurable sections (left, middle, right)
-  - Navigation schema pattern for consistency
-
-- **Form Editor Page** (`pages/editorPage.js`)
-  - Core form editing interface
-  - Question management
-  - Draft form storage and retrieval
-
-- **Question Card Component** (`components/addUpdateQcard.js`)
-  - Add/update question UI
-  - Support for multiple question types (short, paragraph, MCQ, checkbox)
-  - Question validation
-
-- **Editor Logic Class** (`logic/editorClass.js`)
-  - Draft management with auto-generated UUIDs
-  - Question CRUD operations
-  - Question type definitions
-  - Question validation
-
-- **Client-Side State Management** (`store.js`)
-  - Centralized data store for forms, drafts, and user info
-  - Test data for development
-  - Simple, predictable state pattern
-
-- **Styling System**
-  - Modular CSS files per component and page
-  - Responsive design
-  - Smooth animations with Animate.css library
-
-### 🚧 In Development / Upcoming Features
-
-- **AI Form Generation** — Integrate API to generate forms from descriptions
-- **Form Publishing** — Save and publish forms for distribution
-- **Form Responses** — Collect and display form responses
-- **User Authentication** — User accounts and form ownership
-- **Form Analytics** — Response statistics and insights
-- **Advanced Question Types** — Date pickers, file uploads, rating scales
-- **Form Sharing** — Public links and permission management
-- **Database Integration** — Persist forms and responses
+### 6. 🧭 Custom SPA Router
+- Client-side routing using the HTML5 History API (`history.pushState` / `popstate`).
+- Component lifecycle hooks (`init()` and `destroy()`) for event listener cleanup and memory leak prevention.
 
 ---
 
-## Project Scope & Goals
+## 🚧 Roadmap & Upcoming Features
 
-### Scope
-Sky Forms aims to be a complete form creation and distribution platform that allows users to:
-- Create forms through an intuitive visual editor or AI-assisted generation
-- Configure multiple question types with validation rules
-- Publish forms and collect responses
-- Analyze response data and generate reports
-- Manage form versions and duplicates
-
-### Goals (End Vision)
-
-**Phase 1: Form Creation Engine** (Current Phase)
-- ✅ Custom SPA routing
-- ✅ Reusable component architecture
-- ✅ Question editor with multiple question types
-- 🚧 AI-assisted form generation
-- ⏳ Form persistence and retrieval
-
-**Phase 2: Form Distribution**
-- Form publishing and public sharing
-- Unique form URLs
-- Response collection
-- Basic analytics
-
-**Phase 3: Advanced Features**
-- User authentication and form ownership
-- Team collaboration features
-- Advanced question types (date, file upload, rating)
-- Form branching/conditional logic
-- Response export (CSV, PDF)
-- Template library
-
-**Phase 4: Enterprise Features**
-- Webhooks for form submissions
-- API for third-party integration
-- Advanced analytics and reporting
-- Form versioning and rollback
+- [ ] Public respondent form interface & sharable form URLs.
+- [ ] Response collection, storage, and submission confirmation views.
+- [ ] Response analytics and CSV/data export.
+- [ ] Additional question formats (multiple choice radio options, dropdowns, file upload).
 
 ---
 
-## Architecture
+## 🛠️ Tech Stack
 
-### Vanilla JS SPA Pattern
+| Layer | Technology |
+|---|---|
+| **Core** | Vanilla JavaScript (ES6+ Modules), HTML5, CSS3 |
+| **Dev Server / Bundler** | [Vite](https://vite.dev/) (Port 5500) |
+| **Validation** | [Zod](https://zod.dev/) (via ESM CDN) |
+| **Interactions** | [Sortable.js](https://sortablejs.github.io/Sortable/) (Drag & Drop) |
+| **Auth** | Google Identity Services (GSI) |
+| **Styling & Motion** | Modular CSS + [Animate.css](https://animate.style/) |
 
-Our architecture follows a clean, modular pattern without frameworks:
+---
+
+## 📁 Project Structure
 
 ```
-main.js (app initialization)
-  ↓
-route.js (SPA router & renderer)
-  ↓
-pages/ (full page components)
-  ↓
-components/ (reusable UI components)
-  ↓
-logic/ (business logic classes)
-  ↓
-store.js (centralized state)
-  ↓
-DOM (direct DOM manipulation & rendering)
+SkyForms_Frontend/
+├── index.html                   # HTML entry point & external scripts
+├── main.js                      # App bootstrapper, auth check & sync setup
+├── route.js                     # Vanilla SPA router (/, /home, /draft, /publish)
+├── store.js                     # In-memory reactive application state
+├── package.json                 # Vite dev scripts
+│
+├── api/                         # Backend HTTP client integrations
+│   ├── googleAuth.js            # Google GSI initialization & token exchange
+│   ├── getUserHomePageData.js   # User forms & drafts loader (/userdata)
+│   ├── llmResponse.js           # AI form generation client (/llm_form)
+│   ├── logout.js                # Logout request (/auth/logout)
+│   ├── updateDraftServer.js     # Draft update & form publish endpoints
+│   └── verifyJwt.js             # Session verification (/auth/verify)
+│
+├── components/                  # Modular, reusable UI components
+│   ├── addUpdateQcard.js        # Question creation & editing modal
+│   ├── editor.js                # Form question cards, bottom bar & name editor
+│   ├── homePageComponents.js    # Profile card, forms lists, prompt box
+│   ├── loader.js                # Loading spinner overlays
+│   ├── navBar.js                # Top navigation component
+│   └── previewPublish.js        # Form preview layout & publish confirmation
+│
+├── logic/                       # Core domain & synchronization logic
+│   ├── draftClass.js            # Draft state, question CRUD, versioning
+│   └── syncClass.js             # LocalStorage caching, server sync & conflict handling
+│
+├── pages/                       # Routable page views
+│   ├── landingPage.js           # Hero view, card showcase & AI prompt input
+│   ├── homePage.js              # User dashboard & form manager
+│   ├── editorPage.js            # Form builder with Sortable drag-and-drop
+│   └── publishPage.js           # Form review and publish workflow
+│
+├── schema/
+│   └── dataSchema.js            # Zod schemas for user, forms, drafts, questions
+│
+└── style/                       # Scoped stylesheets per page and component
 ```
 
-### Key Architectural Patterns
-
-1. **Component Pattern**
-   - Each component is a pure JavaScript object/function
-   - Returns DOM element and optional init/destroy lifecycle hooks
-   - Reusable and composable
-
-2. **Routing System**
-   - Custom router using History API
-   - No framework overhead
-   - Browser back/forward support
-
-3. **State Management**
-   - Centralized `store.js` for app state
-   - Direct mutation for simplicity (can be enhanced to immutable later)
-   - Easy to trace data flow
-
-4. **Business Logic Classes**
-   - `Draft` class handles form creation and question management
-   - Separation of concerns from UI components
-   - Testable and reusable
-
 ---
 
-## Tech Stack
+## 🏁 Getting Started
 
-| Category | Technology | Reason |
-|----------|-----------|--------|
-| **Frontend Framework** | Vanilla JavaScript (ES6+) | No bloat, full control |
-| **Markup** | HTML5 | Semantic and accessible |
-| **Styling** | CSS3 | Modular, component-scoped |
-| **Animations** | Animate.css | Lightweight animation library |
-| **Utilities** | Sortable.js | Drag-and-drop functionality |
-| **Package Manager** | None required | Minimal dependencies |
-| **Development** | Native ES6 modules | Browser-native support |
+### 1. Prerequisites
+- **Node.js** (v18+)
+- Running **SkyForms Backend** at `http://127.0.0.1:8000`
 
----
+### 2. Installation & Run
+```bash
+# Navigate to frontend directory
+cd SkyForms_Frontend
 
-## Project Structure
+# Install dependencies
+npm install
 
-```
-SkyForms/
-├── index.html              # Main HTML entry point
-├── main.js                 # App initialization
-├── route.js                # SPA router with history API
-├── store.js                # Centralized state management
-├── README.md               # This file
-├── docs.md                 # Component schema documentation
-│
-├── pages/                  # Full page components
-│   ├── landingPage.js      # Welcome/home page
-│   └── editorPage.js       # Form editor page
-│
-├── components/             # Reusable UI components
-│   ├── navBar.js           # Navigation bar component
-│   ├── editor.js           # Main editor component
-│   └── addUpdateQcard.js   # Question card add/update component
-│
-├── logic/                  # Business logic & data management
-│   └── editorClass.js      # Draft & question management
-│
-└── style/                  # Component-scoped stylesheets
-    ├── navBar.css
-    ├── body.css
-    ├── editor.css
-    ├── landingPage.css
-    └── addUpdateQcard.css
+# Start local dev server (http://127.0.0.1:5500)
+npm run dev
 ```
 
-### File Responsibilities
-
-| File | Purpose |
-|------|---------|
-| `main.js` | Entry point; initializes router |
-| `route.js` | Handles SPA routing, page rendering, history |
-| `store.js` | Global state container for forms, drafts, user data |
-| `pages/*.js` | Full-screen page components; routable destinations |
-| `components/*.js` | Reusable UI components; no routing |
-| `logic/*.js` | Business logic, form operations, validation |
-| `style/*.css` | Component-specific styles; modular approach |
-
----
-
-## Getting Started
-
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No build tools or package installation required
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd SkyForms
-   ```
-
-2. Open in browser:
-   ```bash
-   # Simple HTTP server (Python)
-   python -m http.server 8000
-   
-   # Or use any local server:
-   # Node: npx http-server
-   # VS Code: Live Server extension
-   ```
-
-3. Navigate to `http://localhost:8000`
-
-### Development Workflow
-
-- Edit any `.js`, `.css`, or `.html` file
-- Refresh browser to see changes
-- Check browser console for any errors
-- Use browser DevTools for debugging
-
----
-
-## Key Features
-
-### ✨ Form Editor
-- Add, edit, and delete questions
-- Support for 4 question types:
-  - Short Answer (single line text)
-  - Long Answer (multi-line paragraph)
-  - Multiple Choice (radio buttons)
-  - Checkbox (multiple selections)
-- Required field toggle
-- Question descriptions/help text
-- Drag-and-drop question reordering (via Sortable.js)
-
-### 🎨 Responsive UI
-- Mobile-friendly interface
-- Smooth animations and transitions
-- Intuitive form builder experience
-
-### 💾 Client-Side Storage
-- Draft forms stored in-memory (enhancement: localStorage/IndexedDB)
-- Question validation before save
-- UUID-based form identification
-
-### 🧩 Component System
-- Reusable components with lifecycle hooks
-- Clean component interface (element, init, destroy)
-- Easy to compose and extend
-
-### 📱 Single Page Experience
-- No full page reloads
-- Fast navigation between pages
-- Browser history integration (back/forward buttons work)
-
----
-
-## Next Steps for Contributors
-
-1. **AI Integration** — Connect form description input to AI API
-2. **Persistence Layer** — Add localStorage or backend API storage
-3. **Form Publishing** — Create response collection page
-4. **Enhanced Routing** — Add route parameters for form IDs
-5. **Testing** — Add unit and integration tests
-6. **Documentation** — Expand component documentation and examples
-
----
-
-## Notes for Developers
-
-- All code uses ES6+ features and native ES modules
-- No transpilation required for modern browsers
-- Component lifecycle: `init()` runs after DOM insertion, `destroy()` runs before removal
-- Always use `document.createElement()` for components, not `innerHTML` directly (to avoid XSS)
-- State changes should trigger re-renders appropriately
-
----
-
-**Built with ❤️ using vanilla JavaScript, because sometimes less is more.**
-
+### 3. Build & Preview
+```bash
+npm run build
+npm run preview
+```

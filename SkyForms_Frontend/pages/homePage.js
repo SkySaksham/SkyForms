@@ -6,6 +6,8 @@ import { navigate } from "../route.js";
 import { getLoader } from "../components/loader.js";
 import { logout } from "../api/logout.js";
 import { syncManager } from "../main.js";
+import { getLLMResponse } from "../api/llmResponse.js";
+import { Draft } from "../logic/draftClass.js";
 
 export function getHomePage(){
 
@@ -56,6 +58,24 @@ export function getHomePage(){
                     syncManager.clearLocalCache();
                 }
                 else overlayClose();
+                return;
+            case ("LsendBtn"):
+                const prompt = page.querySelector(".LpromptInput").value.trim();
+                if (prompt.length < 25) {
+                    alert("Minimum 25 Characters Required !!");
+                    return;
+                }
+                overlayShow();
+                overlay.replaceChildren(getLoader());
+                try {
+                    const questions = await getLLMResponse(prompt);
+                    const id = crypto.randomUUID();
+                    Draft.updateQuestions(id, questions);
+                    navigate(`/draft?draft=${id}`);
+                } catch(e) {
+                    alert(e);
+                    overlayClose();
+                }
                 return;
         }
         } 
