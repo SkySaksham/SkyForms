@@ -84,3 +84,13 @@ dist/
 .cache/
 temp/
 tmp/
+
+
+# =========================
+# AI / Agent Config
+# =========================
+.agent/
+.claude/
+.cursor/
+.gemini/
+.impeccable/

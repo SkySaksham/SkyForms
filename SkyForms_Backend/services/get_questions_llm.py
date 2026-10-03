@@ -18,7 +18,7 @@ client = Groq(api_key=GROQ_API_KEY)
 
 
 async def get_ai_response(userInput :str) ->ValidQuestions :
-    chat_completion = await client.chat.completions.create(
+    chat_completion =  client.chat.completions.create(
         messages=[
             {
                 "role": "system",
@@ -30,13 +30,14 @@ async def get_ai_response(userInput :str) ->ValidQuestions :
             }
         ],
         model="openai/gpt-oss-120b",
-        response_format={
-            "type": "json_schema",
-            "json_schema": {
-                "name": "valid_form_question",
-                "schema": ValidQuestions.model_json_schema()
-            }
+       response_format={
+        "type": "json_schema",
+        "json_schema": {
+            "name": "valid_form_question",
+            "strict": True,
+            "schema": ValidQuestions.model_json_schema()
         }
+    }
     )
 
     return ValidQuestions.model_validate_json(
