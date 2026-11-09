@@ -10,6 +10,11 @@ export class Sync{
     constructor (id) {
         this.data = data;
         this.userId = id;
+        this.onStateChange = null;
+    }
+
+    setOnStateChange(callback) {
+        this.onStateChange = callback;
     }
 
 
@@ -19,7 +24,14 @@ export class Sync{
         if (!raw) {
             throw Error("NO Data Locally");
         }
-        const parsed = dataSchema.parse(JSON.parse(raw));
+        const cached = JSON.parse(raw);
+        const parsed = dataSchema.parse({
+            ...cached,
+            userInfo: {
+                ...cached.userInfo,
+                id: cached.userInfo?.id || this.userId,
+            },
+        });
         this.data.userInfo = parsed.userInfo;
 
         console.log (parsed);
@@ -100,20 +112,42 @@ export class Sync{
             }
             
             console.log("drafts SYnced !!");
-            console.log("only syncing drafts rn");
+           
             console.log(this.data.yourForms);
             console.log(this.data.drafts);
+            this.onStateChange?.(this.data);
         }
     }
 
+    async refreshDraftFromServer(draftID) {
+        const response = await getUserHomePageData();
+        if (!response) return false;
+
+        const serverDraft = response.draft?.[draftID];
+        if (serverDraft) {
+            const validate = draftFormSchema.safeParse(serverDraft);
+            if (!validate.success) {
+                console.error("Invalid draft received from server:", validate.error);
+                return false;
+            }
+            this.data.drafts[draftID] = validate.data;
+            this.cacheLocally();
+        }
+
+        return true;
+    }
+
     syncUserInfo(data){
-        let a = userInfoSchema.safeParse(data);
+        let a = userInfoSchema.safeParse({
+            ...data,
+            id: data?.id || this.userId,
+        });
         if (a.success) {
             this.data.userInfo = a.data;
             console.log(this.data.userInfo);
             return true;
         }
-        console.error(result.error);
+        console.error(a.error);
         return false;
     }
 

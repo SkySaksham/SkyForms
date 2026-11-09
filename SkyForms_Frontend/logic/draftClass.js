@@ -162,6 +162,7 @@ export class Draft {
             data.drafts[id] = {
                 version: 0,
                 name: "Untitled",
+                id,
                 questions: []
             };
         }

@@ -24,7 +24,6 @@ from uuid import UUID
 async def lifespan(app: FastAPI):
     await connect_db()
     
-
     yield
     POOL = get_pool()
     await POOL.close()

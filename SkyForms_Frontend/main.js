@@ -10,6 +10,7 @@ export let syncManager = null;
 
 export function setSyncManager(id) {
     syncManager = new Sync(id);
+    syncManager.setOnStateChange(render);
 }
 
 async function start_up() {
@@ -22,17 +23,25 @@ async function start_up() {
         return;
     }
 
+    let loadedFromCache = false;
     try {
-        await syncManager.repopulateMemoryFromLocal();
+        syncManager.repopulateMemoryFromLocal();
+        loadedFromCache = true;
     } catch (e) {
         console.log(e);
-        await syncManager.fetchAppState();
     }
 
     if (location.pathname === "/") {
         navigate("/home");
     } else {
         render();
+    }
+
+    try {
+        await syncManager.fetchAppState();
+    } catch (e) {
+        console.log(e);
+        if (!loadedFromCache) return;
     }
 }
 

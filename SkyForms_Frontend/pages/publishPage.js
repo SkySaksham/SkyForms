@@ -69,22 +69,32 @@ export function getPublishPage(){
     
 
 
-    function init (){
+    async function init (){
 
         const params = new URLSearchParams(location.search);
         draftId = params.get("draft");
-        if (! draftId in data.drafts){
+        if (!draftId || !Object.hasOwn(data.drafts, draftId)){
             alert("NOT FOUND !!!");
-            navigate("home");
+            navigate("/home");
             return;
         }
-        else {
-            const draft = new Draft(draftId);
-            console.log(draft.getName);
-            navbar.appendChild(getNavbar({middle:draft.getName}));
-            btmBar.appendChild(getBottomBar("Back","Publish"));
-            pConatiner.appendChild(getPublishContainer(draft.questions));
+
+        pConatiner.appendChild(getLoader("Refreshing draft..."));
+        const refreshed = await syncManager.refreshDraftFromServer(draftId);
+        if (!refreshed) {
+            alert("Could not refresh this draft from the server. Please try again.");
+            navigate("/home");
+            return;
         }
+
+       
+        if (!page.isConnected || location.pathname !== "/publish" ||
+            new URLSearchParams(location.search).get("draft") !== draftId) return;
+
+        const draft = new Draft(draftId);
+        navbar.appendChild(getNavbar({middle:draft.getName}));
+        btmBar.appendChild(getBottomBar("Back","Publish"));
+        pConatiner.replaceChildren(getPublishContainer(draft.questions));
 
         page.addEventListener("click",publishActivity);
 
